@@ -56,7 +56,7 @@ minecraft {
 	
 	replace '${version}', project.version
 	replace '${mcversion}', project.minecraft.version
-	replaceIn "info/u_team/useful_backpacks/UsefulBackPacksConstants.java"
+	replaceIn "info/u_team/overworld_mirror/OverworldMirrorConstants.java"
 }
 
 def normalManifest = {
@@ -182,21 +182,21 @@ uploadArchives {
 				project {
 					name project.archivesBaseName
 					packaging "jar"
-					description "Useful-Backpacks"
-						url "https://github.com/MC-U-Team/Useful-Backpacks"
+					description "Overworld-Mirror"
+						url "https://github.com/MC-U-Team/Overworld-Mirror"
 					scm {
-						url "https://github.com/MC-U-Team/Useful-Backpacks"
-						connection "scm:git:git://github.com/MC-U-Team/Useful-Backpacks.git"
-						developerConnection "scm:git:git@github.com:MC-U-Team/Useful-Backpacks.git"
+						url "https://github.com/MC-U-Team/Overworld-Mirror"
+						connection "scm:git:git://github.com/MC-U-Team/Overworld-Mirror.git"
+						developerConnection "scm:git:git@github.com:MC-U-Team/Overworld-Mirror.git"
 					}
 					issueManagement {
 						system "github"
-						url "https://github.com/MC-U-Team/Useful-Backpacks/issues"
+						url "https://github.com/MC-U-Team/Overworld-Mirror/issues"
 					}
 					licenses {
 						license {
 							name "Apache License 2.0"
-							url "https://github.com/MC-U-Team/Useful-Backpacks/blob/1.12.2/LICENSE"
+							url "https://github.com/MC-U-Team/Overworld-Mirror/blob/1.12.2/LICENSE"
 							distribution "repo"
 						}
 					}
