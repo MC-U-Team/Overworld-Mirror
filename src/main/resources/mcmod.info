@@ -1,0 +1,15 @@
+[
+	{
+		"modid": "overworldmirror",
+		"name": "Overworld Mirror",
+		"version": "${version}",
+		"mcversion": "${mcversion}",
+		"description": "This mod just mirrors the overworld and let you travel with a portal between them",
+		"url": "https://u-team.info/mod/overworldmirror",
+		"authorList": [
+			"HyCraftHD"
+		],
+		"credits": "Team U-Team",
+		"logoFile": "assets/overworldmirror/logo.png"
+	}
+]
