@@ -63,7 +63,8 @@ def normalManifest = {
 	attributes(
 		"Implementation-Title": config.mod.name,
     	"Implementation-Version": project.version,
-		"Built-On": minecraft.version
+		"Built-On": minecraft.version,
+		"FMLAT": "overworldmirror_at.cfg"
 	)
 }
 
@@ -133,6 +134,7 @@ processResources {
     from(sourceSets.main.resources.srcDirs) {
         exclude "mcmod.info"
     }
+    rename '(.+_at.cfg)', 'META-INF/$1'
 }
 
 compileJava {
