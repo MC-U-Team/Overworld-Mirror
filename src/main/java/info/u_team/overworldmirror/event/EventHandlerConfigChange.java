@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class EventHandlerConfigChange {
 	
 	@SubscribeEvent
-	public static void onConfigChangedEvent(OnConfigChangedEvent event) {
+	public static void on(OnConfigChangedEvent event) {
 		if (event.getModID().equals(OverworldMirrorConstants.MODID)) {
 			ConfigManager.sync(OverworldMirrorConstants.MODID, Type.INSTANCE);
 		}

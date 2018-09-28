@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class EventHandlerPortalCreation {
 	
 	@SubscribeEvent
-	public void onBoneMeal(BonemealEvent event) {
+	public void on(BonemealEvent event) {
 		BlockPos pos = event.getPos();
 		World world = event.getWorld();
 		if (!(event.getBlock().getBlock() instanceof BlockFlower)) {
