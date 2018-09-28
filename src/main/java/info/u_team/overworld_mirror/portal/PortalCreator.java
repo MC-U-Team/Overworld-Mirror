@@ -1,8 +1,8 @@
-package info.u_team.overworldmirror.portal;
+package info.u_team.overworld_mirror.portal;
 
 import java.util.ArrayList;
 
-import info.u_team.overworldmirror.init.OverworldMirrorBlocks;
+import info.u_team.overworld_mirror.init.OverworldMirrorBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

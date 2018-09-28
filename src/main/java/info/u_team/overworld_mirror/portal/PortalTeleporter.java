@@ -1,6 +1,6 @@
-package info.u_team.overworldmirror.portal;
+package info.u_team.overworld_mirror.portal;
 
-import info.u_team.overworldmirror.init.OverworldMirrorBlocks;
+import info.u_team.overworld_mirror.init.OverworldMirrorBlocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;

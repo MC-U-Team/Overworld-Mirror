@@ -1,9 +1,9 @@
-package info.u_team.overworldmirror.block;
+package info.u_team.overworld_mirror.block;
 
 import java.util.Random;
 
-import info.u_team.overworldmirror.init.OverworldMirrorDimensions;
-import info.u_team.overworldmirror.portal.PortalTeleporter;
+import info.u_team.overworld_mirror.init.OverworldMirrorDimensions;
+import info.u_team.overworld_mirror.portal.PortalTeleporter;
 import info.u_team.u_team_core.block.UBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;

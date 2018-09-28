@@ -1,7 +1,7 @@
-package info.u_team.overworldmirror.proxy;
+package info.u_team.overworld_mirror.proxy;
 
-import info.u_team.overworldmirror.event.*;
-import info.u_team.overworldmirror.init.*;
+import info.u_team.overworld_mirror.event.*;
+import info.u_team.overworld_mirror.init.*;
 import info.u_team.u_team_core.registry.CommonRegistry;
 import net.minecraftforge.fml.common.event.*;
 

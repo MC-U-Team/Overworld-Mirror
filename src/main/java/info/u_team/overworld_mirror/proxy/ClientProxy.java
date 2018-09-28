@@ -1,6 +1,6 @@
-package info.u_team.overworldmirror.proxy;
+package info.u_team.overworld_mirror.proxy;
 
-import info.u_team.overworldmirror.event.EventHandlerConfigChange;
+import info.u_team.overworld_mirror.event.EventHandlerConfigChange;
 import info.u_team.u_team_core.registry.CommonRegistry;
 import net.minecraftforge.fml.common.event.*;
 

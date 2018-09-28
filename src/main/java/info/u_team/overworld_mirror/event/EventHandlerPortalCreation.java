@@ -1,6 +1,6 @@
-package info.u_team.overworldmirror.event;
+package info.u_team.overworld_mirror.event;
 
-import info.u_team.overworldmirror.portal.PortalValidator;
+import info.u_team.overworld_mirror.portal.PortalValidator;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.util.math.BlockPos;

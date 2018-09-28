@@ -1,8 +1,8 @@
-package info.u_team.overworldmirror;
+package info.u_team.overworld_mirror;
 
-import static info.u_team.overworldmirror.OverworldMirrorConstants.*;
+import static info.u_team.overworld_mirror.OverworldMirrorConstants.*;
 
-import info.u_team.overworldmirror.proxy.CommonProxy;
+import info.u_team.overworld_mirror.proxy.CommonProxy;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.Mod.*;
 import net.minecraftforge.fml.common.event.*;

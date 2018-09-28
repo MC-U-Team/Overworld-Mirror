@@ -1,7 +1,7 @@
 
-package info.u_team.overworldmirror.config;
+package info.u_team.overworld_mirror.config;
 
-import static info.u_team.overworldmirror.OverworldMirrorConstants.MODID;
+import static info.u_team.overworld_mirror.OverworldMirrorConstants.MODID;
 
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Config.*;

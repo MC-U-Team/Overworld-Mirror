@@ -1,4 +1,4 @@
-package info.u_team.overworldmirror;
+package info.u_team.overworld_mirror;
 
 import org.apache.logging.log4j.*;
 

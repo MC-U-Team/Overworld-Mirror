@@ -1,7 +1,7 @@
-package info.u_team.overworldmirror.dimension;
+package info.u_team.overworld_mirror.dimension;
 
-import info.u_team.overworldmirror.config.CommonConfig;
-import info.u_team.overworldmirror.init.OverworldMirrorDimensions;
+import info.u_team.overworld_mirror.config.CommonConfig;
+import info.u_team.overworld_mirror.init.OverworldMirrorDimensions;
 import net.minecraft.world.*;
 
 public class WorldProviderMirroredSurface extends WorldProviderSurface {

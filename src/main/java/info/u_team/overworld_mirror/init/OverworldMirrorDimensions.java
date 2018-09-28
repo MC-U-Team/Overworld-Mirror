@@ -1,6 +1,6 @@
-package info.u_team.overworldmirror.init;
+package info.u_team.overworld_mirror.init;
 
-import info.u_team.overworldmirror.dimension.WorldProviderMirroredSurface;
+import info.u_team.overworld_mirror.dimension.WorldProviderMirroredSurface;
 import net.minecraft.world.*;
 import net.minecraftforge.common.DimensionManager;
 
