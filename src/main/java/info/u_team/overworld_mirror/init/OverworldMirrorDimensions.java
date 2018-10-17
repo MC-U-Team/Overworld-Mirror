@@ -1,7 +1,7 @@
 package info.u_team.overworld_mirror.init;
 
 import info.u_team.overworld_mirror.dimension.WorldProviderMirroredSurface;
-import net.minecraft.world.*;
+import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.DimensionManager;
 
 public class OverworldMirrorDimensions {

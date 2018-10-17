@@ -6,6 +6,8 @@ import net.minecraft.world.*;
 
 public class WorldProviderMirroredSurface extends WorldProviderSurface {
 	
+	private long time;
+	
 	@Override
 	public DimensionType getDimensionType() {
 		return OverworldMirrorDimensions.dimension_type;
@@ -15,8 +17,10 @@ public class WorldProviderMirroredSurface extends WorldProviderSurface {
 	public void setWorld(World world) {
 		this.world = world;
 		
+		time = world.getWorldInfo().getWorldTime();
+		
 		terrainType = WorldType.byName(CommonConfig.settings.world_type);
-		if(terrainType == null) {
+		if (terrainType == null) {
 			terrainType = world.getWorldInfo().getTerrainType();
 		}
 		
@@ -34,6 +38,17 @@ public class WorldProviderMirroredSurface extends WorldProviderSurface {
 	@Override
 	public double getMovementFactor() {
 		return CommonConfig.settings.movement_factor;
+	}
+	
+	@Override
+	public long getWorldTime() {
+		return time;
+	}
+	
+	@Override
+	public void setWorldTime(long time) {
+		super.setWorldTime(time);
+		this.time = time;
 	}
 	
 }

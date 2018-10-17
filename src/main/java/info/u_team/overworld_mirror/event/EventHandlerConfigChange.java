@@ -1,7 +1,7 @@
 package info.u_team.overworld_mirror.event;
 
-import net.minecraftforge.common.config.Config.Type;
 import info.u_team.overworld_mirror.OverworldMirrorConstants;
+import net.minecraftforge.common.config.Config.Type;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
