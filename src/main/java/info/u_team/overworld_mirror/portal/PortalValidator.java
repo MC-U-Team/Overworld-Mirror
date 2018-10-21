@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import info.u_team.overworld_mirror.init.OverworldMirrorBlocks;
 import net.minecraft.block.*;
 import net.minecraft.init.Blocks;
+import net.minecraft.network.play.server.SPacketBlockChange;
+import net.minecraft.server.management.PlayerList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class PortalValidator {
 	
@@ -60,7 +63,7 @@ public class PortalValidator {
 		portal.add(pos.south());
 		
 		boolean bool = stone.stream().allMatch(pos -> world.getBlockState(pos).getBlock() == Blocks.STONEBRICK);
-		boolean bool2 = portal.stream().allMatch(pos -> world.getBlockState(pos).getBlock() instanceof BlockFlower);
+		boolean bool2 = portal.stream().allMatch(pos -> world.getBlockState(pos).getBlock() instanceof BlockBush);
 		
 		return bool && bool2 ? State.WORKING : State.NONE;
 	}
@@ -69,7 +72,9 @@ public class PortalValidator {
 		if (state == State.NONE) {
 			return false;
 		}
-		portal.forEach(pos -> world.setBlockState(pos, OverworldMirrorBlocks.portal.getDefaultState(), 2));
+		PlayerList playerlist = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList();
+		portal.forEach(pos -> world.setBlockState(pos, OverworldMirrorBlocks.portal.getDefaultState()));
+		portal.forEach(pos -> playerlist.sendToAllNearExcept(null, pos.getX(), pos.getY(), pos.getZ(), 64, world.provider.getDimension(), new SPacketBlockChange(world, pos)));
 		return true;
 	}
 	

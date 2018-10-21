@@ -1,7 +1,7 @@
 package info.u_team.overworld_mirror.event;
 
 import info.u_team.overworld_mirror.portal.PortalValidator;
-import net.minecraft.block.BlockFlower;
+import net.minecraft.block.*;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -14,12 +14,17 @@ public class EventHandlerPortalCreation {
 	public static void on(BonemealEvent event) {
 		BlockPos pos = event.getPos();
 		World world = event.getWorld();
-		if (!(event.getBlock().getBlock() instanceof BlockFlower)) {
+		
+		if (world.isRemote) {
 			return;
 		}
+		if (!(event.getBlock().getBlock() instanceof BlockBush)) {
+			return;
+		}
+		
 		if (new PortalValidator(world, pos).create()) {
-			EntityLightningBolt lightning = new EntityLightningBolt(world, pos.getX(), pos.getY() + 1, pos.getZ(), true);
-			world.spawnEntity(lightning);
+//			EntityLightningBolt lightning = new EntityLightningBolt(world, pos.getX(), pos.getY() + 1, pos.getZ(), true);
+//			world.addWeatherEffect(lightning);
 		}
 	}
 	

@@ -2,7 +2,7 @@ package info.u_team.overworld_mirror.block;
 
 import java.util.Random;
 
-import info.u_team.overworld_mirror.init.OverworldMirrorDimensions;
+import info.u_team.overworld_mirror.init.*;
 import info.u_team.overworld_mirror.portal.PortalTeleporter;
 import info.u_team.u_team_core.block.UBlock;
 import net.minecraft.block.*;
@@ -29,7 +29,7 @@ public class BlockOverworldMirrorPortal extends UBlock {
 	}
 	
 	@Override
-	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entity) {
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
 		// if (!entityIn.isRiding() && !entityIn.isBeingRidden() &&
 		// entityIn.isNonBoss()) {
 		// entityIn.setPortal(pos);
@@ -52,10 +52,10 @@ public class BlockOverworldMirrorPortal extends UBlock {
 	}
 	
 	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos neighbor) {
-		if (!neighbor.down().equals(pos) && !neighbor.up().equals(pos)) {
-			worldIn.setBlockToAir(pos);
-		}
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos neighbor) {
+//		if (!world.getBlockState(neighbor).getBlock().equals(OverworldMirrorBlocks.portal)) {
+//			world.setBlockToAir(pos);
+//		}
 	}
 	
 	@Override
@@ -64,7 +64,7 @@ public class BlockOverworldMirrorPortal extends UBlock {
 	}
 	
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos) {
 		return NULL_AABB;
 	}
 	
@@ -74,7 +74,7 @@ public class BlockOverworldMirrorPortal extends UBlock {
 	}
 	
 	@Override
-	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
 		return ItemStack.EMPTY;
 	}
 	
@@ -89,7 +89,7 @@ public class BlockOverworldMirrorPortal extends UBlock {
 	}
 	
 	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing face) {
 		return BlockFaceShape.UNDEFINED;
 	}
 	
@@ -98,36 +98,4 @@ public class BlockOverworldMirrorPortal extends UBlock {
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
 	}
-	
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
-		// if (rand.nextInt(100) == 0) {
-		// worldIn.playSound((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D,
-		// (double) pos.getZ() + 0.5D, SoundEvents.BLOCK_PORTAL_AMBIENT,
-		// SoundCategory.BLOCKS, 0.5F, rand.nextFloat() * 0.4F + 0.8F, false);
-		// }
-		//
-		// for (int i = 0; i < 4; ++i) {
-		// double d0 = (double) ((float) pos.getX() + rand.nextFloat());
-		// double d1 = (double) ((float) pos.getY() + rand.nextFloat());
-		// double d2 = (double) ((float) pos.getZ() + rand.nextFloat());
-		// double d3 = ((double) rand.nextFloat() - 0.5D) * 0.5D;
-		// double d4 = ((double) rand.nextFloat() - 0.5D) * 0.5D;
-		// double d5 = ((double) rand.nextFloat() - 0.5D) * 0.5D;
-		// int j = rand.nextInt(2) * 2 - 1;
-		//
-		// if (worldIn.getBlockState(pos.west()).getBlock() != this &&
-		// worldIn.getBlockState(pos.east()).getBlock() != this) {
-		// d0 = (double) pos.getX() + 0.5D + 0.25D * (double) j;
-		// d3 = (double) (rand.nextFloat() * 2.0F * (float) j);
-		// } else {
-		// d2 = (double) pos.getZ() + 0.5D + 0.25D * (double) j;
-		// d5 = (double) (rand.nextFloat() * 2.0F * (float) j);
-		// }
-		//
-		// worldIn.spawnParticle(EnumParticleTypes.PORTAL, d0, d1, d2, d3, d4, d5);
-		// }
-	}
-	
 }
