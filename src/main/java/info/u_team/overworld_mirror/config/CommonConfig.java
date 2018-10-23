@@ -23,12 +23,17 @@ public class CommonConfig {
 		
 		@Comment("If you want a completly mirrored world, you need to set this to 0")
 		@Name("Seed Shift")
-		public int seed_shift = 100000;
+		public int seed_shift = 100_000;
 		
 		@Comment("Set this if you want to have a higher movement factor like the nether has 8")
 		@Name("Movement Factor")
 		@RangeDouble(min = 0, max = Integer.MAX_VALUE)
 		public double movement_factor = 1;
+		
+		@Comment("How many blocks the portal can be from the normal spawn location to not create a new one. The value is not in sqrt cause of lag reduction. 400 = 20 Blocks, 900 = 30 Blocks, etc")
+		@Name("Portal Distance")
+		@RangeDouble(min = 1, max = 1e20)
+		public double portal_distance = 400;
 		
 	}
 	

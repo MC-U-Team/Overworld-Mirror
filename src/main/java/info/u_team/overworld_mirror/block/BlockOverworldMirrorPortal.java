@@ -2,8 +2,8 @@ package info.u_team.overworld_mirror.block;
 
 import java.util.Random;
 
-import info.u_team.overworld_mirror.init.*;
-import info.u_team.overworld_mirror.portal.PortalTeleporter;
+import info.u_team.overworld_mirror.init.OverworldMirrorDimensions;
+import info.u_team.overworld_mirror.portal.*;
 import info.u_team.u_team_core.block.UBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -52,10 +52,18 @@ public class BlockOverworldMirrorPortal extends UBlock {
 	}
 	
 	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		super.breakBlock(world, pos, state);
+		WorldSaveDataPortal data = WorldSaveDataPortal.get(world);
+		data.getPortals().removeIf(portal -> portal.equals(pos));
+		data.markDirty();
+	}
+	
+	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos neighbor) {
-//		if (!world.getBlockState(neighbor).getBlock().equals(OverworldMirrorBlocks.portal)) {
-//			world.setBlockToAir(pos);
-//		}
+		if (!neighbor.down().equals(pos) && !neighbor.up().equals(pos)) {
+			world.setBlockToAir(pos);
+		}
 	}
 	
 	@Override

@@ -14,7 +14,7 @@ public class PortalCreator {
 	
 	public PortalCreator(World world, BlockPos pos) {
 		this.world = world;
-		this.pos = pos.down().south();
+		this.pos = pos;
 	}
 	
 	public void create() {
@@ -33,6 +33,13 @@ public class PortalCreator {
 		stone.add(pos.south(2).west());
 		stone.add(pos.south(2).east(2));
 		
+		ArrayList<BlockPos> underportal = new ArrayList<>();
+		
+		underportal.add(pos.down());
+		underportal.add(pos.east().down());
+		underportal.add(pos.south().east().down());
+		underportal.add(pos.south().down());
+		
 		ArrayList<BlockPos> portal = new ArrayList<>();
 		
 		portal.add(pos);
@@ -41,6 +48,8 @@ public class PortalCreator {
 		portal.add(pos.south());
 		
 		stone.forEach(pos -> world.setBlockState(pos, Blocks.STONEBRICK.getDefaultState()));
+		underportal.forEach(pos -> world.setBlockState(pos, Blocks.STONEBRICK.getDefaultState()));
+		
 		portal.forEach(pos -> world.setBlockState(pos, OverworldMirrorBlocks.portal.getDefaultState(), 2));
 		
 		stone.forEach(pos -> world.setBlockToAir(pos.up()));

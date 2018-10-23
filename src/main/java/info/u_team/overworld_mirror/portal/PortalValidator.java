@@ -73,7 +73,10 @@ public class PortalValidator {
 			return false;
 		}
 		PlayerList playerlist = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList();
+		
+		portal.forEach(pos -> world.setBlockState(pos.down(), Blocks.STONEBRICK.getDefaultState()));
 		portal.forEach(pos -> world.setBlockState(pos, OverworldMirrorBlocks.portal.getDefaultState()));
+		portal.forEach(pos -> playerlist.sendToAllNearExcept(null, pos.getX(), pos.getY(), pos.getZ(), 64, world.provider.getDimension(), new SPacketBlockChange(world, pos.down())));
 		portal.forEach(pos -> playerlist.sendToAllNearExcept(null, pos.getX(), pos.getY(), pos.getZ(), 64, world.provider.getDimension(), new SPacketBlockChange(world, pos)));
 		return true;
 	}

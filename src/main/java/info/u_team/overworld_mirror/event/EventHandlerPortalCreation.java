@@ -1,7 +1,7 @@
 package info.u_team.overworld_mirror.event;
 
-import info.u_team.overworld_mirror.portal.PortalValidator;
-import net.minecraft.block.*;
+import info.u_team.overworld_mirror.portal.*;
+import net.minecraft.block.BlockBush;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -23,8 +23,11 @@ public class EventHandlerPortalCreation {
 		}
 		
 		if (new PortalValidator(world, pos).create()) {
-//			EntityLightningBolt lightning = new EntityLightningBolt(world, pos.getX(), pos.getY() + 1, pos.getZ(), true);
-//			world.addWeatherEffect(lightning);
+			WorldSaveDataPortal data = WorldSaveDataPortal.get(world);
+			data.getPortals().add(pos);
+			data.markDirty();
+			EntityLightningBolt lightning = new EntityLightningBolt(world, pos.getX(), pos.getY() + 1, pos.getZ(), true);
+			world.addWeatherEffect(lightning);
 		}
 	}
 	
