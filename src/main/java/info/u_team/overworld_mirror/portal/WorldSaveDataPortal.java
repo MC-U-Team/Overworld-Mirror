@@ -4,17 +4,14 @@ import java.util.*;
 
 import net.minecraft.nbt.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.storage.*;
+import net.minecraft.world.storage.WorldSavedData;
 
 public class WorldSaveDataPortal extends WorldSavedData {
-	
-	private static final String data_name = "overworldmirror_portal";
 	
 	private List<BlockPos> portals = new ArrayList<>();
 	
 	public WorldSaveDataPortal() {
-		super(data_name);
+		super("overworldmirror_portal");
 	}
 	
 	@Override
@@ -44,17 +41,6 @@ public class WorldSaveDataPortal extends WorldSavedData {
 	
 	public List<BlockPos> getPortals() {
 		return portals;
-	}
-	
-	public static WorldSaveDataPortal get(World world) {
-		MapStorage storage = world.getPerWorldStorage();
-		WorldSaveDataPortal instance = (WorldSaveDataPortal) storage.getOrLoadData(WorldSaveDataPortal.class, data_name);
-		
-		if (instance == null) {
-			instance = new WorldSaveDataPortal();
-			storage.setData(data_name, instance);
-		}
-		return instance;
 	}
 	
 }

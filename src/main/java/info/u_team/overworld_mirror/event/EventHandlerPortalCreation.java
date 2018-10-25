@@ -1,7 +1,7 @@
 package info.u_team.overworld_mirror.event;
 
-import info.u_team.overworld_mirror.portal.*;
-import net.minecraft.block.BlockBush;
+import info.u_team.overworld_mirror.portal.PortalManager;
+import net.minecraft.block.BlockFlower;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -18,14 +18,15 @@ public class EventHandlerPortalCreation {
 		if (world.isRemote) {
 			return;
 		}
-		if (!(event.getBlock().getBlock() instanceof BlockBush)) {
+		if (!(event.getBlock().getBlock() instanceof BlockFlower)) {
 			return;
 		}
 		
-		if (new PortalValidator(world, pos).create()) {
-			WorldSaveDataPortal data = WorldSaveDataPortal.get(world);
-			data.getPortals().add(pos);
-			data.markDirty();
+		if (!event.getEntityPlayer().isSneaking()) {
+			return;
+		}
+		
+		if (PortalManager.trySpawnPortalFromFrame(world, pos)) {
 			EntityLightningBolt lightning = new EntityLightningBolt(world, pos.getX(), pos.getY() + 1, pos.getZ(), true);
 			world.addWeatherEffect(lightning);
 		}
