@@ -98,7 +98,7 @@ public class PortalManager {
 			data.getPortals().add(middle_pos);
 			data.markDirty();
 		}
-		entity.setPositionAndRotation(middle_pos.getX(), middle_pos.getY(), middle_pos.getZ(), yaw, entity.rotationPitch);
+		entity.setPositionAndRotation(middle_pos.getX() + 0.5D, middle_pos.getY(), middle_pos.getZ() + 0.5F, yaw, entity.rotationPitch);
 		
 	}
 	
@@ -114,27 +114,33 @@ public class PortalManager {
 	}
 	
 	private static BlockPos spawnPortal(World world, BlockPos entity_pos) {
-		BlockPos pos = world.getPrecipitationHeight(entity_pos);
+		BlockPos pos = world.getPrecipitationHeight(entity_pos).down();
 		
 		ArrayList<BlockPos> portal = new ArrayList<>();
 		ArrayList<BlockPos> frame = new ArrayList<>();
 		
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
-				frame.add(pos.add(i, -1, j));
 				portal.add(pos.add(i, 0, j));
 			}
 		}
 		
-		for (int i = -1; i <= 1; i++) {
+		for (int i = -2; i <= 2; i++) {
 			frame.add(pos.add(2, 0, i));
 			frame.add(pos.add(-2, 0, i));
 			frame.add(pos.add(i, 0, 2));
 			frame.add(pos.add(i, 0, -2));
 		}
 		
-		frame.forEach(frame_pos -> world.setBlockState(frame_pos, Blocks.STONEBRICK.getDefaultState()));
-		portal.forEach(portal_pos -> world.setBlockState(portal_pos, OverworldMirrorBlocks.portal.getDefaultState(), 2));
+		frame.forEach(frame_pos -> {
+			world.setBlockState(frame_pos, Blocks.STONEBRICK.getDefaultState());
+			world.setBlockToAir(frame_pos.up());
+			world.setBlockToAir(frame_pos.up(2));
+		});
+		portal.forEach(portal_pos -> {
+			world.setBlockState(portal_pos.down(), Blocks.STONEBRICK.getDefaultState());
+			world.setBlockState(portal_pos, OverworldMirrorBlocks.portal.getDefaultState(), 2);
+		});
 		
 		return pos;
 	}
@@ -144,7 +150,7 @@ public class PortalManager {
 		WorldSaveDataPortal instance = (WorldSaveDataPortal) storage.getOrLoadData(WorldSaveDataPortal.class, "overworldmirror_portal");
 		
 		if (instance == null) {
-			instance = new WorldSaveDataPortal();
+			instance = new WorldSaveDataPortal("overworldmirror_portal");
 			storage.setData("overworldmirror_portal", instance);
 		}
 		return instance;

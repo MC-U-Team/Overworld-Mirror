@@ -10,8 +10,8 @@ public class WorldSaveDataPortal extends WorldSavedData {
 	
 	private List<BlockPos> portals = new ArrayList<>();
 	
-	public WorldSaveDataPortal() {
-		super("overworldmirror_portal");
+	public WorldSaveDataPortal(String name) {
+		super(name);
 	}
 	
 	@Override
