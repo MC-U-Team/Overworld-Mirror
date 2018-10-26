@@ -6,7 +6,7 @@ public class OverworldMirrorConstants {
 	
 	public static final String MODID = "overworldmirror";
 	public static final String NAME = "Overworld Mirror";
-	public static final String VERSION = "1.1.0.DEV-SNAPSHOT"; // TODO!!!!!
+	public static final String VERSION = "${version}";
 	public static final String MCVERSION = "${mcversion}";
 	public static final String DEPENDENCIES = "required:forge@[14.23.4.2705,);required-after:uteamcore@[2.0.0.81,);after:morpheus";
 	public static final String UPDATEURL = "https://api.u-team.info/update/overworldmirror.json";
