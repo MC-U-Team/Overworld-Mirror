@@ -90,6 +90,9 @@ public class PortalManager {
 				if (validatePortal(world, pos)) {
 					middle_pos = pos;
 					break;
+				} else {
+					data.getPortals().remove(pos);
+					data.markDirty();
 				}
 			}
 		}
