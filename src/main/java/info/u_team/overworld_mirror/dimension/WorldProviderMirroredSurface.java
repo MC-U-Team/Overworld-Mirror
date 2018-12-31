@@ -3,6 +3,7 @@ package info.u_team.overworld_mirror.dimension;
 import info.u_team.overworld_mirror.config.CommonConfig;
 import info.u_team.overworld_mirror.init.OverworldMirrorDimensions;
 import net.minecraft.world.*;
+import net.minecraft.world.gen.IChunkGenerator;
 
 public class WorldProviderMirroredSurface extends WorldProviderSurface {
 	
@@ -49,6 +50,11 @@ public class WorldProviderMirroredSurface extends WorldProviderSurface {
 	public void setWorldTime(long time) {
 		super.setWorldTime(time);
 		this.time = time;
+	}
+	
+	@Override
+	public IChunkGenerator createChunkGenerator() {
+		return new WrappedChunkGenerator(world, super.createChunkGenerator());
 	}
 	
 }
