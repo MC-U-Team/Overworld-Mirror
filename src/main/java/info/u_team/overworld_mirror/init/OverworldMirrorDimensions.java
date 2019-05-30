@@ -5,6 +5,7 @@ import info.u_team.overworld_mirror.dimension.DimensionOverworldMirror;
 import info.u_team.u_team_core.dimension.UModDimension;
 import info.u_team.u_team_core.registry.DimensionRegistry;
 import info.u_team.u_team_core.registry.util.CommonRegistry;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.common.*;
 import net.minecraftforge.event.world.RegisterDimensionsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -23,6 +24,10 @@ public class OverworldMirrorDimensions {
 	public static void on(final RegisterDimensionsEvent event) {
 		if (!DimensionManager.getRegistry().containsKey(dimension.getRegistryName())) { // How do we know when the dimension needs to be registered??
 			DimensionManager.registerDimension(dimension.getRegistryName(), dimension, null);
+		}
+		final DimensionType type = DimensionType.byName(dimension.getRegistryName());
+		if (type != null) {
+			type.setRegistryName(dimension.getRegistryName()); // Fix missing registry name
 		}
 	}
 }

@@ -14,7 +14,6 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.Heightmap.Type;
-import net.minecraft.world.storage.WorldSavedDataStorage;
 
 public class PortalManager {
 	
@@ -157,12 +156,12 @@ public class PortalManager {
 	}
 	
 	public static WorldSaveDataPortal getSaveData(World world) {
-		DimensionType type = world.getDimension().getType();
-		WorldSavedDataStorage storage = world.getSavedDataStorage();
-		WorldSaveDataPortal instance = storage.get(type, WorldSaveDataPortal::new, "overworldmirror_portal");
+		final String name = "overworldmirror_portal";
+		final DimensionType type = world.getDimension().getType();
+		WorldSaveDataPortal instance = world.getSavedData(type, WorldSaveDataPortal::new, name);
 		if (instance == null) {
-			instance = new WorldSaveDataPortal("overworldmirror_portal");
-			storage.set(type, "overworldmirror_portal", instance);
+			instance = new WorldSaveDataPortal(name);
+			world.setSavedData(type, name, instance);
 		}
 		return instance;
 	}
