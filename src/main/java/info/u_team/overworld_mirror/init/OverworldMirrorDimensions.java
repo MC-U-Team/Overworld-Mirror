@@ -11,7 +11,7 @@ public class OverworldMirrorDimensions {
 	
 	public static final DimensionType dimension_type = DimensionType.register("mirroredoverworld", "_mirrored_overworld", dimension_id, WorldProviderMirroredSurface.class, true);
 	
-	public static void preinit() {
+	public static void construct() {
 		DimensionManager.registerDimension(dimension_id, dimension_type);
 	}
 	
