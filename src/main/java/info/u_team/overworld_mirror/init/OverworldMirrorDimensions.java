@@ -24,9 +24,11 @@ public class OverworldMirrorDimensions {
 		CommonRegistry.registerEventHandler(OverworldMirrorDimensions.class);
 	}
 	
+	@SuppressWarnings("deprecation")
 	@SubscribeEvent
 	public static void on(final RegisterDimensionsEvent event) {
-		dimension_type = DimensionManager.registerDimension(dimension.getRegistryName(), dimension, null);
+		if (!DimensionManager.getRegistry().containsKey(dimension.getRegistryName())) { // How do we know when the dimension needs to be registered??
+			dimension_type = DimensionManager.registerDimension(dimension.getRegistryName(), dimension, null);
+		}
 	}
-	
 }

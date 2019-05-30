@@ -120,7 +120,10 @@ public class PortalManager {
 	}
 	
 	private static BlockPos spawnPortal(World world, BlockPos entity_pos) {
-		BlockPos pos = world.getHeight(Heightmap.Type.WORLD_SURFACE, entity_pos).down();
+		BlockPos pos = world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, entity_pos).down();
+		
+		System.out.println("PORTAL POS FOR SPAEN");
+		System.out.println(pos);
 		
 		ArrayList<BlockPos> portal = new ArrayList<>();
 		ArrayList<BlockPos> frame = new ArrayList<>();
