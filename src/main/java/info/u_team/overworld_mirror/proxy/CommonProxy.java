@@ -11,11 +11,11 @@ public class CommonProxy implements IModProxy {
 	public void construct() {
 		OverworldMirrorBlocks.construct();
 		OverworldMirrorDimensions.construct();
+		CommonRegistry.registerEventHandler(EventHandlerPortalCreation.class);
 	}
 	
 	@Override
 	public void setup() {
-		CommonRegistry.registerEventHandler(EventHandlerPortalCreation.class);
 	}
 	
 	@Override

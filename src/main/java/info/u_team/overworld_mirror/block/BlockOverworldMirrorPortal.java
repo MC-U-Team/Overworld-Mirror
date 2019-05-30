@@ -15,6 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.*;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraftforge.common.ModDimension;
 
 public class BlockOverworldMirrorPortal extends UBlock {
 	
@@ -25,12 +26,15 @@ public class BlockOverworldMirrorPortal extends UBlock {
 	@Override
 	public void onEntityCollision(IBlockState state, World world, BlockPos pos, Entity entity) {
 		if (!entity.isPassenger() && !entity.isBeingRidden()) {
+			final DimensionType type = entity.dimension;
+			final ModDimension moddimension = type.getModType();
+			
 			if (entity.timeUntilPortal > 0) {
 				entity.timeUntilPortal = 10;
-			} else if (entity.dimension == DimensionType.OVERWORLD) {
+			} else if (type == DimensionType.OVERWORLD) {
 				entity.timeUntilPortal = 10;
-				entity.changeDimension(OverworldMirrorDimensions.dimension_type, new PortalTeleporter());
-			} else if (entity.dimension == OverworldMirrorDimensions.dimension_type) {
+				entity.changeDimension(DimensionType.byName(OverworldMirrorDimensions.dimension.getRegistryName()), new PortalTeleporter());
+			} else if (moddimension != null && moddimension == OverworldMirrorDimensions.dimension) {
 				entity.timeUntilPortal = 10;
 				entity.changeDimension(DimensionType.OVERWORLD, new PortalTeleporter());
 			}
@@ -49,6 +53,8 @@ public class BlockOverworldMirrorPortal extends UBlock {
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos neighbor) {
 		if (!neighbor.down().equals(pos) && !neighbor.up().equals(pos) && world.getBlockState(neighbor).getBlock() != OverworldMirrorBlocks.portal) {
+			System.out.println("REMOVE");
+			System.out.println(pos + " - " + block + " - " + neighbor);
 			world.removeBlock(pos);
 		}
 	}

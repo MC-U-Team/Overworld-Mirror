@@ -10,8 +10,10 @@ import net.minecraft.network.play.server.SPacketBlockChange;
 import net.minecraft.server.management.PlayerList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.Heightmap;
+import net.minecraft.world.gen.Heightmap.Type;
 import net.minecraft.world.storage.WorldSavedDataStorage;
 
 public class PortalManager {
@@ -83,7 +85,7 @@ public class PortalManager {
 		
 		BlockPos middle_pos = null;
 		
-		ListIterator<BlockPos> iterator = data.getPortals().listIterator();
+		Iterator<BlockPos> iterator = data.getPortals().iterator();
 		while (iterator.hasNext()) {
 			BlockPos pos = iterator.next();
 			// TODO
@@ -94,7 +96,7 @@ public class PortalManager {
 					middle_pos = pos;
 					break;
 				} else {
-					data.getPortals().remove(pos);
+					iterator.remove();
 					data.markDirty();
 				}
 			}
@@ -120,10 +122,10 @@ public class PortalManager {
 	}
 	
 	private static BlockPos spawnPortal(World world, BlockPos entity_pos) {
-		BlockPos pos = world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, entity_pos).down();
+		final Chunk chunk = world.getChunk(entity_pos);
+		chunk.getHeightmap(Type.WORLD_SURFACE).generate(); // Generate height map first, so we get accurate height
 		
-		System.out.println("PORTAL POS FOR SPAEN");
-		System.out.println(pos);
+		final BlockPos pos = world.getHeight(Heightmap.Type.WORLD_SURFACE, entity_pos).down();
 		
 		ArrayList<BlockPos> portal = new ArrayList<>();
 		ArrayList<BlockPos> frame = new ArrayList<>();
