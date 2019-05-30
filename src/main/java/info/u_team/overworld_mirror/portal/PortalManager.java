@@ -11,22 +11,22 @@ import net.minecraft.network.play.server.SPacketBlockChange;
 import net.minecraft.server.management.PlayerList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.MapStorage;
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraft.world.gen.Heightmap;
+import net.minecraft.world.storage.WorldSavedDataStorage;
 
 public class PortalManager {
 	
 	public static boolean trySpawnPortalFromFrame(World world, BlockPos pos) {
 		
 		int west_count = 0;
-		while (world.getBlockState(pos.west(west_count + 1)).getBlock() != Blocks.STONEBRICK && west_count < 3) {
+		while (world.getBlockState(pos.west(west_count + 1)).getBlock() != Blocks.STONE_BRICKS && west_count < 3) {
 			west_count++;
 		}
 		
 		BlockPos west_pos = pos.west(west_count);
 		
 		int north_count = 0;
-		while (world.getBlockState(west_pos.north(north_count + 1)).getBlock() != Blocks.STONEBRICK && north_count < 3) {
+		while (world.getBlockState(west_pos.north(north_count + 1)).getBlock() != Blocks.STONE_BRICKS && north_count < 3) {
 			north_count++;
 		}
 		
@@ -63,13 +63,13 @@ public class PortalManager {
 		}
 		
 		boolean flowers_ok = flowers.stream().allMatch(flower_pos -> world.getBlockState(flower_pos).getBlock() instanceof BlockFlower);
-		boolean frame_ok = frame.stream().allMatch(frame_pos -> world.getBlockState(frame_pos).getBlock() == Blocks.STONEBRICK);
+		boolean frame_ok = frame.stream().allMatch(frame_pos -> world.getBlockState(frame_pos).getBlock() == Blocks.STONE_BRICKS);
 		
 		if (flowers_ok && frame_ok) {
 			flowers.forEach(portal_pos -> world.setBlockState(portal_pos, OverworldMirrorBlocks.portal.getDefaultState(), 2));
 			
-			PlayerList playerlist = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList();
-			flowers.forEach(portal_pos -> playerlist.sendToAllNearExcept(null, portal_pos.getX(), portal_pos.getY(), portal_pos.getZ(), 64, world.provider.getDimension(), new SPacketBlockChange(world, portal_pos)));
+			PlayerList playerlist = world.getServer().getPlayerList();
+			flowers.forEach(portal_pos -> playerlist.sendToAllNearExcept(null, portal_pos.getX(), portal_pos.getY(), portal_pos.getZ(), 64, world.getDimension().getType(), new SPacketBlockChange(world, portal_pos)));
 			
 			return true;
 		}
@@ -117,7 +117,7 @@ public class PortalManager {
 	}
 	
 	private static BlockPos spawnPortal(World world, BlockPos entity_pos) {
-		BlockPos pos = world.getPrecipitationHeight(entity_pos).down();
+		BlockPos pos = world.getHeight(Heightmap.Type.WORLD_SURFACE, entity_pos).down();
 		
 		ArrayList<BlockPos> portal = new ArrayList<>();
 		ArrayList<BlockPos> frame = new ArrayList<>();
@@ -136,12 +136,12 @@ public class PortalManager {
 		}
 		
 		frame.forEach(frame_pos -> {
-			world.setBlockState(frame_pos, Blocks.STONEBRICK.getDefaultState());
-			world.setBlockToAir(frame_pos.up());
-			world.setBlockToAir(frame_pos.up(2));
+			world.setBlockState(frame_pos, Blocks.STONE_BRICKS.getDefaultState());
+			world.removeBlock(frame_pos.up());
+			world.removeBlock(frame_pos.up(2));
 		});
 		portal.forEach(portal_pos -> {
-			world.setBlockState(portal_pos.down(), Blocks.STONEBRICK.getDefaultState());
+			world.setBlockState(portal_pos.down(), Blocks.STONE_BRICKS.getDefaultState());
 			world.setBlockState(portal_pos, OverworldMirrorBlocks.portal.getDefaultState(), 2);
 		});
 		
@@ -149,7 +149,7 @@ public class PortalManager {
 	}
 	
 	public static WorldSaveDataPortal getSaveData(World world) {
-		MapStorage storage = world.getPerWorldStorage();
+		WorldSavedDataStorage storage = world.getMapStorage();
 		WorldSaveDataPortal instance = (WorldSaveDataPortal) storage.getOrLoadData(WorldSaveDataPortal.class, "overworldmirror_portal");
 		
 		if (instance == null) {
