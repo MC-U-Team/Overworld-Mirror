@@ -149,13 +149,13 @@ public class PortalManager {
 	}
 	
 	public static WorldSaveDataPortal getSaveData(World world) {
-		WorldSavedDataStorage storage = world.getMapStorage();
-		WorldSaveDataPortal instance = (WorldSaveDataPortal) storage.getOrLoadData(WorldSaveDataPortal.class, "overworldmirror_portal");
+		WorldSavedDataStorage storage = world.getSavedDataStorage();
+		WorldSaveDataPortal instance = storage.get(world.getDimension().getType(), WorldSaveDataPortal::new, "overworldmirror_portal");
 		
-		if (instance == null) {
-			instance = new WorldSaveDataPortal("overworldmirror_portal");
-			storage.setData("overworldmirror_portal", instance);
-		}
+//		if (instance == null) {
+//			instance = new WorldSaveDataPortal("overworldmirror_portal");
+//			storage.setData("overworldmirror_portal", instance);
+//		}
 		return instance;
 	}
 	
