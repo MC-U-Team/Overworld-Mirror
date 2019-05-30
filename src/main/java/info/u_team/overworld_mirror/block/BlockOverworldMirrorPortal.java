@@ -53,8 +53,6 @@ public class BlockOverworldMirrorPortal extends UBlock {
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos neighbor) {
 		if (!neighbor.down().equals(pos) && !neighbor.up().equals(pos) && world.getBlockState(neighbor).getBlock() != OverworldMirrorBlocks.portal) {
-			System.out.println("REMOVE");
-			System.out.println(pos + " - " + block + " - " + neighbor);
 			world.removeBlock(pos);
 		}
 	}
