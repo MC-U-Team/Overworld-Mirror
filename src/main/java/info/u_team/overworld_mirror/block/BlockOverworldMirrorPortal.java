@@ -29,10 +29,10 @@ public class BlockOverworldMirrorPortal extends UBlock {
 				entity.timeUntilPortal = 10;
 			} else if (entity.dimension == DimensionType.OVERWORLD) {
 				entity.timeUntilPortal = 10;
-				entity.changeDimension(OverworldMirrorDimensions.dimension_id, new PortalTeleporter());
-			} else if (entity.dimension == OverworldMirrorDimensions.dimension_id) {
+				entity.changeDimension(OverworldMirrorDimensions.dimension_type, new PortalTeleporter());
+			} else if (entity.dimension == OverworldMirrorDimensions.dimension_type) {
 				entity.timeUntilPortal = 10;
-				entity.changeDimension(0, new PortalTeleporter());
+				entity.changeDimension(DimensionType.OVERWORLD, new PortalTeleporter());
 			}
 		}
 	}

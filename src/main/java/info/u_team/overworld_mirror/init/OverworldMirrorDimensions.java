@@ -1,18 +1,32 @@
 package info.u_team.overworld_mirror.init;
 
-import info.u_team.overworld_mirror.config.CommonConfig;
-import info.u_team.overworld_mirror.dimension.WorldProviderMirroredSurface;
-import net.minecraft.world.DimensionType;
-import net.minecraftforge.common.DimensionManager;
+import info.u_team.overworld_mirror.OverworldMirrorMod;
+import info.u_team.overworld_mirror.dimension.DimensionOverworldMirror;
+import info.u_team.u_team_core.dimension.UModDimension;
+import info.u_team.u_team_core.registry.DimensionRegistry;
+import info.u_team.u_team_core.registry.util.CommonRegistry;
+import net.minecraft.world.dimension.DimensionType;
+import net.minecraftforge.common.*;
+import net.minecraftforge.event.world.RegisterDimensionsEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class OverworldMirrorDimensions {
 	
-	public static final int dimension_id = CommonConfig.settings.dimension_id;
+	public static final ModDimension dimension = new UModDimension("mirrored_overworld", DimensionOverworldMirror::new);
 	
-	public static final DimensionType dimension_type = DimensionType.register("mirroredoverworld", "_mirrored_overworld", dimension_id, WorldProviderMirroredSurface.class, true);
+	/**
+	 * Might be null if dimension is not registered in the world
+	 */
+	public static DimensionType dimension_type;
 	
 	public static void construct() {
-		DimensionManager.registerDimension(dimension_id, dimension_type);
+		DimensionRegistry.register(OverworldMirrorMod.modid, OverworldMirrorDimensions.class);
+		CommonRegistry.registerEventHandler(OverworldMirrorDimensions.class);
+	}
+	
+	@SubscribeEvent
+	public static void on(final RegisterDimensionsEvent event) {
+		dimension_type = DimensionManager.registerDimension(dimension.getRegistryName(), dimension, null);
 	}
 	
 }
