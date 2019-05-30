@@ -1,7 +1,7 @@
 {
 	"textures": {
-		"particle": "overworldmirror:blocks/portal",
-		"portal": "overworldmirror:blocks/portal"
+		"particle": "overworldmirror:block/portal",
+		"portal": "overworldmirror:block/portal"
 	},
 	"elements": [
 		{

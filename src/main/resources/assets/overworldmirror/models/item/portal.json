@@ -1,6 +1,6 @@
 {
 	"parent": "block/cube_all",
 	"textures": {
-		"all": "overworldmirror:blocks/portal"
+		"all": "overworldmirror:block/portal"
 	}
 }

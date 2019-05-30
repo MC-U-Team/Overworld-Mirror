@@ -1,7 +1,7 @@
 {
 	"variants": {
-		"normal": {
-			"model": "overworldmirror:portal"
+		"": {
+			"model": "overworldmirror:block/portal"
 		}
 	}
 }

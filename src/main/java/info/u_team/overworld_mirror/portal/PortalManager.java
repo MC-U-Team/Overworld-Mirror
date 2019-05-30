@@ -10,6 +10,7 @@ import net.minecraft.network.play.server.SPacketBlockChange;
 import net.minecraft.server.management.PlayerList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.storage.WorldSavedDataStorage;
 
@@ -151,13 +152,13 @@ public class PortalManager {
 	}
 	
 	public static WorldSaveDataPortal getSaveData(World world) {
+		DimensionType type = world.getDimension().getType();
 		WorldSavedDataStorage storage = world.getSavedDataStorage();
-		WorldSaveDataPortal instance = storage.get(world.getDimension().getType(), WorldSaveDataPortal::new, "overworldmirror_portal");
-		
-		// if (instance == null) {
-		// instance = new WorldSaveDataPortal("overworldmirror_portal");
-		// storage.setData("overworldmirror_portal", instance);
-		// }
+		WorldSaveDataPortal instance = storage.get(type, WorldSaveDataPortal::new, "overworldmirror_portal");
+		if (instance == null) {
+			instance = new WorldSaveDataPortal("overworldmirror_portal");
+			storage.set(type, "overworldmirror_portal", instance);
+		}
 		return instance;
 	}
 	
