@@ -1,0 +1,35 @@
+modLoader="javafml"
+loaderVersion="[25,)"
+issueTrackerURL="https://github.com/MC-U-Team/Overworld-Mirror/issues"
+displayURL="https://u-team.info/mods/overworldmirror"
+logoFile="logo.png"
+credits="Team U-Team"
+authors="HyCraftHD"
+
+[[mods]]
+	modId="overworldmirror"
+	version="${file.jarVersion}"
+	displayName="Useful Backpacks"
+	updateJSONURL="https://api.u-team.info/update/overworldmirror.json"
+	description="This mod just mirrors the overworld and let you travel with a portal between them."
+	
+	[[dependencies.overworldmirror]]
+	    modId="forge"
+	    mandatory=true
+	    versionRange="[25.0.219,)"
+	    ordering="NONE"
+	    side="BOTH"
+	
+	[[dependencies.overworldmirror]]
+	    modId="minecraft"
+	    mandatory=true
+	    versionRange="[1.13.2]"
+	    ordering="NONE"
+	    side="BOTH"
+	    
+	[[dependencies.overworldmirror]]
+	    modId="uteamcore"
+	    mandatory=true
+	    versionRange="[2.3.4.106,)"
+	    ordering="NONE"
+	    side="BOTH"
