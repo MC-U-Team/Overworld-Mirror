@@ -59,7 +59,7 @@ public class BlockOverworldMirrorPortal extends UBlock {
 	
 	@Override
 	public VoxelShape getShape(IBlockState state, IBlockReader worldIn, BlockPos pos) {
-		return makeCuboidShape(0, 0.75, 0, 1, 0.75, 1);
+		return makeCuboidShape(0, 11.9, 0, 16, 12, 16);
 	}
 	
 	@Override
