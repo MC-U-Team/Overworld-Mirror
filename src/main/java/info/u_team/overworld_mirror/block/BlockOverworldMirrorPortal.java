@@ -11,26 +11,23 @@ import net.minecraft.block.state.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.*;
-import net.minecraftforge.fml.relauncher.*;
+import net.minecraft.world.dimension.DimensionType;
 
 public class BlockOverworldMirrorPortal extends UBlock {
 	
 	public BlockOverworldMirrorPortal(String name) {
-		super(name, Material.PORTAL);
-		// setTickRandomly(true);
-		setHardness(-1.0F);
-		setSoundType(SoundType.GLASS);
-		setLightLevel(0.75F);
+		super(name, Properties.create(Material.PORTAL).doesNotBlockMovement().hardnessAndResistance(-1.0F).sound(SoundType.GLASS).lightValue(11));
 	}
 	
 	@Override
-	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
-		if (!entity.isRiding() && !entity.isBeingRidden()) {
+	public void onEntityCollision(IBlockState state, World world, BlockPos pos, Entity entity) {
+		if (!entity.isPassenger() && !entity.isBeingRidden()) {
 			if (entity.timeUntilPortal > 0) {
 				entity.timeUntilPortal = 10;
-			} else if (entity.dimension == 0) {
+			} else if (entity.dimension == DimensionType.OVERWORLD) {
 				entity.timeUntilPortal = 10;
 				entity.changeDimension(OverworldMirrorDimensions.dimension_id, new PortalTeleporter());
 			} else if (entity.dimension == OverworldMirrorDimensions.dimension_id) {
@@ -40,9 +37,10 @@ public class BlockOverworldMirrorPortal extends UBlock {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		super.breakBlock(world, pos, state);
+	public void onReplaced(IBlockState state, World world, BlockPos pos, IBlockState newState, boolean isMoving) {
+		super.onReplaced(state, world, pos, newState, isMoving);
 		WorldSaveDataPortal data = PortalManager.getSaveData(world);
 		data.getPortals().removeIf(portal -> portal.equals(pos));
 		data.markDirty();
@@ -51,27 +49,21 @@ public class BlockOverworldMirrorPortal extends UBlock {
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos neighbor) {
 		if (!neighbor.down().equals(pos) && !neighbor.up().equals(pos) && world.getBlockState(neighbor).getBlock() != OverworldMirrorBlocks.portal) {
-			world.setBlockToAir(pos);
+			world.removeBlock(pos);
 		}
 	}
 	
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return new AxisAlignedBB(0, 0.75, 0, 1, 0.75, 1);
+	public VoxelShape getShape(IBlockState state, IBlockReader worldIn, BlockPos pos) {
+		return makeCuboidShape(0, 0.75, 0, 1, 0.75, 1);
 	}
 	
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos) {
-		return NULL_AABB;
-	}
-	
-	@Override
-	public int quantityDropped(Random random) {
+	public int quantityDropped(IBlockState state, Random random) {
 		return 0;
 	}
 	
-	@Override
-	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
+	public ItemStack getItem(IBlockReader world, BlockPos pos, IBlockState state) {
 		return ItemStack.EMPTY;
 	}
 	
@@ -81,16 +73,10 @@ public class BlockOverworldMirrorPortal extends UBlock {
 	}
 	
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
-	}
-	
-	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing face) {
+	public BlockFaceShape getBlockFaceShape(IBlockReader world, IBlockState state, BlockPos pos, EnumFacing face) {
 		return BlockFaceShape.UNDEFINED;
 	}
 	
-	@SideOnly(Side.CLIENT)
 	@Override
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
