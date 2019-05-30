@@ -9,7 +9,7 @@ authors="HyCraftHD"
 [[mods]]
 	modId="overworldmirror"
 	version="${file.jarVersion}"
-	displayName="Useful Backpacks"
+	displayName="Overworld Mirror"
 	updateJSONURL="https://api.u-team.info/update/overworldmirror.json"
 	description="This mod just mirrors the overworld and let you travel with a portal between them."
 	

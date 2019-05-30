@@ -2,7 +2,6 @@ package info.u_team.overworld_mirror.portal;
 
 import java.util.*;
 
-import info.u_team.overworld_mirror.config.CommonConfig;
 import info.u_team.overworld_mirror.init.OverworldMirrorBlocks;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.entity.Entity;
@@ -86,7 +85,10 @@ public class PortalManager {
 		ListIterator<BlockPos> iterator = data.getPortals().listIterator();
 		while (iterator.hasNext()) {
 			BlockPos pos = iterator.next();
-			if (distanceSq(pos.getX(), pos.getZ(), entity_pos.getX(), entity_pos.getZ()) < CommonConfig.settings.portal_distance) {
+			// TODO
+			// if (distanceSq(pos.getX(), pos.getZ(), entity_pos.getX(), entity_pos.getZ()) < CommonConfig.settings.portal_distance)
+			// {
+			if (distanceSq(pos.getX(), pos.getZ(), entity_pos.getX(), entity_pos.getZ()) < 200) {
 				if (validatePortal(world, pos)) {
 					middle_pos = pos;
 					break;
@@ -152,10 +154,10 @@ public class PortalManager {
 		WorldSavedDataStorage storage = world.getSavedDataStorage();
 		WorldSaveDataPortal instance = storage.get(world.getDimension().getType(), WorldSaveDataPortal::new, "overworldmirror_portal");
 		
-//		if (instance == null) {
-//			instance = new WorldSaveDataPortal("overworldmirror_portal");
-//			storage.setData("overworldmirror_portal", instance);
-//		}
+		// if (instance == null) {
+		// instance = new WorldSaveDataPortal("overworldmirror_portal");
+		// storage.setData("overworldmirror_portal", instance);
+		// }
 		return instance;
 	}
 	
