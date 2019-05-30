@@ -31,5 +31,4 @@ public class EventHandlerPortalCreation {
 			world.addWeatherEffect(lightning);
 		}
 	}
-	
 }
