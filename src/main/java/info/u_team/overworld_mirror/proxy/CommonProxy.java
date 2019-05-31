@@ -9,7 +9,7 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig.Type;
 
 public class CommonProxy implements IModProxy {
-	
+
 	@Override
 	public void construct() {
 		ModLoadingContext.get().registerConfig(Type.COMMON, CommonConfig.config);
@@ -17,13 +17,13 @@ public class CommonProxy implements IModProxy {
 		OverworldMirrorDimensions.construct();
 		CommonRegistry.registerEventHandler(EventHandlerPortalCreation.class);
 	}
-	
+
 	@Override
 	public void setup() {
 	}
-	
+
 	@Override
 	public void complete() {
 	}
-	
+
 }
