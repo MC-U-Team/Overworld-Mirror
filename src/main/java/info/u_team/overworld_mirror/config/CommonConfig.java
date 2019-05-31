@@ -23,10 +23,15 @@ public class CommonConfig {
 	public final EnumValue<SeedType> seedType;
 	public final LongValue seedValue;
 	
+	public final ConfigValue<String> generatorType;
+	public final ConfigValue<String> generatorSettings;
+	
 	private CommonConfig(Builder builder) {
 		builder.comment("Mirrored Overworld settings").push("dimension");
 		seedType = builder.comment("If you have set this to \"SEED\" then the seedValue value will be treated as new seed, else if its set to \"ADDITION\" the value will be added to the main world seed.").defineEnum("seedType", SeedType.ADDITION);
 		seedValue = builder.comment("The seed value. See seedType for more information.").defineInRange("seedValue", 100_000, Long.MIN_VALUE, Long.MAX_VALUE);
+		generatorType = builder.comment("Generator type").define("generatorType", "default");
+		generatorSettings = builder.comment("Generator settings").define("generatorSettings", "");
 		builder.pop();
 	}
 	
