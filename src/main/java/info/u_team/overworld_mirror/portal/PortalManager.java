@@ -20,36 +20,36 @@ public class PortalManager {
 
 	public static boolean trySpawnPortalFromFrame(World world, BlockPos pos) {
 
-		int west_count = 0;
-		while (world.getBlockState(pos.west(west_count + 1)).getBlock() != Blocks.STONE_BRICKS && west_count < 3) {
-			west_count++;
+		int westCount = 0;
+		while (world.getBlockState(pos.west(westCount + 1)).getBlock() != Blocks.STONE_BRICKS && westCount < 3) {
+			westCount++;
 		}
 
-		BlockPos west_pos = pos.west(west_count);
+		final BlockPos westPost = pos.west(westCount);
 
-		int north_count = 0;
-		while (world.getBlockState(west_pos.north(north_count + 1)).getBlock() != Blocks.STONE_BRICKS && north_count < 3) {
-			north_count++;
+		int northCount = 0;
+		while (world.getBlockState(westPost.north(northCount + 1)).getBlock() != Blocks.STONE_BRICKS && northCount < 3) {
+			northCount++;
 		}
 
-		BlockPos west_north_pos = west_pos.north(north_count);
+		final BlockPos westNorthPos = westPost.north(northCount);
 
-		BlockPos middle_pos = west_north_pos.east().south();
+		final BlockPos middlePos = westNorthPos.east().south();
 
-		if (!validatePortalFrameAndSpawnPortal(world, middle_pos)) {
+		if (!validatePortalFrameAndSpawnPortal(world, middlePos)) {
 			return false;
 		}
 
-		WorldSaveDataPortal data = getSaveData(world);
-		data.getPortals().add(middle_pos);
+		final WorldSaveDataPortal data = getSaveData(world);
+		data.getPortals().add(middlePos);
 		data.markDirty();
 
 		return true;
 	}
 
 	private static boolean validatePortalFrameAndSpawnPortal(World world, BlockPos pos) {
-		ArrayList<BlockPos> flowers = new ArrayList<>();
-		ArrayList<BlockPos> frame = new ArrayList<>();
+		final List<BlockPos> flowers = new ArrayList<>();
+		final List<BlockPos> frame = new ArrayList<>();
 
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
@@ -64,14 +64,14 @@ public class PortalManager {
 			frame.add(pos.add(i, 0, -2));
 		}
 
-		boolean flowers_ok = flowers.stream().allMatch(flower_pos -> world.getBlockState(flower_pos).getBlock() instanceof BlockFlower);
-		boolean frame_ok = frame.stream().allMatch(frame_pos -> world.getBlockState(frame_pos).getBlock() == Blocks.STONE_BRICKS);
+		final boolean flowersMatching = flowers.stream().allMatch(flowerPos -> world.getBlockState(flowerPos).getBlock() instanceof BlockFlower);
+		final boolean frameMatching = frame.stream().allMatch(framePos -> world.getBlockState(framePos).getBlock() == Blocks.STONE_BRICKS);
 
-		if (flowers_ok && frame_ok) {
-			flowers.forEach(portal_pos -> world.setBlockState(portal_pos, OverworldMirrorBlocks.portal.getDefaultState(), 2));
+		if (flowersMatching && frameMatching) {
+			flowers.forEach(portalPos -> world.setBlockState(portalPos, OverworldMirrorBlocks.portal.getDefaultState(), 2));
 
-			PlayerList playerlist = world.getServer().getPlayerList();
-			flowers.forEach(portal_pos -> playerlist.sendToAllNearExcept(null, portal_pos.getX(), portal_pos.getY(), portal_pos.getZ(), 64, world.getDimension().getType(), new SPacketBlockChange(world, portal_pos)));
+			final PlayerList playerlist = world.getServer().getPlayerList();
+			flowers.forEach(portalPos -> playerlist.sendToAllNearExcept(null, portalPos.getX(), portalPos.getY(), portalPos.getZ(), 64, world.getDimension().getType(), new SPacketBlockChange(world, portalPos)));
 
 			return true;
 		}
@@ -79,18 +79,18 @@ public class PortalManager {
 	}
 
 	public static void trySummonEntityInPortal(World world, Entity entity, float yaw) {
-		BlockPos entity_pos = entity.getPosition();
+		final BlockPos entityPos = entity.getPosition();
 
-		WorldSaveDataPortal data = getSaveData(world);
+		final WorldSaveDataPortal data = getSaveData(world);
 
-		BlockPos middle_pos = null;
+		BlockPos middlePos = null;
 
-		Iterator<BlockPos> iterator = data.getPortals().iterator();
+		final Iterator<BlockPos> iterator = data.getPortals().iterator();
 		while (iterator.hasNext()) {
-			BlockPos pos = iterator.next();
-			if (distanceSq(pos.getX(), pos.getZ(), entity_pos.getX(), entity_pos.getZ()) < CommonConfig.getInstance().portalDistance.get()) {
+			final BlockPos pos = iterator.next();
+			if (distanceSq(pos.getX(), pos.getZ(), entityPos.getX(), entityPos.getZ()) < CommonConfig.getInstance().portalDistance.get()) {
 				if (validatePortal(world, pos)) {
-					middle_pos = pos;
+					middlePos = pos;
 					break;
 				} else {
 					iterator.remove();
@@ -98,13 +98,12 @@ public class PortalManager {
 				}
 			}
 		}
-		if (middle_pos == null) {
-			middle_pos = spawnPortal(world, entity_pos);
-			data.getPortals().add(middle_pos);
+		if (middlePos == null) {
+			middlePos = spawnPortal(world, entityPos);
+			data.getPortals().add(middlePos);
 			data.markDirty();
 		}
-		entity.setPositionAndRotation(middle_pos.getX() + 0.5D, middle_pos.getY(), middle_pos.getZ() + 0.5F, yaw, entity.rotationPitch);
-
+		entity.setPositionAndRotation(middlePos.getX() + 0.5D, middlePos.getY(), middlePos.getZ() + 0.5F, yaw, entity.rotationPitch);
 	}
 
 	private static boolean validatePortal(World world, BlockPos pos) {
@@ -140,14 +139,16 @@ public class PortalManager {
 			frame.add(pos.add(i, 0, -2));
 		}
 
-		frame.forEach(frame_pos -> {
-			world.setBlockState(frame_pos, Blocks.STONE_BRICKS.getDefaultState());
-			world.removeBlock(frame_pos.up());
-			world.removeBlock(frame_pos.up(2));
+		frame.forEach(framePos -> {
+			world.setBlockState(framePos, Blocks.STONE_BRICKS.getDefaultState());
+			world.removeBlock(framePos.up());
+			world.removeBlock(framePos.up(2));
 		});
-		portal.forEach(portal_pos -> {
-			world.setBlockState(portal_pos.down(), Blocks.STONE_BRICKS.getDefaultState());
-			world.setBlockState(portal_pos, OverworldMirrorBlocks.portal.getDefaultState(), 2);
+		portal.forEach(portalPos -> {
+			world.removeBlock(portalPos.up());
+			world.removeBlock(portalPos.up(2));
+			world.setBlockState(portalPos.down(), Blocks.STONE_BRICKS.getDefaultState());
+			world.setBlockState(portalPos, OverworldMirrorBlocks.portal.getDefaultState(), 2);
 		});
 
 		return pos;
