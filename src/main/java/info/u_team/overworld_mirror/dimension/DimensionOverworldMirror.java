@@ -1,16 +1,16 @@
 package info.u_team.overworld_mirror.dimension;
 
 import com.google.gson.*;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.datafixers.Dynamic;
 import com.mojang.datafixers.types.JsonOps;
 
 import info.u_team.overworld_mirror.config.CommonConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.init.*;
 import net.minecraft.nbt.*;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.IRegistry;
 import net.minecraft.world.WorldType;
@@ -72,14 +72,25 @@ public class DimensionOverworldMirror extends OverworldDimension {
 			worldtype = WorldType.DEFAULT;
 		}
 		
-		NBTTagCompound generationOptions = null;
-		try {
-			generationOptions = JsonToNBT.getTagFromJson(config.generatorSettings.get());
-		} catch (CommandSyntaxException ex) {
+		final String configGeneratorOptionsString = config.generatorSettings.get();
+		JsonObject configGeneratorOptionsJson = new JsonObject();
+//		if (worldtype == WorldType.FLAT) {
+//			configGeneratorOptionsJson.addProperty("flat_world_options", configGeneratorOptionsString);
+		/*} else*/ if (!configGeneratorOptionsString.isEmpty()) {
+			configGeneratorOptionsJson = JsonUtils.fromJson(configGeneratorOptionsString);
 		}
+		
+		NBTTagCompound generationOptions = (NBTTagCompound) Dynamic.convert(JsonOps.INSTANCE, NBTDynamicOps.INSTANCE, configGeneratorOptionsJson);
+		
 		if (generationOptions == null) {
 			generationOptions = new NBTTagCompound();
 		}
+		
+		System.out.println(world.getServer().getWorld(DimensionType.OVERWORLD).getWorldInfo().getGeneratorOptions());
+		System.out.println(world.getWorldInfo().getGeneratorOptions());
+		System.out.println(world.getServer());
+		
+		System.out.println(generationOptions);
 		
 		// Copy from super class with additions and settings
 		
