@@ -60,6 +60,12 @@ public class DimensionOverworldMirror extends OverworldDimension {
 		return config.seedType.get().calculateSeed(config.seedValue.get(), super.getSeed());
 	}
 
+	// Movement factor
+	@Override
+	public double getMovementFactor() {
+		return config.movementFactor.get();
+	}
+
 	// Override gen settings
 
 	@SuppressWarnings("deprecation")

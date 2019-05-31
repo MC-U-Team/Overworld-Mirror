@@ -26,7 +26,7 @@ public class CommonConfig {
 	public final ConfigValue<String> generatorType;
 	public final ConfigValue<String> generatorSettings;
 
-	public final IntValue movementFactor;
+	public final DoubleValue movementFactor;
 	public final DoubleValue portalDistance;
 
 	private CommonConfig(Builder builder) {
@@ -39,7 +39,7 @@ public class CommonConfig {
 		generatorSettings = builder.comment("Generator settings for flat and buffet. Attention, the format has changed in 1.13!").define("generatorSettings", "");
 		builder.pop();
 		builder.comment("Portal settings").push("portal");
-		movementFactor = builder.comment("Movement factor. Like in the nether you move 8 times the block length as in the overworld").defineInRange("movementFactor", 1, 0, Integer.MAX_VALUE);
+		movementFactor = builder.comment("Movement factor. Like in the nether you move 8 times the block length as in the overworld").defineInRange("movementFactor", 1, 0, 1e10);
 		portalDistance = builder.comment("How many blocks the portal can be from the normal spawn location to not create a new one. The value is not in sqrt cause of lag reduction. 400 = 20 Blocks, 900 = 30 Blocks, etc").defineInRange("portalDistance", 400, 1, 1e20);
 		builder.pop();
 	}
