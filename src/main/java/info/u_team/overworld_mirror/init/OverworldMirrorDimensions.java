@@ -19,15 +19,12 @@ public class OverworldMirrorDimensions {
 		CommonRegistry.registerEventHandler(OverworldMirrorDimensions.class);
 	}
 	
-	@SuppressWarnings("deprecation")
 	@SubscribeEvent
 	public static void on(final RegisterDimensionsEvent event) {
-		if (!DimensionManager.getRegistry().containsKey(dimension.getRegistryName())) { // How do we know when the dimension needs to be registered??
-			DimensionManager.registerDimension(dimension.getRegistryName(), dimension, null);
+		DimensionType type = DimensionType.byName(dimension.getRegistryName());
+		if (type == null) { // Check if dimension is already registered
+			type = DimensionManager.registerDimension(dimension.getRegistryName(), dimension, null);
 		}
-		final DimensionType type = DimensionType.byName(dimension.getRegistryName());
-		if (type != null) {
-			type.setRegistryName(dimension.getRegistryName()); // Fix missing registry name
-		}
+		type.setRegistryName(dimension.getRegistryName()); // Fix missing registry name
 	}
 }
