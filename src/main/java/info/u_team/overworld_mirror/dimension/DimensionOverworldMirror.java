@@ -5,10 +5,8 @@ import com.mojang.datafixers.Dynamic;
 import com.mojang.datafixers.types.JsonOps;
 
 import info.u_team.overworld_mirror.config.CommonConfig;
-import info.u_team.u_team_core.util.io.NBTStreamUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.init.*;
 import net.minecraft.nbt.*;
 import net.minecraft.util.*;
@@ -94,7 +92,7 @@ public class DimensionOverworldMirror extends OverworldDimension {
 		final ChunkGeneratorType<OverworldGenSettings, ChunkGeneratorOverworld> surfaceChunkGenerator = ChunkGeneratorType.SURFACE;
 
 		final BiomeProviderType<SingleBiomeProviderSettings, SingleBiomeProvider> fixedBiomeProvider = BiomeProviderType.FIXED;
-		final BiomeProviderType<OverworldBiomeProviderSettings, MirroredOverworldBiomeProvider> mirroredVanillaLayeredBiomeProvider = BiomeProviderCustomType.MIRRORED_VANILLA_LAYERED;
+		final BiomeProviderType<OverworldBiomeProviderSettings, OverworldBiomeProvider> vanillaLayeredBiomeProvider = BiomeProviderType.VANILLA_LAYERED;
 		final BiomeProviderType<CheckerboardBiomeProviderSettings, CheckerboardBiomeProvider> checkerBoardBiomeProvider = BiomeProviderType.CHECKERBOARD;
 
 		if (worldtype == WorldType.FLAT) {
@@ -106,8 +104,8 @@ public class DimensionOverworldMirror extends OverworldDimension {
 			return debugChunkGenerator.create(this.world, fixedBiomeProvider.create(singlebiomeprovidersettings), debugChunkGenerator.createSettings());
 		} else if (worldtype != WorldType.BUFFET) {
 			OverworldGenSettings overworldgensettings = surfaceChunkGenerator.createSettings();
-			OverworldBiomeProviderSettings overworldbiomeprovidersettings = mirroredVanillaLayeredBiomeProvider.createSettings().setWorldInfo(this.world.getWorldInfo()).setGeneratorSettings(overworldgensettings);
-			return surfaceChunkGenerator.create(this.world, mirroredVanillaLayeredBiomeProvider.create(overworldbiomeprovidersettings), overworldgensettings);
+			OverworldBiomeProviderSettings overworldbiomeprovidersettings = vanillaLayeredBiomeProvider.createSettings().setWorldInfo(new SeedFixWorldInfo(world.getWorldInfo())).setGeneratorSettings(overworldgensettings);
+			return surfaceChunkGenerator.create(this.world, vanillaLayeredBiomeProvider.create(overworldbiomeprovidersettings), overworldgensettings);
 		} else {
 			BiomeProvider biomeprovider = null;
 			JsonElement jsonelement = Dynamic.convert(NBTDynamicOps.INSTANCE, JsonOps.INSTANCE, generationOptions);
@@ -137,9 +135,9 @@ public class DimensionOverworldMirror extends OverworldDimension {
 					biomeprovider = checkerBoardBiomeProvider.create(checkerboardbiomeprovidersettings);
 				}
 
-				if (BiomeProviderType.VANILLA_LAYERED.getKey().equals(resourcelocation) || BiomeProviderCustomType.MIRRORED_VANILLA_LAYERED.getKey().equals(resourcelocation)) {
-					OverworldBiomeProviderSettings overworldbiomeprovidersettings1 = mirroredVanillaLayeredBiomeProvider.createSettings().setGeneratorSettings(new OverworldGenSettings()).setWorldInfo(this.world.getWorldInfo());
-					biomeprovider = mirroredVanillaLayeredBiomeProvider.create(overworldbiomeprovidersettings1);
+				if (BiomeProviderType.VANILLA_LAYERED.getKey().equals(resourcelocation)) {
+					OverworldBiomeProviderSettings overworldbiomeprovidersettings1 = vanillaLayeredBiomeProvider.createSettings().setGeneratorSettings(new OverworldGenSettings()).setWorldInfo(new SeedFixWorldInfo(world.getWorldInfo()));
+					biomeprovider = vanillaLayeredBiomeProvider.create(overworldbiomeprovidersettings1);
 				}
 			}
 
