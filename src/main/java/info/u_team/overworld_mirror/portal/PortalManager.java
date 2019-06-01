@@ -91,7 +91,7 @@ public class PortalManager {
 					middle_pos = pos;
 					break;
 				} else {
-					data.getPortals().remove(pos);
+					iterator.remove();
 					data.markDirty();
 				}
 			}
