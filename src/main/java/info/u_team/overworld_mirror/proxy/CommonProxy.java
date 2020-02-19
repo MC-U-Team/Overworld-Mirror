@@ -1,7 +1,7 @@
 package info.u_team.overworld_mirror.proxy;
 
 import info.u_team.overworld_mirror.config.CommonConfig;
-import info.u_team.overworld_mirror.event.EventHandlerPortalCreation;
+import info.u_team.overworld_mirror.event.PortalCreationEventHandler;
 import info.u_team.overworld_mirror.init.*;
 import info.u_team.u_team_core.api.IModProxy;
 import info.u_team.u_team_core.registry.util.CommonRegistry;
@@ -15,7 +15,7 @@ public class CommonProxy implements IModProxy {
 		ModLoadingContext.get().registerConfig(Type.COMMON, CommonConfig.config);
 		OverworldMirrorBlocks.construct();
 		OverworldMirrorDimensions.construct();
-		CommonRegistry.registerEventHandler(EventHandlerPortalCreation.class);
+		CommonRegistry.registerEventHandler(PortalCreationEventHandler.class);
 	}
 
 	@Override
