@@ -14,11 +14,11 @@ import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ModDimension;
 
-public class BlockOverworldMirrorPortal extends UBlock {
+public class OverworldMirrorPortalBlock extends UBlock {
 	
 	protected static final VoxelShape SHAPE = makeCuboidShape(0, 11.9, 0, 16, 12, 16);
 	
-	public BlockOverworldMirrorPortal(String name) {
+	public OverworldMirrorPortalBlock(String name) {
 		super(name, Properties.create(Material.PORTAL).doesNotBlockMovement().hardnessAndResistance(-1.0F).sound(SoundType.GLASS).lightValue(11).noDrops());
 	}
 	

@@ -3,7 +3,7 @@ package info.u_team.overworld_mirror.init;
 import java.util.List;
 
 import info.u_team.overworld_mirror.OverworldMirrorMod;
-import info.u_team.overworld_mirror.block.BlockOverworldMirrorPortal;
+import info.u_team.overworld_mirror.block.OverworldMirrorPortalBlock;
 import info.u_team.u_team_core.util.registry.BaseRegistryUtil;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @EventBusSubscriber(modid = OverworldMirrorMod.MODID, bus = Bus.MOD)
 public class OverworldMirrorBlocks {
 	
-	public static final BlockOverworldMirrorPortal PORTAL = new BlockOverworldMirrorPortal("portal");
+	public static final OverworldMirrorPortalBlock PORTAL = new OverworldMirrorPortalBlock("portal");
 	
 	@SubscribeEvent
 	public static void register(Register<Block> event) {
