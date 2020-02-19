@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.*;
 import net.minecraft.world.*;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ModDimension;
 
 public class BlockOverworldMirrorPortal extends UBlock {
@@ -41,9 +42,11 @@ public class BlockOverworldMirrorPortal extends UBlock {
 	
 	@Override
 	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
-		WorldSaveDataPortal data = PortalManager.getSaveData(world);
-		data.getPortals().removeIf(portal -> portal.equals(pos));
-		data.markDirty();
+		if (world instanceof ServerWorld) {
+			final WorldSaveDataPortal data = PortalManager.getSaveData((ServerWorld) world);
+			data.getPortals().removeIf(portal -> portal.equals(pos));
+			data.markDirty();
+		}
 	}
 	
 	@Override
