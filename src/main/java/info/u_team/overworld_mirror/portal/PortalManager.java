@@ -11,7 +11,6 @@ import net.minecraft.network.play.server.SChangeBlockPacket;
 import net.minecraft.server.management.PlayerList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerWorld;
 
@@ -117,8 +116,7 @@ public class PortalManager {
 	}
 	
 	private static BlockPos spawnPortal(World world, BlockPos entity_pos) {
-		final IChunk chunk = world.getChunk(entity_pos);
-		// chunk.getHeightmap(Type.WORLD_SURFACE).generate(); // Generate height map first, so we get accurate height
+		world.getChunk(entity_pos); // This loads the chunk / generates it so we can determine the height
 		
 		final BlockPos pos = world.getHeight(Heightmap.Type.WORLD_SURFACE, entity_pos).down();
 		
