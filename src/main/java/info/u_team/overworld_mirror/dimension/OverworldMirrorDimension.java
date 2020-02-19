@@ -4,9 +4,9 @@ import info.u_team.overworld_mirror.config.ServerConfig;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.*;
 
-public class DimensionOverworldMirror extends OverworldDimension {
+public class OverworldMirrorDimension extends OverworldDimension {
 	
-	public DimensionOverworldMirror(World world, DimensionType type) {
+	public OverworldMirrorDimension(World world, DimensionType type) {
 		super(world, type);
 		world.worldInfo = new OverworldMirrorWorldInfo(world, world.worldInfo);
 	}
