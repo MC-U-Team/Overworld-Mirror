@@ -15,7 +15,7 @@ public class OverworldMirrorDimensions {
 	public static final ModDimension dimension = new UModDimension("dimension", DimensionOverworldMirror::new);
 	
 	public static void construct() {
-		DimensionRegistry.register(OverworldMirrorMod.modid, OverworldMirrorDimensions.class);
+		DimensionRegistry.register(OverworldMirrorMod.MODID, OverworldMirrorDimensions.class);
 		CommonRegistry.registerEventHandler(OverworldMirrorDimensions.class);
 	}
 	

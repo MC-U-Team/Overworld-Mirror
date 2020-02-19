@@ -9,7 +9,7 @@ public class OverworldMirrorBlocks {
 	public static final BlockOverworldMirrorPortal portal = new BlockOverworldMirrorPortal("portal");
 	
 	public static void construct() {
-		BlockRegistry.register(OverworldMirrorMod.modid, OverworldMirrorBlocks.class);
+		BlockRegistry.register(OverworldMirrorMod.MODID, OverworldMirrorBlocks.class);
 	}
 	
 }
