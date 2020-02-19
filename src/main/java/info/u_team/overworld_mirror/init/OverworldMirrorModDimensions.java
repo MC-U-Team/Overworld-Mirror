@@ -19,13 +19,4 @@ public class OverworldMirrorModDimensions {
 	public static void register(Register<ModDimension> event) {
 		BaseRegistryUtil.getAllRegistryEntriesAndApplyNames(OverworldMirrorMod.MODID, ModDimension.class).forEach(event.getRegistry()::register);
 	}
-	
-	// @SubscribeEvent
-	// public static void on(final RegisterDimensionsEvent event) {
-	// DimensionType type = DimensionType.byName(dimension.getRegistryName());
-	// if (type == null) { // Check if dimension is already registered
-	// type = DimensionManager.registerDimension(dimension.getRegistryName(), dimension, null);
-	// }
-	// type.setRegistryName(dimension.getRegistryName()); // Fix missing registry name
-	// }
 }
