@@ -6,11 +6,11 @@ import net.minecraft.nbt.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.storage.WorldSavedData;
 
-public class WorldSaveDataPortal extends WorldSavedData {
+public class PortalWorldSavedData extends WorldSavedData {
 	
 	private final List<BlockPos> portals;
 	
-	public WorldSaveDataPortal(String name) {
+	public PortalWorldSavedData(String name) {
 		super(name);
 		portals = new ArrayList<>();
 	}

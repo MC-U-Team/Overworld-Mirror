@@ -43,7 +43,7 @@ public class BlockOverworldMirrorPortal extends UBlock {
 	@Override
 	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (world instanceof ServerWorld) {
-			final WorldSaveDataPortal data = PortalManager.getSaveData((ServerWorld) world);
+			final PortalWorldSavedData data = PortalManager.getSaveData((ServerWorld) world);
 			data.getPortals().removeIf(portal -> portal.equals(pos));
 			data.markDirty();
 		}

@@ -3,11 +3,11 @@ package info.u_team.overworld_mirror.dimension;
 import net.minecraft.nbt.*;
 import net.minecraft.world.storage.WorldSavedData;
 
-public class WorldSaveDataDimension extends WorldSavedData {
+public class TimeWorldSavedData extends WorldSavedData {
 	
 	private long time;
 	
-	public WorldSaveDataDimension(String name) {
+	public TimeWorldSavedData(String name) {
 		super(name);
 	}
 	
