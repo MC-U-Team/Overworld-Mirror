@@ -7,43 +7,40 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.storage.WorldSavedData;
 
 public class WorldSaveDataPortal extends WorldSavedData {
-
-	private List<BlockPos> portals = new ArrayList<>();
-
+	
+	private final List<BlockPos> portals;
+	
 	public WorldSaveDataPortal(String name) {
 		super(name);
+		portals = new ArrayList<>();
 	}
-
+	
 	@Override
-	public void read(NBTTagCompound nbt) {
-		NBTTagList list = nbt.getList("list", 10);
-		if (list != null) {
-			list.forEach(tag -> {
-				NBTTagCompound compound = (NBTTagCompound) tag;
-				portals.add(new BlockPos(compound.getInt("x"), compound.getInt("y"), compound.getInt("z")));
-			});
-		}
-	}
-
-	@Override
-	public NBTTagCompound write(NBTTagCompound nbt) {
-		NBTTagList list = new NBTTagList();
-		portals.forEach(pos -> {
-			NBTTagCompound compound = new NBTTagCompound();
-			compound.putInt("x", pos.getX());
-			compound.putInt("y", pos.getY());
-			compound.putInt("z", pos.getZ());
-			list.add(compound);
+	public void read(CompoundNBT compound) {
+		compound.getList("list", 10).stream().filter(tag -> tag instanceof CompoundNBT).map(tag -> (CompoundNBT) tag).forEach(entryCompound -> {
+			portals.add(new BlockPos(entryCompound.getInt("x"), entryCompound.getInt("y"), entryCompound.getInt("z")));
 		});
-		nbt.put("list", list);
-		return nbt;
 	}
-
+	
+	@Override
+	public CompoundNBT write(CompoundNBT compound) {
+		final ListNBT list = new ListNBT();
+		portals.forEach(pos -> {
+			final CompoundNBT entryCompound = new CompoundNBT();
+			entryCompound.putInt("x", pos.getX());
+			entryCompound.putInt("y", pos.getY());
+			entryCompound.putInt("z", pos.getZ());
+			list.add(entryCompound);
+		});
+		compound.put("list", list);
+		return compound;
+	}
+	
 	/**
 	 * Changes must be marked dirty
 	 */
 	public List<BlockPos> getPortals() {
 		return portals;
 	}
-
+	
 }
