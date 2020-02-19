@@ -1,6 +1,6 @@
 package info.u_team.overworld_mirror.dimension;
 
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.*;
 import net.minecraft.world.storage.WorldSavedData;
 
 public class WorldSaveDataDimension extends WorldSavedData {
@@ -12,12 +12,12 @@ public class WorldSaveDataDimension extends WorldSavedData {
 	}
 	
 	@Override
-	public void read(NBTTagCompound compound) {
+	public void read(CompoundNBT compound) {
 		time = compound.getLong("time");
 	}
 	
 	@Override
-	public NBTTagCompound write(NBTTagCompound compound) {
+	public CompoundNBT write(CompoundNBT compound) {
 		compound.putLong("time", time);
 		return compound;
 	}
