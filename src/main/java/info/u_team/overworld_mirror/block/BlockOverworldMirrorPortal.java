@@ -1,30 +1,28 @@
 package info.u_team.overworld_mirror.block;
 
-import java.util.Random;
-
 import info.u_team.overworld_mirror.init.*;
 import info.u_team.overworld_mirror.portal.*;
 import info.u_team.u_team_core.block.UBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.*;
 import net.minecraft.world.*;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.common.ModDimension;
 
 public class BlockOverworldMirrorPortal extends UBlock {
 	
+	protected static final VoxelShape SHAPE = makeCuboidShape(0, 11.9, 0, 16, 12, 16);
+	
 	public BlockOverworldMirrorPortal(String name) {
-		super(name, Properties.create(Material.PORTAL).doesNotBlockMovement().hardnessAndResistance(-1.0F).sound(SoundType.GLASS).lightValue(11));
+		super(name, Properties.create(Material.PORTAL).doesNotBlockMovement().hardnessAndResistance(-1.0F).sound(SoundType.GLASS).lightValue(11).noDrops());
 	}
 	
 	@Override
-	public void onEntityCollision(IBlockState state, World world, BlockPos pos, Entity entity) {
+	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 		if (!entity.isPassenger() && !entity.isBeingRidden()) {
 			final DimensionType type = entity.dimension;
 			final ModDimension moddimension = type.getModType();
@@ -41,48 +39,28 @@ public class BlockOverworldMirrorPortal extends UBlock {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Override
-	public void onReplaced(IBlockState state, World world, BlockPos pos, IBlockState newState, boolean isMoving) {
-		super.onReplaced(state, world, pos, newState, isMoving);
+	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
 		WorldSaveDataPortal data = PortalManager.getSaveData(world);
 		data.getPortals().removeIf(portal -> portal.equals(pos));
 		data.markDirty();
 	}
 	
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos neighbor) {
-		if (!neighbor.down().equals(pos) && !neighbor.up().equals(pos) && world.getBlockState(neighbor).getBlock() != OverworldMirrorBlocks.portal) {
-			world.removeBlock(pos);
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+		if (!fromPos.down().equals(pos) && !fromPos.up().equals(pos) && world.getBlockState(fromPos).getBlock() != OverworldMirrorBlocks.portal) {
+			world.removeBlock(pos, isMoving);
 		}
 	}
 	
 	@Override
-	public VoxelShape getShape(IBlockState state, IBlockReader worldIn, BlockPos pos) {
-		return makeCuboidShape(0, 11.9, 0, 16, 12, 16);
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+		return SHAPE;
 	}
 	
 	@Override
-	public int quantityDropped(IBlockState state, Random random) {
-		return 0;
-	}
-	
-	public ItemStack getItem(IBlockReader world, BlockPos pos, IBlockState state) {
+	public ItemStack getItem(IBlockReader world, BlockPos pos, BlockState state) {
 		return ItemStack.EMPTY;
 	}
 	
-	@Override
-	public boolean isFullCube(IBlockState state) {
-		return false;
-	}
-	
-	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockReader world, IBlockState state, BlockPos pos, EnumFacing face) {
-		return BlockFaceShape.UNDEFINED;
-	}
-	
-	@Override
-	public BlockRenderLayer getRenderLayer() {
-		return BlockRenderLayer.TRANSLUCENT;
-	}
 }
