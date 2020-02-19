@@ -7,39 +7,20 @@ buildscript {
     }
     dependencies {
         classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "3.+", changing: true
-		classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.1.2"
+		classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.4.0"
     }
 }
 
-apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/build.methods"
-apply from: "https://raw.githubusercontent.com/HyCraftHD/Blank-Forge-Project/master/git.methods"
-
-setup()
-info()
+apply from: "https://gradle-files.u-team.info/default-project.gradle"
 
 apply plugin: "net.minecraftforge.gradle"
 apply plugin: "eclipse"
 apply plugin: "com.matthewprenger.cursegradle"
 apply plugin: "maven"
 
-repositories {
-    maven { url = "https://repo.u-team.info" }
-    //maven { url = "https://minecraft.curseforge.com/api/maven" }
-}
-
-getBuildNumber()
-
 group = "info.u-team"
-archivesBaseName = "${config.mod.filename}-${config.forge.mcversion}"
-version = "${config.mod.version}.${config.buildnumber}" + getAppendix();
-
-def getAppendix() {
-	if("${config.mod.snapshot}".toBoolean()) {
-		return "-SNAPSHOT"
-	} else {
-		return ""
-	}
-}
+archivesBaseName = generateArchivesBaseName()
+version = generateVersion()
 
 sourceCompatibility = targetCompatibility = "1.8"
 
@@ -49,7 +30,7 @@ minecraft {
         client = {
             workingDirectory project.file("run/client").canonicalPath
             mods {
-                overworldmirror {
+                "${config.mod.modid}" {
                     source sourceSets.main
 				}
 			}
@@ -57,7 +38,16 @@ minecraft {
         server = {
             workingDirectory project.file("run/server").canonicalPath
             mods {
-                overworldmirror {
+                "${config.mod.modid}" {
+                    source sourceSets.main
+				}
+			}
+        }
+        data = {
+            workingDirectory project.file("run/data").canonicalPath
+            args "--mod", config.mod.modid, "--all", "--output", "\"" + file("src/generated/resources").toString() + "\"", "--validate", "--existing", "\"" + sourceSets.main.resources.srcDirs[0] + "\""
+            mods {
+                "${config.mod.modid}" {
                     source sourceSets.main
 				}
 			}
@@ -65,23 +55,12 @@ minecraft {
     }
 }
 
-def normalManifest = {
-	attributes(
-		"Specification-Title": config.mod.name,
-        "Specification-Vendor": "Team UTeam",
-        "Specification-Version": "25.0",
-		"Built-On": config.forge.mcversion,
-		"Implementation-Title": config.mod.name,
-    	"Implementation-Version": project.version,
-		"Implementation-Vendor": "Team UTeam",
-        "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-	)
-}
-
 jar {
 	classifier = ""
 
     from "LICENSE"
+    
+    exclude(".cache")    
        
    	manifest normalManifest
 }
@@ -91,6 +70,8 @@ task deobfJar(type: Jar) {
 
     from sourceSets.main.output
     from "LICENSE"
+    
+    exclude(".cache")    
         
     manifest normalManifest
 }
@@ -122,32 +103,34 @@ artifacts {
     archives jar
 }
 
+signAllJars()
+
 sourceSets {
 	main {
-		java {
-			srcDirs += "src/api/java"
-		}
+		java
 		resources {
-			srcDirs += "src/api/resources"
+			srcDirs += "src/generated/resources"
 		}
 	}
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:$config.forge.version"
-	compile "info.u-team:u_team_core-${config.forge.mcversion}:${config.uteamcore.version}:dev"
-	
-	//compile fg.deobf(project.dependencies.create(group: "morpheus", name: "Morpheus", version: "1.13.2", classifier: "4.0.115", ext: "jar"))
-}
-
-compileJava {
-    options.encoding = "UTF-8"
+    minecraft getForgeDependency()
+    compile getUTeamCoreDependency()
+    compile fg.deobf(getJeiApiDependency())
+    runtime fg.deobf(getJeiDependency())
 }
 
 curseforge {
-	apiKey = project.getProperty("token")
+	afterEvaluate {
+		tasks."curseforge${config.curse.id}".onlyIf {
+			getValue("token") != null
+		}
+	}
 	
 	tasks.curseforge.dependsOn build
+	
+	apiKey = getValue("token")
 	
   	project {
     	id = config.curse.id
@@ -166,7 +149,7 @@ curseforge {
     	mainArtifact(jar) {
       		displayName = "${config.curse.display}-${config.forge.mcversion}-${project.version}"
       		changelogType = "html"
-			changelog = "<a href=\"${config.curse.changelog}\">Changelog of ${project.version}</a>"
+      		changelog = "<a href=\"" + generateChangelogUrl() + "\">Changelog of ${project.version}</a>"
     	}
     	
     	addArtifact(deobfJar) {
@@ -178,15 +161,16 @@ curseforge {
 }
 
 uploadArchives {
+	onlyIf {
+		getValue("mavenpass") != null
+	}
 
 	tasks.uploadArchives.dependsOn build
 
 	repositories {
 		mavenDeployer {
-			if (project.hasProperty("mavenpass")) {
-				repository(url: "https://repo.u-team.info") {
-					authentication(userName: "maven", password: project.getProperty("mavenpass"))
-				}
+			repository(url: "https://repo.u-team.info") {
+				authentication(userName: "maven", password: getValue("mavenpass"))
 			}
 			pom {
 				groupId = project.group
@@ -195,21 +179,21 @@ uploadArchives {
 				project {
 					name project.archivesBaseName
 					packaging "jar"
-					description "${config.maven.github_name}"
-						url "https://github.com/MC-U-Team/${config.maven.github_name}"
+					description "${config.github.name}"
+					url "https://github.com/MC-U-Team/${config.github.name}"
 					scm {
-						url "https://github.com/MC-U-Team/${config.maven.github_name}"
-						connection "scm:git:git://github.com/MC-U-Team/${config.maven.github_name}.git"
-						developerConnection "scm:git:git@github.com:MC-U-Team/${config.maven.github_name}.git"
+						url "https://github.com/MC-U-Team/${config.github.name}"
+						connection "scm:git:git://github.com/MC-U-Team/${config.github.name}.git"
+						developerConnection "scm:git:git@github.com:MC-U-Team/${config.github.name}.git"
 					}
 					issueManagement {
 						system "github"
-						url "https://github.com/MC-U-Team/${config.maven.github_name}/issues"
+						url "https://github.com/MC-U-Team/${config.github.name}/issues"
 					}
 					licenses {
 						license {
 							name "Apache License 2.0"
-							url "https://github.com/MC-U-Team/${config.maven.github_name}/blob/1.13.2/LICENSE"
+							url "https://github.com/MC-U-Team/${config.github.name}/blob/${config.github.branch}/LICENSE"
 							distribution "repo"
 						}
 					}
@@ -220,6 +204,7 @@ uploadArchives {
 						}
 					}
 				}
+				setConfigurations(null) // Prevent all dependencies in the pom file
 			}
 		}
 	}
@@ -232,5 +217,11 @@ task uploadBoth {
 	tasks.uploadBoth.dependsOn setBuildNumber
 	doLast {
 		println "Published both"
+	}
+}
+
+gradle.taskGraph.whenReady {
+	if (gradle.taskGraph.hasTask(":curseforge${config.curse.id}") || gradle.taskGraph.hasTask(":uploadArchives")) {
+		validateBuild()
 	}
 }
