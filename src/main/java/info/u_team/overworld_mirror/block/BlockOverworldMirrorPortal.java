@@ -26,14 +26,14 @@ public class BlockOverworldMirrorPortal extends UBlock {
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 		if (!entity.isPassenger() && !entity.isBeingRidden()) {
 			final DimensionType type = entity.dimension;
-			final ModDimension moddimension = type.getModType();
+			final ModDimension modDimension = type.getModType();
 			
 			if (entity.timeUntilPortal > 0) {
 				entity.timeUntilPortal = 10;
 			} else if (type == DimensionType.OVERWORLD) {
 				entity.timeUntilPortal = 10;
 				entity.changeDimension(DimensionType.byName(OverworldMirrorModDimensions.DIMENSION.getRegistryName()), new PortalTeleporter());
-			} else if (moddimension != null && moddimension == OverworldMirrorModDimensions.DIMENSION) {
+			} else if (modDimension != null && modDimension == OverworldMirrorModDimensions.DIMENSION) {
 				entity.timeUntilPortal = 10;
 				entity.changeDimension(DimensionType.OVERWORLD, new PortalTeleporter());
 			}
