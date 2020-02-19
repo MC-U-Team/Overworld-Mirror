@@ -2,7 +2,7 @@ package info.u_team.overworld_mirror.portal;
 
 import java.util.*;
 
-import info.u_team.overworld_mirror.config.CommonConfig;
+import info.u_team.overworld_mirror.config.ServerConfig;
 import info.u_team.overworld_mirror.init.OverworldMirrorBlocks;
 import info.u_team.u_team_core.util.world.WorldUtil;
 import net.minecraft.block.*;
@@ -87,7 +87,7 @@ public class PortalManager {
 		final Iterator<BlockPos> iterator = data.getPortals().iterator();
 		while (iterator.hasNext()) {
 			final BlockPos pos = iterator.next();
-			if (distanceSq(pos.getX(), pos.getZ(), entityPos.getX(), entityPos.getZ()) < CommonConfig.getInstance().portalDistance.get()) {
+			if (distanceSq(pos.getX(), pos.getZ(), entityPos.getX(), entityPos.getZ()) < ServerConfig.getInstance().portalDistance.get()) {
 				if (validatePortal(world, pos)) {
 					middlePos = pos;
 					break;

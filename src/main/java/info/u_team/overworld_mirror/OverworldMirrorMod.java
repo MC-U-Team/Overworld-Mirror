@@ -1,7 +1,10 @@
 package info.u_team.overworld_mirror;
 
+import info.u_team.overworld_mirror.config.ServerConfig;
 import info.u_team.u_team_core.util.verify.JarSignVerifier;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig.Type;
 
 @Mod(OverworldMirrorMod.MODID)
 public class OverworldMirrorMod {
@@ -10,6 +13,7 @@ public class OverworldMirrorMod {
 	
 	public OverworldMirrorMod() {
 		JarSignVerifier.checkSigned(MODID);
+		ModLoadingContext.get().registerConfig(Type.SERVER, ServerConfig.CONFIG);
 	}
 	
 }

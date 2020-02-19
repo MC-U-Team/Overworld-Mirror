@@ -1,6 +1,6 @@
 package info.u_team.overworld_mirror.dimension;
 
-import info.u_team.overworld_mirror.config.CommonConfig;
+import info.u_team.overworld_mirror.config.ServerConfig;
 import net.minecraft.world.storage.*;
 
 public class SeedFixWorldInfo extends DerivedWorldInfo {
@@ -11,7 +11,7 @@ public class SeedFixWorldInfo extends DerivedWorldInfo {
 
 	@Override
 	public long getSeed() {
-		final CommonConfig config = CommonConfig.getInstance();
+		final ServerConfig config = ServerConfig.getInstance();
 		return config.seedType.get().calculateSeed(config.seedValue.get(), super.getSeed());
 	}
 }

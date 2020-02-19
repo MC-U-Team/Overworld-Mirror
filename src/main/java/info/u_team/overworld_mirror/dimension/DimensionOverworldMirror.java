@@ -4,7 +4,7 @@ import com.google.gson.*;
 import com.mojang.datafixers.Dynamic;
 import com.mojang.datafixers.types.JsonOps;
 
-import info.u_team.overworld_mirror.config.CommonConfig;
+import info.u_team.overworld_mirror.config.ServerConfig;
 import info.u_team.u_team_core.util.world.WorldUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -22,7 +22,7 @@ import net.minecraft.world.gen.*;
 public class DimensionOverworldMirror extends OverworldDimension {
 	
 	private WorldSaveDataDimension saveData;
-	private CommonConfig config;
+	private ServerConfig config;
 	
 	public DimensionOverworldMirror(DimensionType type) {
 		super(type);
@@ -32,7 +32,7 @@ public class DimensionOverworldMirror extends OverworldDimension {
 	protected void init() {
 		super.init();
 		saveData = getSaveData();
-		config = CommonConfig.getInstance();
+		config = ServerConfig.getInstance();
 	}
 	
 	// Can unload chunk
