@@ -13,7 +13,7 @@ import net.minecraft.nbt.*;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.IRegistry;
-import net.minecraft.world.WorldType;
+import net.minecraft.world.*;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.provider.*;
 import net.minecraft.world.dimension.*;
@@ -24,8 +24,8 @@ public class DimensionOverworldMirror extends OverworldDimension {
 	private WorldSaveDataDimension saveData;
 	private ServerConfig config;
 	
-	public DimensionOverworldMirror(DimensionType type) {
-		super(type);
+	public DimensionOverworldMirror(World world, DimensionType type) {
+		super(world, type);
 	}
 	
 	@Override

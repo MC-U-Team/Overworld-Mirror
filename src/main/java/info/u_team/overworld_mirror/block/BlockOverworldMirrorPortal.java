@@ -32,8 +32,8 @@ public class BlockOverworldMirrorPortal extends UBlock {
 				entity.timeUntilPortal = 10;
 			} else if (type == DimensionType.OVERWORLD) {
 				entity.timeUntilPortal = 10;
-				entity.changeDimension(DimensionType.byName(OverworldMirrorDimensions.dimension.getRegistryName()), new PortalTeleporter());
-			} else if (moddimension != null && moddimension == OverworldMirrorDimensions.dimension) {
+				entity.changeDimension(DimensionType.byName(OverworldMirrorDimensions.DIMENSION.getRegistryName()), new PortalTeleporter());
+			} else if (moddimension != null && moddimension == OverworldMirrorDimensions.DIMENSION) {
 				entity.timeUntilPortal = 10;
 				entity.changeDimension(DimensionType.OVERWORLD, new PortalTeleporter());
 			}
@@ -51,7 +51,7 @@ public class BlockOverworldMirrorPortal extends UBlock {
 	
 	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
-		if (!fromPos.down().equals(pos) && !fromPos.up().equals(pos) && world.getBlockState(fromPos).getBlock() != OverworldMirrorBlocks.portal) {
+		if (!fromPos.down().equals(pos) && !fromPos.up().equals(pos) && world.getBlockState(fromPos).getBlock() != OverworldMirrorBlocks.PORTAL) {
 			world.removeBlock(pos, isMoving);
 		}
 	}
