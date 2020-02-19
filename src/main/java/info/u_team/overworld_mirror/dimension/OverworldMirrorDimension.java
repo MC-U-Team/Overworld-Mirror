@@ -16,29 +16,4 @@ public class OverworldMirrorDimension extends OverworldDimension {
 		return ServerConfig.getInstance().movementFactor.get();
 	}
 	
-	// // Time
-	//
-	// @Override
-	// public void setWorldTime(long time) {
-	// saveData.setTime(time);
-	// }
-	//
-	// @Override
-	// public long getWorldTime() {
-	// return saveData.getTime();
-	// }
-	//
-	// // Seed
-	//
-	// @Override
-	// public long getSeed() {
-	// return config.seedType.get().calculateSeed(config.seedValue.get(), super.getSeed());
-	// }
-	//
-	// // Movement factor
-	// @Override
-	// public double getMovementFactor() {
-	// return config.movementFactor.get();
-	// }
-	//
 }

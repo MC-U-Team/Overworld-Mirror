@@ -38,7 +38,7 @@ public class PortalManager {
 			return false;
 		}
 		
-		final PortalWorldSavedData data = getSaveData(world);
+		final PortalWorldSavedData data = getSavedData(world);
 		data.getPortals().add(middlePos);
 		data.markDirty();
 		
@@ -79,7 +79,7 @@ public class PortalManager {
 	public static void trySummonEntityInPortal(ServerWorld world, Entity entity, float yaw) {
 		final BlockPos entityPos = entity.getPosition();
 		
-		final PortalWorldSavedData data = getSaveData(world);
+		final PortalWorldSavedData data = getSavedData(world);
 		
 		BlockPos middlePos = null;
 		
@@ -151,7 +151,7 @@ public class PortalManager {
 		return pos;
 	}
 	
-	public static PortalWorldSavedData getSaveData(ServerWorld world) {
+	public static PortalWorldSavedData getSavedData(ServerWorld world) {
 		final String name = "overworldmirror_portal";
 		return WorldUtil.getSaveData(world, name, () -> new PortalWorldSavedData(name));
 	}
