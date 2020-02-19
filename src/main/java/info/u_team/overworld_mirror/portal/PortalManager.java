@@ -67,7 +67,7 @@ public class PortalManager {
 		final boolean frameMatching = frame.stream().allMatch(framePos -> world.getBlockState(framePos).getBlock() == Blocks.STONE_BRICKS);
 		
 		if (flowersMatching && frameMatching) {
-			flowers.forEach(portalPos -> world.setBlockState(portalPos, OverworldMirrorBlocks.portal.getDefaultState(), 2));
+			flowers.forEach(portalPos -> world.setBlockState(portalPos, OverworldMirrorBlocks.PORTAL.getDefaultState(), 2));
 			
 			final PlayerList playerlist = world.getServer().getPlayerList();
 			flowers.forEach(portalPos -> playerlist.sendToAllNearExcept(null, portalPos.getX(), portalPos.getY(), portalPos.getZ(), 64, world.getDimension().getType(), new SChangeBlockPacket(world, portalPos)));
@@ -108,7 +108,7 @@ public class PortalManager {
 	private static boolean validatePortal(World world, BlockPos pos) {
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
-				if (world.getBlockState(pos.add(i, 0, j)).getBlock() != OverworldMirrorBlocks.portal) {
+				if (world.getBlockState(pos.add(i, 0, j)).getBlock() != OverworldMirrorBlocks.PORTAL) {
 					return false;
 				}
 			}
@@ -147,7 +147,7 @@ public class PortalManager {
 			world.removeBlock(portalPos.up(), false);
 			world.removeBlock(portalPos.up(2), false);
 			world.setBlockState(portalPos.down(), Blocks.STONE_BRICKS.getDefaultState());
-			world.setBlockState(portalPos, OverworldMirrorBlocks.portal.getDefaultState(), 2);
+			world.setBlockState(portalPos, OverworldMirrorBlocks.PORTAL.getDefaultState(), 2);
 		});
 		
 		return pos;
