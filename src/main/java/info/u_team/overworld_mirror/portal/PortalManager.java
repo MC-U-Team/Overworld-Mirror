@@ -115,13 +115,13 @@ public class PortalManager {
 		return true;
 	}
 	
-	private static BlockPos spawnPortal(World world, BlockPos entity_pos) {
-		world.getChunk(entity_pos); // This loads the chunk / generates it so we can determine the height
+	private static BlockPos spawnPortal(World world, BlockPos entityPos) {
+		world.getChunk(entityPos); // This loads the chunk / generates it so we can determine the height
 		
-		final BlockPos pos = world.getHeight(Heightmap.Type.WORLD_SURFACE, entity_pos).down();
+		final BlockPos pos = world.getHeight(Heightmap.Type.WORLD_SURFACE, entityPos).down();
 		
-		ArrayList<BlockPos> portal = new ArrayList<>();
-		ArrayList<BlockPos> frame = new ArrayList<>();
+		final ArrayList<BlockPos> portal = new ArrayList<>();
+		final ArrayList<BlockPos> frame = new ArrayList<>();
 		
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
@@ -156,9 +156,9 @@ public class PortalManager {
 		return WorldUtil.getSaveData(world, name, () -> new WorldSaveDataPortal(name));
 	}
 	
-	public static double distanceSq(double from_x, double from_z, double to_x, double to_z) {
-		double x = from_x - to_x;
-		double z = from_z - to_z;
+	public static double distanceSq(double fromX, double fromZ, double toX, double toZ) {
+		double x = fromX - toX;
+		double z = fromZ - toZ;
 		return x * x + z * z;
 	}
 }
