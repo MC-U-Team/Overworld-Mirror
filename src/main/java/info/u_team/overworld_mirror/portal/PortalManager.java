@@ -145,8 +145,9 @@ public class PortalManager {
 			world.removeBlock(portalPos.up(), false);
 			world.removeBlock(portalPos.up(2), false);
 			world.setBlockState(portalPos.down(), Blocks.STONE_BRICKS.getDefaultState());
-			world.setBlockState(portalPos, OverworldMirrorBlocks.PORTAL.getDefaultState(), 2);
 		});
+		
+		portal.forEach(portalPos -> world.setBlockState(portalPos, OverworldMirrorBlocks.PORTAL.getDefaultState(), 2));
 		
 		return pos;
 	}
