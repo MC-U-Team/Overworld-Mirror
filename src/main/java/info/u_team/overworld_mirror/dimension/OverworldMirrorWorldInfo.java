@@ -1,6 +1,5 @@
 package info.u_team.overworld_mirror.dimension;
 
-import com.google.gson.JsonObject;
 import com.mojang.datafixers.Dynamic;
 import com.mojang.datafixers.types.JsonOps;
 
@@ -37,16 +36,10 @@ public class OverworldMirrorWorldInfo extends DerivedWorldInfo {
 	private CompoundNBT initOptions() {
 		final String settings = CONFIG.generatorSettings.get();
 		
-		final JsonObject json;
-		if (type == WorldType.FLAT) {
-			json = new JsonObject();
-			json.addProperty("flat_world_options", settings);
-		} else if (!settings.isEmpty()) {
-			json = JSONUtils.fromJson(settings);
-		} else {
-			json = new JsonObject();
+		if (!settings.isEmpty()) {
+			return (CompoundNBT) Dynamic.convert(JsonOps.INSTANCE, NBTDynamicOps.INSTANCE, JSONUtils.fromJson(settings));
 		}
-		return (CompoundNBT) Dynamic.convert(JsonOps.INSTANCE, NBTDynamicOps.INSTANCE, json);
+		return new CompoundNBT();
 	}
 	
 	@Override

@@ -2,10 +2,14 @@ package info.u_team.overworld_mirror.dimension;
 
 import java.util.Optional;
 
+import com.mojang.datafixers.Dynamic;
+
 import info.u_team.overworld_mirror.config.ServerConfig;
 import info.u_team.u_team_core.util.world.WorldUtil;
+import net.minecraft.nbt.NBTDynamicOps;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.*;
+import net.minecraft.world.gen.*;
 import net.minecraft.world.server.ServerWorld;
 
 public class OverworldMirrorDimension extends OverworldDimension {
@@ -15,6 +19,20 @@ public class OverworldMirrorDimension extends OverworldDimension {
 	public OverworldMirrorDimension(World world, DimensionType type) {
 		super(world, type);
 		world.worldInfo = new OverworldMirrorWorldInfo(world.worldInfo);
+	}
+	
+	@Override
+	public ChunkGenerator<? extends GenerationSettings> createChunkGenerator() {
+
+		Dynamic<?> d = new Dynamic<>(NBTDynamicOps.INSTANCE, this.world.getWorldInfo().getGeneratorOptions());
+		
+		System.out.println(d);
+		
+		FlatGenerationSettings flatgenerationsettings = FlatGenerationSettings.createFlatGenerator(d);
+		System.out.println("___________________________________________");
+		System.out.println(flatgenerationsettings);
+		
+		return super.createChunkGenerator();
 	}
 	
 	@Override
