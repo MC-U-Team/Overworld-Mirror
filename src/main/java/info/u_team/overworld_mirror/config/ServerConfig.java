@@ -35,8 +35,8 @@ public class ServerConfig {
 		seedValue = builder.comment("The seed value. See seedType for more information.").defineInRange("seedValue", 100_000, Long.MIN_VALUE, Long.MAX_VALUE);
 		builder.pop();
 		builder.comment("Generation settings").push("generator");
-		generatorType = builder.comment("Generator type e.g. default, flat, buffet, ...").define("generatorType", "default");
-		generatorSettings = builder.comment("Generator settings for flat and buffet. Attention, the format has changed in 1.13!").define("generatorSettings", "");
+		generatorType = builder.comment("Generator type e.g. default, flat, buffet, ... (See here for a list: https://minecraft.gamepedia.com/World_type)").define("generatorType", "default");
+		generatorSettings = builder.comment("Generator settings for the generator type").define("generatorSettings", "");
 		builder.pop();
 		builder.comment("Portal settings").push("portal");
 		movementFactor = builder.comment("Movement factor. Like in the nether you move 8 times the block length as in the overworld").defineInRange("movementFactor", 1, 0, 1e10);
