@@ -36,7 +36,7 @@ public class ServerConfig {
 		builder.pop();
 		builder.comment("Generation settings").push("generator");
 		generatorType = builder.comment("Generator type e.g. default, flat, buffet, ... (See here for a list: https://minecraft.gamepedia.com/World_type)").define("generatorType", "default");
-		generatorSettings = builder.comment("Generator settings for the generator type").define("generatorSettings", "");
+		generatorSettings = builder.comment("Generator settings for the generator type. The snbt string must be valid json and escaped. For flat worlds you must use the snbt variant like this: ({\"biome\":\"minecraft:plains\",\"layers\":[{\"block\":\"minecraft:bedrock\",\"height\":1},{\"block\":\"minecraft:dirt\",\"height\":2},{\"block\":\"minecraft:grass_block\",\"height\":1}],\"structures\":{\"village\":{}}}) and not the client side preset code (minecraft:bedrock,30*minecraft:dirt,minecraft:grass_block;minecraft:plains;village)").define("generatorSettings", "");
 		builder.pop();
 		builder.comment("Portal settings").push("portal");
 		movementFactor = builder.comment("Movement factor. Like in the nether you move 8 times the block length as in the overworld").defineInRange("movementFactor", 1, 0, 1e10);
