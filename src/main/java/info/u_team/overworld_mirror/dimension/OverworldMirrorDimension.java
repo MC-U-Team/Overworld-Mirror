@@ -8,7 +8,7 @@ public class OverworldMirrorDimension extends OverworldDimension {
 	
 	public OverworldMirrorDimension(World world, DimensionType type) {
 		super(world, type);
-		world.worldInfo = new OverworldMirrorWorldInfo(world, world.worldInfo);
+		world.worldInfo = new OverworldMirrorWorldInfo(world.worldInfo);
 	}
 	
 	@Override

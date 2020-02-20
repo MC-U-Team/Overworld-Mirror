@@ -5,45 +5,58 @@ import com.mojang.datafixers.Dynamic;
 import com.mojang.datafixers.types.JsonOps;
 
 import info.u_team.overworld_mirror.config.ServerConfig;
-import info.u_team.u_team_core.util.world.WorldUtil;
 import net.minecraft.nbt.*;
 import net.minecraft.util.JSONUtils;
-import net.minecraft.world.*;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.WorldType;
 import net.minecraft.world.storage.*;
 
 public class OverworldMirrorWorldInfo extends DerivedWorldInfo {
 	
 	private static final ServerConfig CONFIG = ServerConfig.getInstance();
 	
-	private final TimeWorldSavedData timeData;
+	private final WorldType type;
+	private final CompoundNBT options;
 	
-	public OverworldMirrorWorldInfo(World world, WorldInfo worldInfo) {
+	private long dayTime;
+	
+	public OverworldMirrorWorldInfo(WorldInfo worldInfo) {
 		super(worldInfo);
-		timeData = world instanceof ServerWorld ? getSavedData((ServerWorld) world) : new TimeWorldSavedData("dummy");
+		
+		type = initType();
+		options = initOptions();
+	}
+	
+	private WorldType initType() {
+		final WorldType worldType = WorldType.byName(CONFIG.generatorType.get());
+		if (worldType != null) {
+			return worldType;
+		}
+		return WorldType.DEFAULT;
+	}
+	
+	private CompoundNBT initOptions() {
+		final String settings = CONFIG.generatorSettings.get();
+		
+		final JsonObject json;
+		if (type == WorldType.FLAT) {
+			json = new JsonObject();
+			json.addProperty("flat_world_options", settings);
+		} else if (!settings.isEmpty()) {
+			json = JSONUtils.fromJson(settings);
+		} else {
+			json = new JsonObject();
+		}
+		return (CompoundNBT) Dynamic.convert(JsonOps.INSTANCE, NBTDynamicOps.INSTANCE, json);
 	}
 	
 	@Override
 	public WorldType getGenerator() {
-		final WorldType type = WorldType.byName(CONFIG.generatorType.get());
-		if (type != null) {
-			return type;
-		}
-		return super.getGenerator();
+		return type;
 	}
 	
 	@Override
 	public CompoundNBT getGeneratorOptions() {
-		final String generatorSettings = CONFIG.generatorSettings.get();
-		
-		JsonObject json = new JsonObject();
-		if (getGenerator() == WorldType.FLAT) {
-			json.addProperty("flat_world_options", generatorSettings);
-		} else if (!generatorSettings.isEmpty()) {
-			json = JSONUtils.fromJson(generatorSettings);
-		}
-		
-		return (CompoundNBT) Dynamic.convert(JsonOps.INSTANCE, NBTDynamicOps.INSTANCE, json);
+		return options;
 	}
 	
 	@Override
@@ -52,17 +65,12 @@ public class OverworldMirrorWorldInfo extends DerivedWorldInfo {
 	}
 	
 	@Override
-	public long getGameTime() {
-		return timeData.getTime();
+	public long getDayTime() {
+		return dayTime;
 	}
 	
 	@Override
-	public void setGameTime(long time) {
-		timeData.setTime(time);
-	}
-	
-	public static TimeWorldSavedData getSavedData(ServerWorld world) {
-		final String name = "overworldmirror_time";
-		return WorldUtil.getSaveData(world, name, () -> new TimeWorldSavedData(name));
+	public void setDayTime(long time) {
+		dayTime = time;
 	}
 }
