@@ -22,20 +22,6 @@ public class OverworldMirrorDimension extends OverworldDimension {
 	}
 	
 	@Override
-	public ChunkGenerator<? extends GenerationSettings> createChunkGenerator() {
-
-		Dynamic<?> d = new Dynamic<>(NBTDynamicOps.INSTANCE, this.world.getWorldInfo().getGeneratorOptions());
-		
-		System.out.println(d);
-		
-		FlatGenerationSettings flatgenerationsettings = FlatGenerationSettings.createFlatGenerator(d);
-		System.out.println("___________________________________________");
-		System.out.println(flatgenerationsettings);
-		
-		return super.createChunkGenerator();
-	}
-	
-	@Override
 	public double getMovementFactor() {
 		return ServerConfig.getInstance().movementFactor.get();
 	}
