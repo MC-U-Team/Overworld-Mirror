@@ -9,5 +9,5 @@ All notable changes to this project will be documented in this file.
  - Updated to uteamcore 2.10.5.154
  - Update buildscripts
  - Sign jar from now on
- - Check sign with help of uteamcore jar sign verifier (only if its installed)
+ - Check sign with help of uteamcore jar sign verifier
  - Add german translation
