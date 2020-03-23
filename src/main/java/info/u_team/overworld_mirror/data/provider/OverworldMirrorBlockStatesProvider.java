@@ -13,18 +13,18 @@ public class OverworldMirrorBlockStatesProvider extends CommonBlockStatesProvide
 	
 	@Override
 	protected void registerStatesAndModels() {
-		simpleBlock(PORTAL, models() //
-				.getBuilder(getPath(PORTAL)) //
-				.texture("particle", models().modLoc("block/" + getPath(PORTAL))) //
-				.texture("portal", models().modLoc("block/" + getPath(PORTAL))) //
-				.element() //
-				.from(0, 12, 0) //
-				.to(16, 12, 16) //
-				.face(Direction.UP) //
-				.uvs(0, 0, 16, 16) //
-				.texture("#portal") //
-				.end() //
-				.end() //
+		simpleBlock(PORTAL, //
+				getBuilder(getPath(PORTAL)) //
+						.texture("particle", modLoc("block/" + getPath(PORTAL))) //
+						.texture("portal", modLoc("block/" + getPath(PORTAL))) //
+						.element() //
+						.from(0, 12, 0) //
+						.to(16, 12, 16) //
+						.face(Direction.UP) //
+						.uvs(0, 0, 16, 16) //
+						.texture("#portal") //
+						.end() //
+						.end() //
 		);
 	}
 	

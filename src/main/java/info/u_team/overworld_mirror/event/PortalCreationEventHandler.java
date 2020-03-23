@@ -27,7 +27,7 @@ public class PortalCreationEventHandler {
 			return;
 		}
 		
-		if (!event.getPlayer().isShiftKeyDown()) {
+		if (!event.getPlayer().isSneaking()) {
 			return;
 		}
 		

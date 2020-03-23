@@ -7,6 +7,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.*;
 import net.minecraft.world.*;
@@ -32,10 +33,10 @@ public class OverworldMirrorPortalBlock extends UBlock {
 				entity.timeUntilPortal = 10;
 			} else if (type == DimensionType.OVERWORLD) {
 				entity.timeUntilPortal = 10;
-				entity.changeDimension(DimensionType.byName(OverworldMirrorModDimensions.DIMENSION.getRegistryName()), new PortalTeleporter());
+				DimensionTeleportManager.teleportEntity(entity, DimensionType.byName(OverworldMirrorModDimensions.DIMENSION.getRegistryName()));
 			} else if (modDimension != null && modDimension == OverworldMirrorModDimensions.DIMENSION) {
 				entity.timeUntilPortal = 10;
-				entity.changeDimension(DimensionType.OVERWORLD, new PortalTeleporter());
+				DimensionTeleportManager.teleportEntity(entity, DimensionType.OVERWORLD);
 			}
 		}
 	}
@@ -64,6 +65,11 @@ public class OverworldMirrorPortalBlock extends UBlock {
 	@Override
 	public ItemStack getItem(IBlockReader world, BlockPos pos, BlockState state) {
 		return ItemStack.EMPTY;
+	}
+	
+	@Override
+	public BlockRenderLayer getRenderLayer() {
+		return BlockRenderLayer.TRANSLUCENT;
 	}
 	
 }
