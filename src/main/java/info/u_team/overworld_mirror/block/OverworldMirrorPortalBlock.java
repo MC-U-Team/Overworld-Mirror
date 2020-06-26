@@ -18,8 +18,8 @@ public class OverworldMirrorPortalBlock extends UBlock {
 	
 	protected static final VoxelShape SHAPE = makeCuboidShape(0, 11.9, 0, 16, 12, 16);
 	
-	public OverworldMirrorPortalBlock(String name) {
-		super(name, Properties.create(Material.PORTAL).doesNotBlockMovement().hardnessAndResistance(-1.0F).sound(SoundType.GLASS).lightValue(11).noDrops());
+	public OverworldMirrorPortalBlock() {
+		super(Properties.create(Material.PORTAL).doesNotBlockMovement().hardnessAndResistance(-1.0F).sound(SoundType.GLASS).lightValue(11).noDrops());
 	}
 	
 	@Override
