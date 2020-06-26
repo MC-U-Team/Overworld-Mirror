@@ -13,8 +13,6 @@ public class OverworldMirrorDimensions {
 	
 	@SubscribeEvent
 	public static void on(RegisterDimensionsEvent event) {
-		if (DimensionType.byName(OverworldMirrorModDimensions.DIMENSION.getRegistryName()) == null) {
-			DimensionManager.registerDimension(OverworldMirrorModDimensions.DIMENSION.getRegistryName(), OverworldMirrorModDimensions.DIMENSION, null, true);
-		}
+		DimensionManager.registerOrGetDimension(OverworldMirrorModDimensions.DIMENSION.getRegistryName(), OverworldMirrorModDimensions.DIMENSION, null, true);
 	}
 }
