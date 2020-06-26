@@ -1,7 +1,6 @@
 package info.u_team.overworld_mirror.init;
 
 import info.u_team.overworld_mirror.OverworldMirrorMod;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.world.RegisterDimensionsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
