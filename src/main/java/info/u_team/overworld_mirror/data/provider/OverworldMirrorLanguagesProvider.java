@@ -14,10 +14,10 @@ public class OverworldMirrorLanguagesProvider extends CommonLanguagesProvider {
 	public void addTranslations() {
 		
 		// English
-		add(PORTAL, "Overworld Mirror Portal");
+		add(PORTAL.get(), "Overworld Mirror Portal");
 		
 		// German
-		add("de_de", PORTAL, "Oberflächen Spiegel Portal");
+		add("de_de", PORTAL.get(), "Oberflächen Spiegel Portal");
 	}
 	
 }

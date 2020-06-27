@@ -12,8 +12,8 @@ public class OverworldMirrorItemModelsProvider extends CommonItemModelsProvider 
 	
 	@Override
 	protected void registerModels() {
-		withExistingParent(getPath(PORTAL), "block/cube_all") //
-				.texture("all", modLoc("block/" + getPath(PORTAL)));
+		withExistingParent(getPath(PORTAL.get()), "block/cube_all") //
+				.texture("all", modLoc("block/" + getPath(PORTAL.get())));
 	}
 	
 }
