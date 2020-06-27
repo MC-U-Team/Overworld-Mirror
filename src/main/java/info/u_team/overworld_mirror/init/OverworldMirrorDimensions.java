@@ -12,6 +12,6 @@ public class OverworldMirrorDimensions {
 	
 	@SubscribeEvent
 	public static void on(RegisterDimensionsEvent event) {
-		DimensionManager.registerOrGetDimension(OverworldMirrorModDimensions.DIMENSION.getRegistryName(), OverworldMirrorModDimensions.DIMENSION, null, true);
+		DimensionManager.registerOrGetDimension(OverworldMirrorModDimensions.DIMENSION.get().getRegistryName(), OverworldMirrorModDimensions.DIMENSION.get(), null, true);
 	}
 }

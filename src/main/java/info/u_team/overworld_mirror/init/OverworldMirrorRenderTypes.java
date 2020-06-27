@@ -18,7 +18,7 @@ public class OverworldMirrorRenderTypes {
 		// Translucent
 		final RenderType transluctent = RenderType.getTranslucent();
 		
-		RenderTypeLookup.setRenderLayer(PORTAL, transluctent);
+		RenderTypeLookup.setRenderLayer(PORTAL.get(), transluctent);
 	}
 	
 }
