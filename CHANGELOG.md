@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.15.2-1.4.1.16] - 2020-07-26
+### Changed
+ - Fixed [#7](https://github.com/MC-U-Team/Overworld-Mirror/issues/7)
+
 ## [1.15.2-1.4.0.15] - 2020-07-02
 ### Changed
  - Updated to forge 31.2.30
