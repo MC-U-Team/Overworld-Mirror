@@ -9,8 +9,9 @@ import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.play.server.SChangeBlockPacket;
 import net.minecraft.server.management.PlayerList;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
+import net.minecraft.world.border.WorldBorder;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerWorld;
 
@@ -76,18 +77,31 @@ public class PortalManager {
 		return false;
 	}
 	
-	public static void trySummonEntityInPortal(ServerWorld world, Entity entity, float yaw) {
-		final BlockPos entityPos = entity.getPosition();
+	public static void trySummonEntityInPortal(ServerWorld currentWorld, ServerWorld destinationWorld, Entity entity, float yaw) {
+		final double movementFactor = currentWorld.getDimension().getMovementFactor() / destinationWorld.getDimension().getMovementFactor();
 		
-		final PortalWorldSavedData data = getSavedData(world);
+		final WorldBorder border = destinationWorld.getWorldBorder();
+		
+		final double minX = Math.min(-2.9999872e7, border.minX() + 16);
+		final double maxX = Math.min(2.9999872e7, border.maxX() - 16);
+		
+		final double minZ = Math.min(-2.9999872e7, border.minZ() + 16);
+		final double maxZ = Math.min(2.9999872e7, border.maxZ() - 16);
+		
+		final double scaledX = MathHelper.clamp(entity.getPosX() * movementFactor, minX, maxX);
+		final double scaledZ = MathHelper.clamp(entity.getPosZ() * movementFactor, minZ, maxZ);
+		
+		final BlockPos scaledPos = new BlockPos(scaledX, entity.getPosY(), scaledZ);
+		
+		final PortalWorldSavedData data = getSavedData(destinationWorld);
 		
 		BlockPos middlePos = null;
 		
 		final Iterator<BlockPos> iterator = data.getPortals().iterator();
 		while (iterator.hasNext()) {
 			final BlockPos pos = iterator.next();
-			if (distanceSq(pos.getX(), pos.getZ(), entityPos.getX(), entityPos.getZ()) < ServerConfig.getInstance().portalDistance.get()) {
-				if (validatePortal(world, pos)) {
+			if (distanceSq(pos.getX(), pos.getZ(), scaledPos.getX(), scaledPos.getZ()) < ServerConfig.getInstance().portalDistance.get()) {
+				if (validatePortal(destinationWorld, pos)) {
 					middlePos = pos;
 					break;
 				} else {
@@ -97,11 +111,12 @@ public class PortalManager {
 			}
 		}
 		if (middlePos == null) {
-			middlePos = spawnPortal(world, entityPos);
+			middlePos = spawnPortal(destinationWorld, scaledPos);
 			data.getPortals().add(middlePos);
 			data.markDirty();
 		}
-		entity.setPositionAndRotation(middlePos.getX() + 0.5D, middlePos.getY(), middlePos.getZ() + 0.5F, yaw, entity.rotationPitch);
+		
+		entity.setPositionAndRotation((middlePos.getX() + 0.5) * (1 / movementFactor), middlePos.getY(), (middlePos.getZ() + 0.5) * (1 / movementFactor), yaw, entity.rotationPitch);
 	}
 	
 	private static boolean validatePortal(World world, BlockPos pos) {
