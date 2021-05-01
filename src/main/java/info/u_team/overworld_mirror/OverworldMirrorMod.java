@@ -21,7 +21,6 @@ public class OverworldMirrorMod {
 	
 	private void register() {
 		BusRegister.registerMod(OverworldMirrorBlocks::register);
-		BusRegister.registerMod(OverworldMirrorModDimensions::register);
 	}
 	
 }
