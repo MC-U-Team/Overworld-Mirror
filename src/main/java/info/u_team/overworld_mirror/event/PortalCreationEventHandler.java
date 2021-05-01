@@ -1,6 +1,5 @@
 package info.u_team.overworld_mirror.event;
 
-import info.u_team.overworld_mirror.OverworldMirrorMod;
 import info.u_team.overworld_mirror.portal.PortalManager;
 import net.minecraft.block.FlowerBlock;
 import net.minecraft.entity.EntityType;
@@ -10,14 +9,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.entity.player.BonemealEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.eventbus.api.IEventBus;
 
-@EventBusSubscriber(modid = OverworldMirrorMod.MODID)
 public class PortalCreationEventHandler {
 	
-	@SubscribeEvent
-	public static void on(BonemealEvent event) {
+	private static void onBonemeal(BonemealEvent event) {
 		final BlockPos pos = event.getPos();
 		
 		if (!(event.getWorld() instanceof ServerWorld)) {
@@ -45,5 +41,9 @@ public class PortalCreationEventHandler {
 			
 			world.addEntity(lightning);
 		}
+	}
+	
+	public static void registerForge(IEventBus bus) {
+		bus.addListener(PortalCreationEventHandler::onBonemeal);
 	}
 }
