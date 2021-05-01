@@ -12,7 +12,7 @@ public class OverworldMirrorBlocks {
 	
 	public static final BlockRegistryObject<OverworldMirrorPortalBlock, BlockItem> PORTAL = BLOCKS.register("portal", OverworldMirrorPortalBlock::new);
 	
-	public static void register(IEventBus bus) {
+	public static void registerMod(IEventBus bus) {
 		BLOCKS.register(bus);
 	}
 	

@@ -15,7 +15,7 @@ public class OverworldMirrorCommonConstruct implements IModConstruct {
 	public void construct() {
 		ModLoadingContext.get().registerConfig(Type.SERVER, ServerConfig.CONFIG);
 		
-		BusRegister.registerMod(OverworldMirrorBlocks::register);
+		BusRegister.registerMod(OverworldMirrorBlocks::registerMod);
 	}
 	
 }
