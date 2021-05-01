@@ -70,7 +70,7 @@ public class PortalManager {
 			flowers.forEach(portalPos -> world.setBlockState(portalPos, OverworldMirrorBlocks.PORTAL.get().getDefaultState(), 2));
 			
 			final PlayerList playerlist = world.getServer().getPlayerList();
-			flowers.forEach(portalPos -> playerlist.sendToAllNearExcept(null, portalPos.getX(), portalPos.getY(), portalPos.getZ(), 64, world.getDimension().getType(), new SChangeBlockPacket(world, portalPos)));
+			flowers.forEach(portalPos -> playerlist.sendToAllNearExcept(null, portalPos.getX(), portalPos.getY(), portalPos.getZ(), 64, world.getDimensionKey(), new SChangeBlockPacket(world, portalPos)));
 			
 			return true;
 		}
@@ -78,7 +78,7 @@ public class PortalManager {
 	}
 	
 	public static void trySummonEntityInPortal(ServerWorld currentWorld, ServerWorld destinationWorld, Entity entity, float yaw) {
-		final double movementFactor = currentWorld.getDimension().getMovementFactor() / destinationWorld.getDimension().getMovementFactor();
+		final double movementFactor = currentWorld.getDimensionType().getCoordinateScale() / destinationWorld.getDimensionType().getCoordinateScale();
 		
 		final WorldBorder border = destinationWorld.getWorldBorder();
 		
