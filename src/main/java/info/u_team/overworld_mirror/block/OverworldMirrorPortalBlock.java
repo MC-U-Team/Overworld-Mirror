@@ -1,41 +1,43 @@
 package info.u_team.overworld_mirror.block;
 
-import info.u_team.overworld_mirror.init.*;
-import info.u_team.overworld_mirror.portal.*;
+import info.u_team.overworld_mirror.init.OverworldMirrorBlocks;
+import info.u_team.overworld_mirror.init.OverworldMirrorWorldKeys;
+import info.u_team.overworld_mirror.portal.PortalManager;
+import info.u_team.overworld_mirror.portal.PortalTeleporter;
+import info.u_team.overworld_mirror.portal.PortalWorldSavedData;
 import info.u_team.u_team_core.block.UBlock;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.*;
-import net.minecraft.world.*;
-import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.ModDimension;
 
 public class OverworldMirrorPortalBlock extends UBlock {
 	
 	protected static final VoxelShape SHAPE = makeCuboidShape(0, 11.9, 0, 16, 12, 16);
 	
 	public OverworldMirrorPortalBlock() {
-		super(Properties.create(Material.PORTAL).doesNotBlockMovement().hardnessAndResistance(-1.0F).sound(SoundType.GLASS).lightValue(11).noDrops());
+		super(Properties.create(Material.PORTAL).doesNotBlockMovement().hardnessAndResistance(-1.0F).sound(SoundType.GLASS).setLightLevel(state -> 11).noDrops());
 	}
 	
 	@Override
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 		if (!entity.isPassenger() && !entity.isBeingRidden()) {
-			final DimensionType type = entity.dimension;
-			final ModDimension modDimension = type.getModType();
-			
-			if (entity.timeUntilPortal > 0) {
-				entity.timeUntilPortal = 10;
-			} else if (type == DimensionType.OVERWORLD) {
-				entity.timeUntilPortal = 10;
-				entity.changeDimension(DimensionType.byName(OverworldMirrorModDimensions.DIMENSION.get().getRegistryName()), new PortalTeleporter());
-			} else if (modDimension != null && modDimension == OverworldMirrorModDimensions.DIMENSION.get()) {
-				entity.timeUntilPortal = 10;
-				entity.changeDimension(DimensionType.OVERWORLD, new PortalTeleporter());
+			if (entity.hasPortalCooldown()) {
+				entity.setPortalCooldown();
+			} else if (world.getDimensionKey() == World.OVERWORLD) {
+				entity.setPortalCooldown();
+				entity.changeDimension(world.getServer().getWorld(OverworldMirrorWorldKeys.MIRROR_OVERWORLD), new PortalTeleporter());
+			} else if (world.getDimensionKey() == OverworldMirrorWorldKeys.MIRROR_OVERWORLD) {
+				entity.setPortalCooldown();
+				entity.changeDimension(world.getServer().getWorld(World.OVERWORLD), new PortalTeleporter());
 			}
 		}
 	}
