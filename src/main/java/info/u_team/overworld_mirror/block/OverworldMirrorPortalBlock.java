@@ -12,6 +12,8 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -29,17 +31,25 @@ public class OverworldMirrorPortalBlock extends UBlock {
 	
 	@Override
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-		if (!entity.isPassenger() && !entity.isBeingRidden()) {
+		if (world instanceof ServerWorld && world.getServer() != null && !entity.isPassenger() && !entity.isBeingRidden() && entity.canChangeDimension()) {
+			final MinecraftServer server = world.getServer();
 			if (entity.hasPortalCooldown()) {
 				entity.setPortalCooldown();
 			} else if (world.getDimensionKey() == World.OVERWORLD) {
-				entity.setPortalCooldown();
-				entity.changeDimension(world.getServer().getWorld(OverworldMirrorWorldKeys.MIRROR_OVERWORLD), new PortalTeleporter());
+				changeDimension(server, entity, OverworldMirrorWorldKeys.MIRROR_OVERWORLD);
 			} else if (world.getDimensionKey() == OverworldMirrorWorldKeys.MIRROR_OVERWORLD) {
-				entity.setPortalCooldown();
-				entity.changeDimension(world.getServer().getWorld(World.OVERWORLD), new PortalTeleporter());
+				changeDimension(server, entity, World.OVERWORLD);
 			}
 		}
+	}
+	
+	private void changeDimension(MinecraftServer server, Entity entity, RegistryKey<World> key) {
+		final ServerWorld newWorld = server.getWorld(key);
+		if (newWorld == null) {
+			return;
+		}
+		entity.setPortalCooldown();
+		entity.changeDimension(newWorld, new PortalTeleporter());
 	}
 	
 	@Override
