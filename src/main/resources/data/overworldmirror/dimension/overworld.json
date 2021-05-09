@@ -1,5 +1,5 @@
 {
-	"type": "minecraft:overworld",
+	"type": "overworldmirror:overworld",
 	"generator": {
 		"biome_source": {
 			"seed": 0,
