@@ -1,15 +1,22 @@
 package info.u_team.overworld_mirror.portal;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import info.u_team.overworld_mirror.config.ServerConfig;
 import info.u_team.overworld_mirror.init.OverworldMirrorBlocks;
 import info.u_team.u_team_core.util.world.WorldUtil;
-import net.minecraft.block.*;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.FlowerBlock;
+import net.minecraft.block.PortalInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.play.server.SChangeBlockPacket;
 import net.minecraft.server.management.PlayerList;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.border.WorldBorder;
 import net.minecraft.world.gen.Heightmap;
@@ -77,32 +84,28 @@ public class PortalManager {
 		return false;
 	}
 	
-	public static void trySummonEntityInPortal(ServerWorld currentWorld, ServerWorld destinationWorld, Entity entity, float yaw) {
-		final double movementFactor = currentWorld.getDimensionType().getCoordinateScale() / destinationWorld.getDimensionType().getCoordinateScale();
-		
+	public static PortalInfo findOrCreatePortal(ServerWorld destinationWorld, Entity entity) {
 		final WorldBorder border = destinationWorld.getWorldBorder();
 		
-		final double minX = Math.min(-2.9999872e7, border.minX() + 16);
+		final double minX = Math.max(-2.9999872e7, border.minX() + 16);
+		final double minZ = Math.max(-2.9999872e7, border.minZ() + 16);
 		final double maxX = Math.min(2.9999872e7, border.maxX() - 16);
-		
-		final double minZ = Math.min(-2.9999872e7, border.minZ() + 16);
 		final double maxZ = Math.min(2.9999872e7, border.maxZ() - 16);
 		
-		final double scaledX = MathHelper.clamp(entity.getPosX() * movementFactor, minX, maxX);
-		final double scaledZ = MathHelper.clamp(entity.getPosZ() * movementFactor, minZ, maxZ);
+		final double coordinateScale = DimensionType.getCoordinateDifference(entity.getEntityWorld().getDimensionType(), destinationWorld.getDimensionType());
 		
-		final BlockPos scaledPos = new BlockPos(scaledX, entity.getPosY(), scaledZ);
+		final BlockPos estimatedPos = new BlockPos(MathHelper.clamp(entity.getPosX() * coordinateScale, minX, maxX), entity.getPosY(), MathHelper.clamp(entity.getPosZ() * coordinateScale, minZ, maxZ));
 		
 		final PortalWorldSavedData data = getSavedData(destinationWorld);
 		
-		BlockPos middlePos = null;
+		BlockPos portalMiddlePos = null;
 		
 		final Iterator<BlockPos> iterator = data.getPortals().iterator();
 		while (iterator.hasNext()) {
 			final BlockPos pos = iterator.next();
-			if (distanceSq(pos.getX(), pos.getZ(), scaledPos.getX(), scaledPos.getZ()) < ServerConfig.getInstance().portalDistance.get()) {
+			if (distanceSq(pos.getX(), pos.getZ(), estimatedPos.getX(), estimatedPos.getZ()) < ServerConfig.getInstance().portalDistance.get()) {
 				if (validatePortal(destinationWorld, pos)) {
-					middlePos = pos;
+					portalMiddlePos = pos;
 					break;
 				} else {
 					iterator.remove();
@@ -110,13 +113,13 @@ public class PortalManager {
 				}
 			}
 		}
-		if (middlePos == null) {
-			middlePos = spawnPortal(destinationWorld, scaledPos);
-			data.getPortals().add(middlePos);
+		if (portalMiddlePos == null) {
+			portalMiddlePos = spawnPortal(destinationWorld, estimatedPos);
+			data.getPortals().add(portalMiddlePos);
 			data.markDirty();
 		}
 		
-		entity.setPositionAndRotation((middlePos.getX() + 0.5) * (1 / movementFactor), middlePos.getY(), (middlePos.getZ() + 0.5) * (1 / movementFactor), yaw, entity.rotationPitch);
+		return new PortalInfo(Vector3d.copyCenteredWithVerticalOffset(portalMiddlePos, 0.25), entity.getMotion(), entity.rotationYaw, entity.rotationPitch);
 	}
 	
 	private static boolean validatePortal(World world, BlockPos pos) {
