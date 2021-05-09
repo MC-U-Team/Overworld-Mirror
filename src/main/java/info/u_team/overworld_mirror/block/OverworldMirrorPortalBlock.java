@@ -25,8 +25,11 @@ public class OverworldMirrorPortalBlock extends UBlock {
 	
 	protected static final VoxelShape SHAPE = makeCuboidShape(0, 11.9, 0, 16, 12, 16);
 	
+	private final PortalTeleporter teleporter;
+	
 	public OverworldMirrorPortalBlock() {
 		super(Properties.create(Material.PORTAL).doesNotBlockMovement().hardnessAndResistance(-1.0F).sound(SoundType.GLASS).setLightLevel(state -> 11).noDrops());
+		teleporter = new PortalTeleporter();
 	}
 	
 	@Override
@@ -49,7 +52,7 @@ public class OverworldMirrorPortalBlock extends UBlock {
 			return;
 		}
 		entity.setPortalCooldown();
-		entity.changeDimension(newWorld, new PortalTeleporter());
+		entity.changeDimension(newWorld, teleporter);
 	}
 	
 	@Override
