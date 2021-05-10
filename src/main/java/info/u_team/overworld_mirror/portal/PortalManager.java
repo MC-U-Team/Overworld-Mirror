@@ -94,17 +94,19 @@ public class PortalManager {
 		final double maxZ = Math.min(2.9999872e7, border.maxZ() - 16);
 		
 		final double coordinateScale = DimensionType.getCoordinateDifference(entity.getEntityWorld().getDimensionType(), destinationWorld.getDimensionType());
-		
 		final BlockPos estimatedPos = new BlockPos(MathHelper.clamp(entity.getPosX() * coordinateScale, minX, maxX), entity.getPosY(), MathHelper.clamp(entity.getPosZ() * coordinateScale, minZ, maxZ));
 		
 		final PortalWorldSavedData data = getSavedData(destinationWorld);
+		final ServerConfig config = ServerConfig.getInstance();
+		final double searchDistance = Math.pow(destinationWorld.getDimensionKey() == World.OVERWORLD ? config.portalSearchDistanceOverworld.get() : config.portalSearchDistanceOverworldMirror.get(), 2);
 		
 		BlockPos portalMiddlePos = null;
 		
 		final Iterator<BlockPos> iterator = data.getPortals().iterator();
 		while (iterator.hasNext()) {
 			final BlockPos pos = iterator.next();
-			if (distanceSq(pos.getX(), pos.getZ(), estimatedPos.getX(), estimatedPos.getZ()) < ServerConfig.getInstance().portalDistance.get()) {
+			
+			if (getPlaneDistanceSq(pos.getX(), pos.getZ(), estimatedPos.getX(), estimatedPos.getZ()) < searchDistance) {
 				if (validatePortal(destinationWorld, pos)) {
 					portalMiddlePos = pos;
 					break;
@@ -176,9 +178,9 @@ public class PortalManager {
 		return WorldUtil.getSaveData(world, name, () -> new PortalWorldSavedData(name));
 	}
 	
-	public static double distanceSq(double fromX, double fromZ, double toX, double toZ) {
-		double x = fromX - toX;
-		double z = fromZ - toZ;
-		return x * x + z * z;
+	public static float getPlaneDistanceSq(int x1, int z1, int x2, int z2) {
+		final int xDiff = x2 - x1;
+		final int zDiff = z2 - z1;
+		return xDiff * xDiff + zDiff * zDiff;
 	}
 }
