@@ -21,6 +21,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.border.WorldBorder;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.util.Constants.BlockFlags;
 
 public class PortalManager {
 	
@@ -165,7 +166,7 @@ public class PortalManager {
 			world.setBlockState(portalPos.down(), Blocks.STONE_BRICKS.getDefaultState());
 		});
 		
-		portal.forEach(portalPos -> world.setBlockState(portalPos, OverworldMirrorBlocks.PORTAL.get().getDefaultState(), 2));
+		portal.forEach(portalPos -> world.setBlockState(portalPos, OverworldMirrorBlocks.PORTAL.get().getDefaultState(), BlockFlags.BLOCK_UPDATE));
 		
 		return pos;
 	}
