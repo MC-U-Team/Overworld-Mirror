@@ -3,6 +3,7 @@ package info.u_team.overworld_mirror.init;
 import info.u_team.overworld_mirror.OverworldMirrorMod;
 import info.u_team.overworld_mirror.config.ServerConfig;
 import info.u_team.overworld_mirror.event.PortalCreationEventHandler;
+import info.u_team.overworld_mirror.event.WorldInfoReplaceEventHandler;
 import info.u_team.u_team_core.api.construct.Construct;
 import info.u_team.u_team_core.api.construct.IModConstruct;
 import info.u_team.u_team_core.util.registry.BusRegister;
@@ -20,6 +21,7 @@ public class OverworldMirrorCommonConstruct implements IModConstruct {
 		
 		BusRegister.registerForge(OverworldMirrorDimensionRegistry::registerForge);
 		BusRegister.registerForge(PortalCreationEventHandler::registerForge);
+		BusRegister.registerForge(WorldInfoReplaceEventHandler::registerForge);
 	}
 	
 }
