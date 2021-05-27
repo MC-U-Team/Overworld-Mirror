@@ -18,6 +18,7 @@ public class OverworldMirrorCommonConstruct implements IModConstruct {
 		
 		BusRegister.registerMod(OverworldMirrorBlocks::registerMod);
 		
+		BusRegister.registerForge(OverworldMirrorDimensionRegistry::registerForge);
 		BusRegister.registerForge(PortalCreationEventHandler::registerForge);
 	}
 	
