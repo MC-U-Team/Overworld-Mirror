@@ -31,23 +31,15 @@ public class WorldInfoReplaceEventHandler {
 			return;
 		}
 		final ServerWorld world = (ServerWorld) event.world;
-		if (world.getDimensionKey() != OverworldMirrorWorldKeys.MIRROR_OVERWORLD) {
-			return;
-		}
 		if (!(world.serverWorldInfo instanceof CustomTimeWorldInfo)) {
 			return;
 		}
-		((CustomTimeWorldInfo) world.serverWorldInfo).tick();
-	}
-	
-	private static void onWorldUnload(WorldEvent.Unload event) {
-		
+		((CustomTimeWorldInfo) world.serverWorldInfo).tick(world);
 	}
 	
 	public static void registerForge(IEventBus bus) {
 		bus.addListener(WorldInfoReplaceEventHandler::onWorldLoad);
 		bus.addListener(WorldInfoReplaceEventHandler::onWorldTick);
-		bus.addListener(WorldInfoReplaceEventHandler::onWorldUnload);
 	}
 	
 }

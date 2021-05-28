@@ -2,6 +2,7 @@ package info.u_team.overworld_mirror.world;
 
 import java.util.UUID;
 
+import info.u_team.u_team_core.util.world.WorldUtil;
 import net.minecraft.command.TimerCallbackManager;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.server.MinecraftServer;
@@ -10,6 +11,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.GameType;
 import net.minecraft.world.border.WorldBorder.Serializer;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.IServerWorldInfo;
 
 public class CustomTimeWorldInfo implements IServerWorldInfo {
@@ -22,10 +24,18 @@ public class CustomTimeWorldInfo implements IServerWorldInfo {
 		this.info = info;
 	}
 	
-	public void tick() {
+	// Update and save methods
+	
+	public void tick(ServerWorld world) {
 		if (getGameRulesInstance().getBoolean(GameRules.DO_DAYLIGHT_CYCLE)) {
 			setDayTime(getDayTime() + 1);
 		}
+		getSavedData(world).updateDayTime(getDayTime());
+	}
+	
+	public DimensionDataWorldSavedData getSavedData(ServerWorld world) {
+		final String name = "overworldmirror_dimensiondata";
+		return WorldUtil.getSaveData(world, name, () -> new DimensionDataWorldSavedData(name));
 	}
 	
 	@Override
