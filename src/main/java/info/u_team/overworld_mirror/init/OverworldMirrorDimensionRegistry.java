@@ -9,7 +9,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.Dimension;
-import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeManager;
 import net.minecraft.world.border.IBorderListener;
@@ -38,7 +37,7 @@ public class OverworldMirrorDimensionRegistry {
 			final DimensionGeneratorSettings dimensionSettings = serverConfig.getDimensionGeneratorSettings();
 			
 			// Create dimension
-			final Dimension dimension = new Dimension(() -> server.getDynamicRegistries().func_230520_a_().getOrThrow(DimensionType.OVERWORLD), DimensionGeneratorSettings.func_242750_a(server.getDynamicRegistries().getRegistry(Registry.BIOME_KEY), server.getDynamicRegistries().getRegistry(Registry.NOISE_SETTINGS_KEY), dimensionSettings.getSeed()));
+			final Dimension dimension = new Dimension(() -> server.getDynamicRegistries().func_230520_a_().getOrThrow(OverworldMirrorDimensionTypeKeys.MIRROR_OVERWORLD), DimensionGeneratorSettings.func_242750_a(server.getDynamicRegistries().getRegistry(Registry.BIOME_KEY), server.getDynamicRegistries().getRegistry(Registry.NOISE_SETTINGS_KEY), dimensionSettings.getSeed()));
 			
 			// Register dimension
 			dimensionSettings.func_236224_e_().register(OverworldMirrorDimensionKeys.MIRROR_OVERWORLD, dimension, Lifecycle.experimental());
