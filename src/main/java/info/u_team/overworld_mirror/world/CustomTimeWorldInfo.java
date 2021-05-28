@@ -38,6 +38,58 @@ public class CustomTimeWorldInfo implements IServerWorldInfo {
 		return dayTime;
 	}
 	
+	// TODO delegate for now but consider adding them for extra weather in dimension
+	
+	@Override
+	public void setThundering(boolean thunderingIn) {
+		info.setThundering(thunderingIn);
+	}
+	
+	@Override
+	public int getRainTime() {
+		return info.getRainTime();
+	}
+	
+	@Override
+	public boolean isThundering() {
+		return info.isThundering();
+	}
+	
+	@Override
+	public void setRainTime(int time) {
+		info.setRainTime(time);
+	}
+	
+	@Override
+	public boolean isRaining() {
+		return info.isRaining();
+	}
+	
+	@Override
+	public void setThunderTime(int time) {
+		info.setThunderTime(time);
+	}
+	
+	@Override
+	public void setRaining(boolean isRaining) {
+		info.setRaining(isRaining);
+	}
+	
+	@Override
+	public int getThunderTime() {
+		return info.getThunderTime();
+	}
+	
+	@Override
+	public int getClearWeatherTime() {
+		return info.getClearWeatherTime();
+	}
+	
+	@Override
+	public void setClearWeatherTime(int time) {
+		info.setClearWeatherTime(time);
+	}
+	
 	// Delegated methods
 	
 	@Override
@@ -81,11 +133,6 @@ public class CustomTimeWorldInfo implements IServerWorldInfo {
 	}
 	
 	@Override
-	public void setThundering(boolean thunderingIn) {
-		info.setThundering(thunderingIn);
-	}
-	
-	@Override
 	public float getSpawnAngle() {
 		return info.getSpawnAngle();
 	}
@@ -98,41 +145,6 @@ public class CustomTimeWorldInfo implements IServerWorldInfo {
 	@Override
 	public long getGameTime() {
 		return info.getGameTime();
-	}
-	
-	@Override
-	public int getRainTime() {
-		return info.getRainTime();
-	}
-	
-	@Override
-	public boolean isThundering() {
-		return info.isThundering();
-	}
-	
-	@Override
-	public void setRainTime(int time) {
-		info.setRainTime(time);
-	}
-	
-	@Override
-	public boolean isRaining() {
-		return info.isRaining();
-	}
-	
-	@Override
-	public void setThunderTime(int time) {
-		info.setThunderTime(time);
-	}
-	
-	@Override
-	public void setRaining(boolean isRaining) {
-		info.setRaining(isRaining);
-	}
-	
-	@Override
-	public int getThunderTime() {
-		return info.getThunderTime();
 	}
 	
 	@Override
@@ -158,16 +170,6 @@ public class CustomTimeWorldInfo implements IServerWorldInfo {
 	@Override
 	public boolean isDifficultyLocked() {
 		return info.isDifficultyLocked();
-	}
-	
-	@Override
-	public int getClearWeatherTime() {
-		return info.getClearWeatherTime();
-	}
-	
-	@Override
-	public void setClearWeatherTime(int time) {
-		info.setClearWeatherTime(time);
 	}
 	
 	@Override
