@@ -5,6 +5,7 @@ import java.util.Map;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Lifecycle;
 
+import info.u_team.overworld_mirror.config.ServerConfig;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.registry.Registry;
@@ -36,15 +37,18 @@ public class OverworldMirrorDimensionRegistry {
 			final IServerConfiguration serverConfig = server.getServerConfiguration();
 			final DimensionGeneratorSettings dimensionSettings = serverConfig.getDimensionGeneratorSettings();
 			
+			// Calculate used seed
+			final long seed = ServerConfig.getInstance().seedType.get().calculateSeed(ServerConfig.getInstance().seedValue.get(), dimensionSettings.getSeed());
+			
 			// Create dimension
-			final Dimension dimension = new Dimension(() -> server.getDynamicRegistries().func_230520_a_().getOrThrow(OverworldMirrorDimensionTypeKeys.MIRROR_OVERWORLD), DimensionGeneratorSettings.func_242750_a(server.getDynamicRegistries().getRegistry(Registry.BIOME_KEY), server.getDynamicRegistries().getRegistry(Registry.NOISE_SETTINGS_KEY), dimensionSettings.getSeed()));
+			final Dimension dimension = new Dimension(() -> server.getDynamicRegistries().func_230520_a_().getOrThrow(OverworldMirrorDimensionTypeKeys.MIRROR_OVERWORLD), DimensionGeneratorSettings.func_242750_a(server.getDynamicRegistries().getRegistry(Registry.BIOME_KEY), server.getDynamicRegistries().getRegistry(Registry.NOISE_SETTINGS_KEY), seed));
 			
 			// Register dimension
 			dimensionSettings.func_236224_e_().register(OverworldMirrorDimensionKeys.MIRROR_OVERWORLD, dimension, Lifecycle.experimental());
 			
 			// Create world
 			final DerivedWorldInfo worldInfo = new DerivedWorldInfo(serverConfig, serverConfig.getServerWorldInfo());
-			final ServerWorld world = new ServerWorld(server, server.backgroundExecutor, server.anvilConverterForAnvilFile, worldInfo, OverworldMirrorWorldKeys.MIRROR_OVERWORLD, dimension.getDimensionType(), server.chunkStatusListenerFactory.create(11), dimension.getChunkGenerator(), dimensionSettings.hasDebugChunkGenerator(), BiomeManager.getHashedSeed(dimensionSettings.getSeed()), ImmutableList.of(), false);
+			final ServerWorld world = new ServerWorld(server, server.backgroundExecutor, server.anvilConverterForAnvilFile, worldInfo, OverworldMirrorWorldKeys.MIRROR_OVERWORLD, dimension.getDimensionType(), server.chunkStatusListenerFactory.create(11), dimension.getChunkGenerator(), dimensionSettings.hasDebugChunkGenerator(), BiomeManager.getHashedSeed(seed), ImmutableList.of(), false);
 			
 			// Add world border listener
 			server.getWorld(World.OVERWORLD).getWorldBorder().addListener(new IBorderListener.Impl(world.getWorldBorder()));
