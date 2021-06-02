@@ -12,7 +12,6 @@ public class OverworldMirrorLanguagesProvider extends CommonLanguagesProvider {
 	
 	@Override
 	public void addTranslations() {
-		
 		// English
 		add(PORTAL.get(), "Overworld Mirror Portal");
 		
