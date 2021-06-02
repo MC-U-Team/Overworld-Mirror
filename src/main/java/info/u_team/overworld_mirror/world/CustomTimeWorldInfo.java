@@ -38,6 +38,8 @@ public class CustomTimeWorldInfo implements IServerWorldInfo {
 		return WorldUtil.getSaveData(world, name, () -> new DimensionDataWorldSavedData(name));
 	}
 	
+	// Custom dimension time
+	
 	@Override
 	public void setDayTime(long time) {
 		dayTime = time;
