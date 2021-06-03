@@ -1,8 +1,9 @@
 package info.u_team.overworld_mirror.data.provider;
 
-import static info.u_team.overworld_mirror.init.OverworldMirrorBlocks.*;
+import static info.u_team.overworld_mirror.init.OverworldMirrorBlocks.PORTAL;
 
-import info.u_team.u_team_core.data.*;
+import info.u_team.u_team_core.data.CommonBlockStatesProvider;
+import info.u_team.u_team_core.data.GenerationData;
 import net.minecraft.util.Direction;
 
 public class OverworldMirrorBlockStatesProvider extends CommonBlockStatesProvider {

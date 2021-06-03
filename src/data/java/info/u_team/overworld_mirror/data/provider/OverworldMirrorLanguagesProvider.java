@@ -1,8 +1,9 @@
 package info.u_team.overworld_mirror.data.provider;
 
-import info.u_team.u_team_core.data.*;
+import static info.u_team.overworld_mirror.init.OverworldMirrorBlocks.PORTAL;
 
-import static info.u_team.overworld_mirror.init.OverworldMirrorBlocks.*;
+import info.u_team.u_team_core.data.CommonLanguagesProvider;
+import info.u_team.u_team_core.data.GenerationData;
 
 public class OverworldMirrorLanguagesProvider extends CommonLanguagesProvider {
 	
