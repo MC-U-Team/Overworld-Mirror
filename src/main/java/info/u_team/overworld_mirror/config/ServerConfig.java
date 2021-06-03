@@ -28,6 +28,7 @@ public class ServerConfig {
 	
 	private ServerConfig(Builder builder) {
 		builder.comment("To configure the dimension type please create a data pack and add a dimension type in this resource location: data/overworldmirror/dimension_type/overworld_mirror.json").push("information");
+		builder.define("information", "");
 		builder.pop();
 		
 		builder.comment("Seed settings").push("seed");
