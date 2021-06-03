@@ -2,17 +2,29 @@ package info.u_team.overworld_mirror.init;
 
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+
 import com.google.common.collect.ImmutableList;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.Lifecycle;
 
 import info.u_team.overworld_mirror.config.ServerConfig;
+import info.u_team.overworld_mirror.util.JsonUtil;
+import net.minecraft.nbt.NBTDynamicOps;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.RegistryKey;
+import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.WorldGenSettingsExport;
+import net.minecraft.util.registry.WorldSettingsImport;
 import net.minecraft.world.Dimension;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeManager;
 import net.minecraft.world.border.IBorderListener;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.settings.DimensionGeneratorSettings;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.DerivedWorldInfo;
@@ -40,8 +52,28 @@ public class OverworldMirrorDimensionRegistry {
 			// Calculate used seed
 			final long seed = ServerConfig.getInstance().seedType.get().calculateSeed(ServerConfig.getInstance().seedValue.get(), dimensionSettings.getSeed());
 			
+			// Create chunk generator
+			ChunkGenerator generator;
+			
+			try {
+				final JsonObject jsonObject = new JsonParser().parse(ServerConfig.getInstance().chunkGenerator.get()).getAsJsonObject();
+				JsonUtil.replaceNamedLongElement(jsonObject, "seed", oldSeed -> oldSeed == 0, seed);
+				// final WorldGenSettingsExport<JsonElement> ops = WorldGenSettingsExport.create(JsonOps.INSTANCE,
+				// server.getDynamicRegistries());
+				
+				final WorldSettingsImport<JsonElement> ops = WorldSettingsImport.create(JsonOps.INSTANCE, server.getDataPackRegistries().getResourceManager(), DynamicRegistries.func_239770_b_());
+				
+				// generator = Registry.CHUNK_GENERATOR_CODEC.decode(ops, jsonObject).map(pair -> pair.getFirst().decode(ops,
+				// pair.getSecond()).get().orThrow()).get().orThrow().getFirst();
+				generator = ChunkGenerator.field_235948_a_.decode(ops, jsonObject).get().orThrow().getFirst();
+				System.out.println(generator);
+			} catch (RuntimeException ex) {
+				LogManager.getLogger().warn("Cannot create overworld mirror chunkgenerator from config. Fallback to overworld. The supplier json string is {}", ServerConfig.getInstance().chunkGenerator.get(), ex);
+				generator = DimensionGeneratorSettings.func_242750_a(server.getDynamicRegistries().getRegistry(Registry.BIOME_KEY), server.getDynamicRegistries().getRegistry(Registry.NOISE_SETTINGS_KEY), seed);
+			}
+			
 			// Create dimension
-			final Dimension dimension = new Dimension(() -> server.getDynamicRegistries().func_230520_a_().getOrThrow(OverworldMirrorDimensionTypeKeys.MIRROR_OVERWORLD), DimensionGeneratorSettings.func_242750_a(server.getDynamicRegistries().getRegistry(Registry.BIOME_KEY), server.getDynamicRegistries().getRegistry(Registry.NOISE_SETTINGS_KEY), seed));
+			final Dimension dimension = new Dimension(() -> server.getDynamicRegistries().func_230520_a_().getOrThrow(OverworldMirrorDimensionTypeKeys.MIRROR_OVERWORLD), generator);
 			
 			// Register dimension
 			dimensionSettings.func_236224_e_().register(OverworldMirrorDimensionKeys.MIRROR_OVERWORLD, dimension, Lifecycle.experimental());

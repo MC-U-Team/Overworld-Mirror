@@ -23,14 +23,22 @@ public class ServerConfig {
 	public final EnumValue<SeedType> seedType;
 	public final LongValue seedValue;
 	
+	public final ConfigValue<String> chunkGenerator;
+	
 	public final DoubleValue portalSearchDistanceOverworld;
 	public final DoubleValue portalSearchDistanceOverworldMirror;
 	
 	private ServerConfig(Builder builder) {
+		builder.comment("To configure the dimension type please create a data pack and add a dimension type in this resource location: data/overworldmirror/dimension_type/overworld_mirror.json").push("information");
+		builder.pop();
 		
 		builder.comment("Seed settings").push("seed");
 		seedType = builder.comment("If you have set this to \"SEED\" then the seedValue value will be treated as new seed, else if its set to \"ADDITION\" the value will be added to the main world seed.").defineEnum("seedType", SeedType.ADDITION);
 		seedValue = builder.comment("The seed value. See seedType for more information.").defineInRange("seedValue", 100_000, Long.MIN_VALUE, Long.MAX_VALUE);
+		builder.pop();
+		
+		builder.comment("World generator").push("world generator");
+		chunkGenerator = builder.comment("The chunk generator. The seed values will be replaced if the seed entries are 0").define("chunkGenerator", "{\"biome_source\":{\"seed\":0,\"large_biomes\":false,\"type\":\"minecraft:vanilla_layered\"},\"seed\":0,\"settings\":\"minecraft:overworld\",\"type\":\"minecraft:noise\"}");
 		builder.pop();
 		
 		builder.comment("Portal settings").push("portal");
