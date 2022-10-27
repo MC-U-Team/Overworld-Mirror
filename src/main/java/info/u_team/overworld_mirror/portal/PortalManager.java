@@ -7,25 +7,25 @@ import java.util.List;
 import info.u_team.overworld_mirror.config.ServerConfig;
 import info.u_team.overworld_mirror.init.OverworldMirrorBlocks;
 import info.u_team.u_team_core.util.world.WorldUtil;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.block.FlowerBlock;
 import net.minecraft.block.PortalInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.play.server.SChangeBlockPacket;
 import net.minecraft.server.management.PlayerList;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.border.WorldBorder;
 import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.util.Constants.BlockFlags;
 
 public class PortalManager {
 	
-	public static boolean trySpawnPortalFromFrame(ServerWorld world, BlockPos pos) {
+	public static boolean trySpawnPortalFromFrame(ServerLevel world, BlockPos pos) {
 		
 		int westCount = 0;
 		while (world.getBlockState(pos.west(westCount + 1)).getBlock() != Blocks.STONE_BRICKS && westCount < 3) {

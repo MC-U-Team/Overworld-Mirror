@@ -7,19 +7,19 @@ import com.mojang.serialization.Lifecycle;
 
 import info.u_team.overworld_mirror.config.ServerConfig;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.RegistryKey;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.Dimension;
 import net.minecraft.world.DimensionType;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.biome.BiomeManager;
 import net.minecraft.world.border.IBorderListener;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.settings.DimensionGeneratorSettings;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.storage.DerivedWorldInfo;
-import net.minecraft.world.storage.IServerConfiguration;
+import net.minecraft.world.level.storage.WorldData;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -33,11 +33,11 @@ public class OverworldMirrorDimensionRegistry {
 		
 		// Recreate func_240787_a_ at the end
 		
-		final Map<RegistryKey<World>, ServerWorld> worlds = server.forgeGetWorldMap();
+		final Map<ResourceKey<Level>, ServerLevel> worlds = server.forgeGetWorldMap();
 		// Check if dimension is not already registered
 		if (!worlds.containsKey(OverworldMirrorWorldKeys.MIRROR_OVERWORLD)) {
 			// Get some important fields
-			final IServerConfiguration serverConfig = server.getServerConfiguration();
+			final WorldData serverConfig = server.getServerConfiguration();
 			final DimensionGeneratorSettings dimensionSettings = serverConfig.getDimensionGeneratorSettings();
 			final DynamicRegistries registries = server.getDynamicRegistries();
 			

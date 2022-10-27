@@ -1,9 +1,9 @@
 package info.u_team.overworld_mirror.world;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.world.storage.WorldSavedData;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.saveddata.SavedData;
 
-public class DimensionDataWorldSavedData extends WorldSavedData {
+public class DimensionDataWorldSavedData extends SavedData {
 	
 	private long dayTime;
 	
@@ -12,12 +12,12 @@ public class DimensionDataWorldSavedData extends WorldSavedData {
 	}
 	
 	@Override
-	public void read(CompoundNBT compound) {
+	public void read(CompoundTag compound) {
 		dayTime = compound.getLong("dayTime");
 	}
 	
 	@Override
-	public CompoundNBT write(CompoundNBT compound) {
+	public CompoundTag write(CompoundTag compound) {
 		compound.putLong("dayTime", dayTime);
 		return compound;
 	}

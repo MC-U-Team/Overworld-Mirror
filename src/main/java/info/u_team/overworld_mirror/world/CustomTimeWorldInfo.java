@@ -11,22 +11,22 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.GameType;
 import net.minecraft.world.border.WorldBorder.Serializer;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.IServerWorldInfo;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.storage.ServerLevelData;
 
-public class CustomTimeWorldInfo implements IServerWorldInfo {
+public class CustomTimeWorldInfo implements ServerLevelData {
 	
-	private final IServerWorldInfo info;
+	private final ServerLevelData info;
 	
 	private long dayTime;
 	
-	public CustomTimeWorldInfo(IServerWorldInfo info) {
+	public CustomTimeWorldInfo(ServerLevelData info) {
 		this.info = info;
 	}
 	
 	// Update and save methods
 	
-	public void tick(ServerWorld world) {
+	public void tick(ServerLevel world) {
 		if (getGameRulesInstance().getBoolean(GameRules.DO_DAYLIGHT_CYCLE)) {
 			setDayTime(getDayTime() + 1);
 		}

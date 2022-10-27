@@ -3,12 +3,12 @@ package info.u_team.overworld_mirror.portal;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.storage.WorldSavedData;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.saveddata.SavedData;
 
-public class PortalWorldSavedData extends WorldSavedData {
+public class PortalWorldSavedData extends SavedData {
 	
 	private final List<BlockPos> portals;
 	
@@ -18,17 +18,17 @@ public class PortalWorldSavedData extends WorldSavedData {
 	}
 	
 	@Override
-	public void read(CompoundNBT compound) {
-		compound.getList("list", 10).stream().filter(tag -> tag instanceof CompoundNBT).map(tag -> (CompoundNBT) tag).forEach(entryCompound -> {
+	public void read(CompoundTag compound) {
+		compound.getList("list", 10).stream().filter(tag -> tag instanceof CompoundTag).map(tag -> (CompoundTag) tag).forEach(entryCompound -> {
 			portals.add(new BlockPos(entryCompound.getInt("x"), entryCompound.getInt("y"), entryCompound.getInt("z")));
 		});
 	}
 	
 	@Override
-	public CompoundNBT write(CompoundNBT compound) {
-		final ListNBT list = new ListNBT();
+	public CompoundTag write(CompoundTag compound) {
+		final ListTag list = new ListTag();
 		portals.forEach(pos -> {
-			final CompoundNBT entryCompound = new CompoundNBT();
+			final CompoundTag entryCompound = new CompoundTag();
 			entryCompound.putInt("x", pos.getX());
 			entryCompound.putInt("y", pos.getY());
 			entryCompound.putInt("z", pos.getZ());
