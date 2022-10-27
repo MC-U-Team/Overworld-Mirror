@@ -18,14 +18,14 @@ public class PortalWorldSavedData extends SavedData {
 	}
 	
 	@Override
-	public void read(CompoundTag compound) {
+	public void load(CompoundTag compound) {
 		compound.getList("list", 10).stream().filter(tag -> tag instanceof CompoundTag).map(tag -> (CompoundTag) tag).forEach(entryCompound -> {
 			portals.add(new BlockPos(entryCompound.getInt("x"), entryCompound.getInt("y"), entryCompound.getInt("z")));
 		});
 	}
 	
 	@Override
-	public CompoundTag write(CompoundTag compound) {
+	public CompoundTag save(CompoundTag compound) {
 		final ListTag list = new ListTag();
 		portals.forEach(pos -> {
 			final CompoundTag entryCompound = new CompoundTag();

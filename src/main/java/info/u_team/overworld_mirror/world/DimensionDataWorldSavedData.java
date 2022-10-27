@@ -12,19 +12,19 @@ public class DimensionDataWorldSavedData extends SavedData {
 	}
 	
 	@Override
-	public void read(CompoundTag compound) {
+	public void load(CompoundTag compound) {
 		dayTime = compound.getLong("dayTime");
 	}
 	
 	@Override
-	public CompoundTag write(CompoundTag compound) {
+	public CompoundTag save(CompoundTag compound) {
 		compound.putLong("dayTime", dayTime);
 		return compound;
 	}
 	
 	public void updateDayTime(long dayTime) {
 		this.dayTime = dayTime;
-		markDirty();
+		setDirty();
 	}
 	
 }

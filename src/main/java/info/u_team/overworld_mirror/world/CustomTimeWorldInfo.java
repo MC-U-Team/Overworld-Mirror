@@ -3,14 +3,14 @@ package info.u_team.overworld_mirror.world;
 import java.util.UUID;
 
 import info.u_team.u_team_core.util.world.WorldUtil;
-import net.minecraft.command.TimerCallbackManager;
-import net.minecraft.crash.CrashReportCategory;
+import net.minecraft.world.level.timers.TimerQueue;
+import net.minecraft.CrashReportCategory;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.GameType;
-import net.minecraft.world.border.WorldBorder.Serializer;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.border.WorldBorder.Settings;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.storage.ServerLevelData;
 
@@ -27,13 +27,13 @@ public class CustomTimeWorldInfo implements ServerLevelData {
 	// Update and save methods
 	
 	public void tick(ServerLevel world) {
-		if (getGameRulesInstance().getBoolean(GameRules.DO_DAYLIGHT_CYCLE)) {
+		if (getGameRules().getBoolean(GameRules.RULE_DAYLIGHT)) {
 			setDayTime(getDayTime() + 1);
 		}
 		getSavedData(world).updateDayTime(getDayTime());
 	}
 	
-	public DimensionDataWorldSavedData getSavedData(ServerWorld world) {
+	public DimensionDataWorldSavedData getSavedData(ServerLevel world) {
 		final String name = "overworldmirror_dimensiondata";
 		return WorldUtil.getSaveData(world, name, () -> new DimensionDataWorldSavedData(name));
 	}
@@ -105,38 +105,38 @@ public class CustomTimeWorldInfo implements ServerLevelData {
 	// Delegated methods
 	
 	@Override
-	public void setSpawnX(int x) {
-		info.setSpawnX(x);
+	public void setXSpawn(int x) {
+		info.setXSpawn(x);
 	}
 	
 	@Override
-	public int getSpawnX() {
-		return info.getSpawnX();
+	public int getXSpawn() {
+		return info.getXSpawn();
 	}
 	
 	@Override
-	public void setSpawnY(int y) {
-		info.setSpawnY(y);
+	public void setYSpawn(int y) {
+		info.setYSpawn(y);
 	}
 	
 	@Override
-	public int getSpawnY() {
-		return info.getSpawnY();
+	public int getYSpawn() {
+		return info.getYSpawn();
 	}
 	
 	@Override
-	public void setSpawnZ(int z) {
-		info.setSpawnZ(z);
+	public void setZSpawn(int z) {
+		info.setZSpawn(z);
 	}
 	
 	@Override
-	public String getWorldName() {
-		return info.getWorldName();
+	public String getLevelName() {
+		return info.getLevelName();
 	}
 	
 	@Override
-	public int getSpawnZ() {
-		return info.getSpawnZ();
+	public int getZSpawn() {
+		return info.getZSpawn();
 	}
 	
 	@Override
@@ -165,13 +165,13 @@ public class CustomTimeWorldInfo implements ServerLevelData {
 	}
 	
 	@Override
-	public void addToCrashReport(CrashReportCategory category) {
-		info.addToCrashReport(category);
+	public void fillCrashReportCategory(CrashReportCategory category) {
+		info.fillCrashReportCategory(category);
 	}
 	
 	@Override
-	public GameRules getGameRulesInstance() {
-		return info.getGameRulesInstance();
+	public GameRules getGameRules() {
+		return info.getGameRules();
 	}
 	
 	@Override
@@ -205,8 +205,8 @@ public class CustomTimeWorldInfo implements ServerLevelData {
 	}
 	
 	@Override
-	public void setWanderingTraderID(UUID id) {
-		info.setWanderingTraderID(id);
+	public void setWanderingTraderId(UUID id) {
+		info.setWanderingTraderId(id);
 	}
 	
 	@Override
@@ -215,13 +215,13 @@ public class CustomTimeWorldInfo implements ServerLevelData {
 	}
 	
 	@Override
-	public void setWorldBorderSerializer(Serializer serializer) {
-		info.setWorldBorderSerializer(serializer);
+	public void setWorldBorder(Settings serializer) {
+		info.setWorldBorder(serializer);
 	}
 	
 	@Override
-	public Serializer getWorldBorderSerializer() {
-		return info.getWorldBorderSerializer();
+	public Settings getWorldBorder() {
+		return info.getWorldBorder();
 	}
 	
 	@Override
@@ -235,8 +235,8 @@ public class CustomTimeWorldInfo implements ServerLevelData {
 	}
 	
 	@Override
-	public boolean areCommandsAllowed() {
-		return info.areCommandsAllowed();
+	public boolean getAllowCommands() {
+		return info.getAllowCommands();
 	}
 	
 	@Override
@@ -245,7 +245,7 @@ public class CustomTimeWorldInfo implements ServerLevelData {
 	}
 	
 	@Override
-	public TimerCallbackManager<MinecraftServer> getScheduledEvents() {
+	public TimerQueue<MinecraftServer> getScheduledEvents() {
 		return info.getScheduledEvents();
 	}
 	

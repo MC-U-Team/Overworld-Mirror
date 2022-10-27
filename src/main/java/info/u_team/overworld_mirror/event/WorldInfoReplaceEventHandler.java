@@ -15,26 +15,26 @@ public class WorldInfoReplaceEventHandler {
 			return;
 		}
 		final ServerLevel world = (ServerLevel) event.getWorld();
-		if (world.getDimensionKey() != OverworldMirrorWorldKeys.MIRROR_OVERWORLD) {
+		if (world.dimension() != OverworldMirrorWorldKeys.MIRROR_OVERWORLD) {
 			return;
 		}
-		final CustomTimeWorldInfo worldInfo = new CustomTimeWorldInfo(world.serverWorldInfo);
-		world.serverWorldInfo = worldInfo;
-		world.worldInfo = worldInfo;
+		final CustomTimeWorldInfo worldInfo = new CustomTimeWorldInfo(world.serverLevelData);
+		world.serverLevelData = worldInfo;
+		world.levelData = worldInfo;
 	}
 	
 	private static void onWorldTick(WorldTickEvent event) {
 		if (event.phase != Phase.END) {
 			return;
 		}
-		if (!(event.world instanceof ServerWorld)) {
+		if (!(event.world instanceof ServerLevel)) {
 			return;
 		}
-		final ServerWorld world = (ServerWorld) event.world;
-		if (!(world.serverWorldInfo instanceof CustomTimeWorldInfo)) {
+		final ServerLevel world = (ServerLevel) event.world;
+		if (!(world.serverLevelData instanceof CustomTimeWorldInfo)) {
 			return;
 		}
-		((CustomTimeWorldInfo) world.serverWorldInfo).tick(world);
+		((CustomTimeWorldInfo) world.serverLevelData).tick(world);
 	}
 	
 	public static void registerForge(IEventBus bus) {

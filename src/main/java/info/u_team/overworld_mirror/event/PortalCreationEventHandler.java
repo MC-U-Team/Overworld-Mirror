@@ -2,11 +2,11 @@ package info.u_team.overworld_mirror.event;
 
 import info.u_team.overworld_mirror.portal.PortalManager;
 import net.minecraft.world.level.block.FlowerBlock;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.effect.LightningBoltEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -26,20 +26,20 @@ public class PortalCreationEventHandler {
 			return;
 		}
 		
-		if (!event.getPlayer().isSneaking()) {
+		if (!event.getPlayer().isShiftKeyDown()) {
 			return;
 		}
 		
 		if (PortalManager.trySpawnPortalFromFrame(world, pos)) {
-			final LightningBoltEntity lightning = EntityType.LIGHTNING_BOLT.create(world);
-			lightning.moveForced(Vector3d.copyCenteredHorizontally(pos.up()));
-			lightning.setEffectOnly(true);
+			final LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(world);
+			lightning.moveTo(Vec3.atBottomCenterOf(pos.above()));
+			lightning.setVisualOnly(true);
 			
-			if (event.getPlayer() instanceof ServerPlayerEntity) {
-				lightning.setCaster((ServerPlayerEntity) event.getPlayer());
+			if (event.getPlayer() instanceof ServerPlayer) {
+				lightning.setCause((ServerPlayer) event.getPlayer());
 			}
 			
-			world.addEntity(lightning);
+			world.addFreshEntity(lightning);
 		}
 	}
 	

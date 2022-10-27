@@ -10,7 +10,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public class OverworldMirrorRenderTypes {
 	
 	private static void setup(FMLClientSetupEvent event) {
-		ItemBlockRenderTypes.setRenderLayer(PORTAL.get(), RenderType.getTranslucent());
+		ItemBlockRenderTypes.setRenderLayer(PORTAL.get(), RenderType.translucent());
 	}
 	
 	public static void registerMod(IEventBus bus) {

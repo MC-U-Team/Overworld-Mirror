@@ -4,7 +4,7 @@ import info.u_team.overworld_mirror.OverworldMirrorMod;
 import info.u_team.overworld_mirror.block.OverworldMirrorPortalBlock;
 import info.u_team.u_team_core.util.registry.BlockDeferredRegister;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 
 public class OverworldMirrorBlocks {
 	
