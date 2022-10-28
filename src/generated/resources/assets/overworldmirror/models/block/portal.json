@@ -1,10 +1,11 @@
 {
-	"textures": {
-		"particle": "overworldmirror:block/portal",
-		"portal": "overworldmirror:block/portal"
-	},
 	"elements": [
 		{
+			"faces": {
+				"up": {
+					"texture": "#portal"
+				}
+			},
 			"from": [
 				0,
 				12,
@@ -14,12 +15,11 @@
 				16,
 				12,
 				16
-			],
-			"faces": {
-				"up": {
-					"texture": "#portal"
-				}
-			}
+			]
 		}
-	]
+	],
+	"textures": {
+		"particle": "overworldmirror:block/portal",
+		"portal": "overworldmirror:block/portal"
+	}
 }
