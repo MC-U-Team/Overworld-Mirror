@@ -7,12 +7,12 @@ import info.u_team.u_team_core.data.GenerationData;
 
 public class OverworldMirrorLanguagesProvider extends CommonLanguagesProvider {
 	
-	public OverworldMirrorLanguagesProvider(GenerationData data) {
-		super(data);
+	public OverworldMirrorLanguagesProvider(GenerationData generationData) {
+		super(generationData);
 	}
 	
 	@Override
-	public void addTranslations() {
+	public void register() {
 		// English
 		add(PORTAL.get(), "Overworld Mirror Portal");
 		

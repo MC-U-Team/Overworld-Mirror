@@ -2,18 +2,18 @@ package info.u_team.overworld_mirror.data.provider;
 
 import static info.u_team.overworld_mirror.init.OverworldMirrorBlocks.PORTAL;
 
-import info.u_team.u_team_core.data.CommonBlockStatesProvider;
+import info.u_team.u_team_core.data.CommonBlockStateProvider;
 import info.u_team.u_team_core.data.GenerationData;
 import net.minecraft.core.Direction;
 
-public class OverworldMirrorBlockStatesProvider extends CommonBlockStatesProvider {
+public class OverworldMirrorBlockStateProvider extends CommonBlockStateProvider {
 	
-	public OverworldMirrorBlockStatesProvider(GenerationData data) {
-		super(data);
+	public OverworldMirrorBlockStateProvider(GenerationData generationData) {
+		super(generationData);
 	}
-	
+
 	@Override
-	protected void registerStatesAndModels() {
+	public void register() {
 		simpleBlock(PORTAL.get(), models() //
 				.getBuilder(getPath(PORTAL.get())) //
 				.texture("particle", models().modLoc("block/" + getPath(PORTAL.get()))) //
