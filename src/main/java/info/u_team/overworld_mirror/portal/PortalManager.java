@@ -6,22 +6,22 @@ import java.util.List;
 
 import info.u_team.overworld_mirror.config.ServerConfig;
 import info.u_team.overworld_mirror.init.OverworldMirrorBlocks;
-import info.u_team.u_team_core.util.world.WorldUtil;
+import info.u_team.u_team_core.util.LevelUtil;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.players.PlayerList;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerBlock;
-import net.minecraft.world.level.portal.PortalInfo;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
-import net.minecraft.server.players.PlayerList;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.level.dimension.DimensionType;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.border.WorldBorder;
+import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.common.util.Constants.BlockFlags;
+import net.minecraft.world.level.portal.PortalInfo;
+import net.minecraft.world.phys.Vec3;
 
 public class PortalManager {
 	
@@ -122,7 +122,7 @@ public class PortalManager {
 			data.setDirty();
 		}
 		
-		return new PortalInfo(Vec3.upFromBottomCenterOf(portalMiddlePos, 0.25), entity.getDeltaMovement(), entity.yRot, entity.xRot);
+		return new PortalInfo(Vec3.upFromBottomCenterOf(portalMiddlePos, 0.25), entity.getDeltaMovement(), entity.getYRot(), entity.getXRot());
 	}
 	
 	private static boolean validatePortal(Level world, BlockPos pos) {
@@ -168,14 +168,14 @@ public class PortalManager {
 			world.setBlockAndUpdate(portalPos.below(), Blocks.STONE_BRICKS.defaultBlockState());
 		});
 		
-		portal.forEach(portalPos -> world.setBlock(portalPos, OverworldMirrorBlocks.PORTAL.get().defaultBlockState(), BlockFlags.BLOCK_UPDATE));
+		portal.forEach(portalPos -> world.setBlock(portalPos, OverworldMirrorBlocks.PORTAL.get().defaultBlockState(), Block.UPDATE_CLIENTS));
 		
 		return pos;
 	}
 	
-	public static PortalWorldSavedData getSavedData(ServerLevel world) {
+	public static PortalWorldSavedData getSavedData(ServerLevel level) {
 		final String name = "overworldmirror_portal";
-		return WorldUtil.getSaveData(world, name, () -> new PortalWorldSavedData(name));
+		return LevelUtil.getSaveData(level, name, PortalWorldSavedData::load, PortalWorldSavedData::new);
 	}
 	
 	public static float getPlaneDistanceSq(int x1, int z1, int x2, int z2) {

@@ -7,13 +7,16 @@ public class DimensionDataWorldSavedData extends SavedData {
 	
 	private long dayTime;
 	
-	public DimensionDataWorldSavedData(String name) {
-		super(name);
+	public DimensionDataWorldSavedData() {
+		this(0);
 	}
 	
-	@Override
-	public void load(CompoundTag compound) {
-		dayTime = compound.getLong("dayTime");
+	public DimensionDataWorldSavedData(long dayTime) {
+		this.dayTime = dayTime;
+	}
+	
+	public static DimensionDataWorldSavedData load(CompoundTag compound) {
+		return new DimensionDataWorldSavedData(compound.getLong("dayTime"));
 	}
 	
 	@Override

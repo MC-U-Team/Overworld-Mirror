@@ -2,17 +2,16 @@ package info.u_team.overworld_mirror.world;
 
 import java.util.UUID;
 
-import info.u_team.u_team_core.util.world.WorldUtil;
-import net.minecraft.world.level.timers.TimerQueue;
-import net.minecraft.CrashReportCategory;
-import net.minecraft.server.MinecraftServer;
+import info.u_team.u_team_core.util.LevelUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.border.WorldBorder.Settings;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.storage.ServerLevelData;
+import net.minecraft.world.level.timers.TimerQueue;
 
 public class CustomTimeWorldInfo implements ServerLevelData {
 	
@@ -35,7 +34,7 @@ public class CustomTimeWorldInfo implements ServerLevelData {
 	
 	public DimensionDataWorldSavedData getSavedData(ServerLevel world) {
 		final String name = "overworldmirror_dimensiondata";
-		return WorldUtil.getSaveData(world, name, () -> new DimensionDataWorldSavedData(name));
+		return LevelUtil.getSaveData(world, name, DimensionDataWorldSavedData::load, DimensionDataWorldSavedData::new);
 	}
 	
 	// Custom dimension time
@@ -165,11 +164,6 @@ public class CustomTimeWorldInfo implements ServerLevelData {
 	}
 	
 	@Override
-	public void fillCrashReportCategory(CrashReportCategory category) {
-		info.fillCrashReportCategory(category);
-	}
-	
-	@Override
 	public GameRules getGameRules() {
 		return info.getGameRules();
 	}
@@ -202,6 +196,11 @@ public class CustomTimeWorldInfo implements ServerLevelData {
 	@Override
 	public void setWanderingTraderSpawnChance(int chance) {
 		info.setWanderingTraderSpawnChance(chance);
+	}
+	
+	@Override
+	public UUID getWanderingTraderId() {
+		return info.getWanderingTraderId();
 	}
 	
 	@Override

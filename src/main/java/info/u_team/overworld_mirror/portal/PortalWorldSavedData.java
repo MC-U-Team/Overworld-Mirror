@@ -1,27 +1,31 @@
 package info.u_team.overworld_mirror.portal;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.saveddata.SavedData;
 
 public class PortalWorldSavedData extends SavedData {
 	
 	private final List<BlockPos> portals;
 	
-	public PortalWorldSavedData(String name) {
-		super(name);
-		portals = new ArrayList<>();
+	public PortalWorldSavedData() {
+		this(Collections.emptyList());
 	}
 	
-	@Override
-	public void load(CompoundTag compound) {
-		compound.getList("list", 10).stream().filter(tag -> tag instanceof CompoundTag).map(tag -> (CompoundTag) tag).forEach(entryCompound -> {
-			portals.add(new BlockPos(entryCompound.getInt("x"), entryCompound.getInt("y"), entryCompound.getInt("z")));
-		});
+	public PortalWorldSavedData(List<BlockPos> entries) {
+		portals = new ArrayList<>(entries);
+	}
+	
+	public static PortalWorldSavedData load(CompoundTag compound) {
+		return new PortalWorldSavedData(compound.getList("list", 10).stream().filter(tag -> tag instanceof CompoundTag).map(tag -> (CompoundTag) tag).map(entryCompound -> {
+			return new BlockPos(entryCompound.getInt("x"), entryCompound.getInt("y"), entryCompound.getInt("z"));
+		}).collect(Collectors.toList()));
 	}
 	
 	@Override
