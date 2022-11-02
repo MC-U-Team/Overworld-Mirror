@@ -11,11 +11,12 @@ public class OverworldMirrorBlockStateProvider extends CommonBlockStateProvider 
 	public OverworldMirrorBlockStateProvider(GenerationData generationData) {
 		super(generationData);
 	}
-
+	
 	@Override
 	public void register() {
 		simpleBlock(PORTAL.get(), models() //
 				.getBuilder(getPath(PORTAL.get())) //
+				.renderType("translucent") //
 				.texture("particle", models().modLoc("block/" + getPath(PORTAL.get()))) //
 				.texture("portal", models().modLoc("block/" + getPath(PORTAL.get()))) //
 				.element() //

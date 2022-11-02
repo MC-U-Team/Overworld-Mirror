@@ -18,6 +18,7 @@
 			]
 		}
 	],
+	"render_type": "minecraft:translucent",
 	"textures": {
 		"particle": "overworldmirror:block/portal",
 		"portal": "overworldmirror:block/portal"

@@ -2,9 +2,9 @@ package info.u_team.overworld_mirror.portal;
 
 import java.util.function.Function;
 
-import net.minecraft.world.level.portal.PortalInfo;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraftforge.common.util.ITeleporter;
 
 public class PortalTeleporter implements ITeleporter {
