@@ -1,22 +1,22 @@
-package info.u_team.overworld_mirror.world;
+package info.u_team.overworld_mirror.level;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.saveddata.SavedData;
 
-public class DimensionDataWorldSavedData extends SavedData {
+public class DimensionDataLevelSavedData extends SavedData {
 	
 	private long dayTime;
 	
-	public DimensionDataWorldSavedData() {
+	public DimensionDataLevelSavedData() {
 		this(0);
 	}
 	
-	public DimensionDataWorldSavedData(long dayTime) {
+	public DimensionDataLevelSavedData(long dayTime) {
 		this.dayTime = dayTime;
 	}
 	
-	public static DimensionDataWorldSavedData load(CompoundTag compound) {
-		return new DimensionDataWorldSavedData(compound.getLong("dayTime"));
+	public static DimensionDataLevelSavedData load(CompoundTag compound) {
+		return new DimensionDataLevelSavedData(compound.getLong("dayTime"));
 	}
 	
 	@Override

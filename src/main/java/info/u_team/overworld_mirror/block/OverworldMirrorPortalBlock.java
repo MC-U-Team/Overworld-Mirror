@@ -1,10 +1,10 @@
 package info.u_team.overworld_mirror.block;
 
 import info.u_team.overworld_mirror.init.OverworldMirrorBlocks;
-import info.u_team.overworld_mirror.init.OverworldMirrorWorldKeys;
+import info.u_team.overworld_mirror.init.OverworldMirrorLevelKeys;
 import info.u_team.overworld_mirror.portal.PortalManager;
 import info.u_team.overworld_mirror.portal.PortalTeleporter;
-import info.u_team.overworld_mirror.portal.PortalWorldSavedData;
+import info.u_team.overworld_mirror.portal.PortalLevelSavedData;
 import info.u_team.u_team_core.block.UBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
@@ -39,8 +39,8 @@ public class OverworldMirrorPortalBlock extends UBlock {
 			if (entity.isOnPortalCooldown()) {
 				entity.setPortalCooldown();
 			} else if (world.dimension() == Level.OVERWORLD) {
-				changeDimension(server, entity, OverworldMirrorWorldKeys.MIRROR_OVERWORLD);
-			} else if (world.dimension() == OverworldMirrorWorldKeys.MIRROR_OVERWORLD) {
+				changeDimension(server, entity, OverworldMirrorLevelKeys.MIRROR_OVERWORLD);
+			} else if (world.dimension() == OverworldMirrorLevelKeys.MIRROR_OVERWORLD) {
 				changeDimension(server, entity, Level.OVERWORLD);
 			}
 		}
@@ -58,7 +58,7 @@ public class OverworldMirrorPortalBlock extends UBlock {
 	@Override
 	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (world instanceof ServerLevel) {
-			final PortalWorldSavedData data = PortalManager.getSavedData((ServerLevel) world);
+			final PortalLevelSavedData data = PortalManager.getSavedData((ServerLevel) world);
 			data.getPortals().removeIf(portal -> portal.equals(pos));
 			data.setDirty();
 		}

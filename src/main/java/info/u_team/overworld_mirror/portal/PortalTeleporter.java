@@ -10,12 +10,12 @@ import net.minecraftforge.common.util.ITeleporter;
 public class PortalTeleporter implements ITeleporter {
 	
 	@Override
-	public Entity placeEntity(Entity entity, ServerLevel currentWorld, ServerLevel destinationWorld, float yaw, Function<Boolean, Entity> repositionEntity) {
+	public Entity placeEntity(Entity entity, ServerLevel currentLevel, ServerLevel destinationLevel, float yaw, Function<Boolean, Entity> repositionEntity) {
 		return repositionEntity.apply(false);
 	}
 	
 	@Override
-	public PortalInfo getPortalInfo(Entity entity, ServerLevel destinationWorld, Function<ServerLevel, PortalInfo> defaultPortalInfo) {
-		return PortalManager.findOrCreatePortal(destinationWorld, entity);
+	public PortalInfo getPortalInfo(Entity entity, ServerLevel destinationLevel, Function<ServerLevel, PortalInfo> defaultPortalInfo) {
+		return PortalManager.findOrCreatePortal(destinationLevel, entity);
 	}
 }

@@ -1,7 +1,7 @@
 package info.u_team.overworld_mirror.event;
 
-import info.u_team.overworld_mirror.init.OverworldMirrorWorldKeys;
-import info.u_team.overworld_mirror.world.CustomTimeWorldInfo;
+import info.u_team.overworld_mirror.init.OverworldMirrorLevelKeys;
+import info.u_team.overworld_mirror.level.CustomTimeLevelInfo;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.event.TickEvent.LevelTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
@@ -14,10 +14,10 @@ public class WorldInfoReplaceEventHandler {
 		if (!(event.getLevel() instanceof ServerLevel level)) {
 			return;
 		}
-		if (level.dimension() != OverworldMirrorWorldKeys.MIRROR_OVERWORLD) {
+		if (level.dimension() != OverworldMirrorLevelKeys.MIRROR_OVERWORLD) {
 			return;
 		}
-		final CustomTimeWorldInfo worldInfo = new CustomTimeWorldInfo(level.serverLevelData);
+		final CustomTimeLevelInfo worldInfo = new CustomTimeLevelInfo(level.serverLevelData);
 		level.serverLevelData = worldInfo;
 		level.levelData = worldInfo;
 	}
@@ -29,7 +29,7 @@ public class WorldInfoReplaceEventHandler {
 		if (!(event.level instanceof ServerLevel level)) {
 			return;
 		}
-		if (!(level.serverLevelData instanceof CustomTimeWorldInfo customTimeLevelData)) {
+		if (!(level.serverLevelData instanceof CustomTimeLevelInfo customTimeLevelData)) {
 			return;
 		}
 		customTimeLevelData.tick(level);

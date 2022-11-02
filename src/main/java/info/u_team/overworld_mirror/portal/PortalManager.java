@@ -25,17 +25,17 @@ import net.minecraft.world.phys.Vec3;
 
 public class PortalManager {
 	
-	public static boolean trySpawnPortalFromFrame(ServerLevel world, BlockPos pos) {
+	public static boolean trySpawnPortalFromFrame(ServerLevel level, BlockPos pos) {
 		
 		int westCount = 0;
-		while (world.getBlockState(pos.west(westCount + 1)).getBlock() != Blocks.STONE_BRICKS && westCount < 3) {
+		while (level.getBlockState(pos.west(westCount + 1)).getBlock() != Blocks.STONE_BRICKS && westCount < 3) {
 			westCount++;
 		}
 		
 		final BlockPos westPost = pos.west(westCount);
 		
 		int northCount = 0;
-		while (world.getBlockState(westPost.north(northCount + 1)).getBlock() != Blocks.STONE_BRICKS && northCount < 3) {
+		while (level.getBlockState(westPost.north(northCount + 1)).getBlock() != Blocks.STONE_BRICKS && northCount < 3) {
 			northCount++;
 		}
 		
@@ -43,18 +43,18 @@ public class PortalManager {
 		
 		final BlockPos middlePos = westNorthPos.east().south();
 		
-		if (!validatePortalFrameAndSpawnPortal(world, middlePos)) {
+		if (!validatePortalFrameAndSpawnPortal(level, middlePos)) {
 			return false;
 		}
 		
-		final PortalWorldSavedData data = getSavedData(world);
+		final PortalLevelSavedData data = getSavedData(level);
 		data.getPortals().add(middlePos);
 		data.setDirty();
 		
 		return true;
 	}
 	
-	private static boolean validatePortalFrameAndSpawnPortal(Level world, BlockPos pos) {
+	private static boolean validatePortalFrameAndSpawnPortal(Level level, BlockPos pos) {
 		final List<BlockPos> flowers = new ArrayList<>();
 		final List<BlockPos> frame = new ArrayList<>();
 		
@@ -71,34 +71,34 @@ public class PortalManager {
 			frame.add(pos.offset(i, 0, -2));
 		}
 		
-		final boolean flowersMatching = flowers.stream().allMatch(flowerPos -> world.getBlockState(flowerPos).getBlock() instanceof FlowerBlock);
-		final boolean frameMatching = frame.stream().allMatch(framePos -> world.getBlockState(framePos).getBlock() == Blocks.STONE_BRICKS);
+		final boolean flowersMatching = flowers.stream().allMatch(flowerPos -> level.getBlockState(flowerPos).getBlock() instanceof FlowerBlock);
+		final boolean frameMatching = frame.stream().allMatch(framePos -> level.getBlockState(framePos).getBlock() == Blocks.STONE_BRICKS);
 		
 		if (flowersMatching && frameMatching) {
-			flowers.forEach(portalPos -> world.setBlock(portalPos, OverworldMirrorBlocks.PORTAL.get().defaultBlockState(), 2));
+			flowers.forEach(portalPos -> level.setBlock(portalPos, OverworldMirrorBlocks.PORTAL.get().defaultBlockState(), 2));
 			
-			final PlayerList playerlist = world.getServer().getPlayerList();
-			flowers.forEach(portalPos -> playerlist.broadcast(null, portalPos.getX(), portalPos.getY(), portalPos.getZ(), 64, world.dimension(), new ClientboundBlockUpdatePacket(world, portalPos)));
+			final PlayerList playerlist = level.getServer().getPlayerList();
+			flowers.forEach(portalPos -> playerlist.broadcast(null, portalPos.getX(), portalPos.getY(), portalPos.getZ(), 64, level.dimension(), new ClientboundBlockUpdatePacket(level, portalPos)));
 			
 			return true;
 		}
 		return false;
 	}
 	
-	public static PortalInfo findOrCreatePortal(ServerLevel destinationWorld, Entity entity) {
-		final WorldBorder border = destinationWorld.getWorldBorder();
+	public static PortalInfo findOrCreatePortal(ServerLevel destinationLevel, Entity entity) {
+		final WorldBorder border = destinationLevel.getWorldBorder();
 		
 		final double minX = Math.max(-2.9999872e7, border.getMinX() + 16);
 		final double minZ = Math.max(-2.9999872e7, border.getMinZ() + 16);
 		final double maxX = Math.min(2.9999872e7, border.getMaxX() - 16);
 		final double maxZ = Math.min(2.9999872e7, border.getMaxZ() - 16);
 		
-		final double coordinateScale = DimensionType.getTeleportationScale(entity.getCommandSenderWorld().dimensionType(), destinationWorld.dimensionType());
+		final double coordinateScale = DimensionType.getTeleportationScale(entity.getCommandSenderWorld().dimensionType(), destinationLevel.dimensionType());
 		final BlockPos estimatedPos = new BlockPos(Mth.clamp(entity.getX() * coordinateScale, minX, maxX), entity.getY(), Mth.clamp(entity.getZ() * coordinateScale, minZ, maxZ));
 		
-		final PortalWorldSavedData data = getSavedData(destinationWorld);
+		final PortalLevelSavedData data = getSavedData(destinationLevel);
 		final ServerConfig config = ServerConfig.getInstance();
-		final double searchDistance = Math.pow(destinationWorld.dimension() == Level.OVERWORLD ? config.portalSearchDistanceOverworld.get() : config.portalSearchDistanceOverworldMirror.get(), 2);
+		final double searchDistance = Math.pow(destinationLevel.dimension() == Level.OVERWORLD ? config.portalSearchDistanceOverworld.get() : config.portalSearchDistanceOverworldMirror.get(), 2);
 		
 		BlockPos portalMiddlePos = null;
 		
@@ -107,7 +107,7 @@ public class PortalManager {
 			final BlockPos pos = iterator.next();
 			
 			if (getPlaneDistanceSq(pos.getX(), pos.getZ(), estimatedPos.getX(), estimatedPos.getZ()) < searchDistance) {
-				if (validatePortal(destinationWorld, pos)) {
+				if (validatePortal(destinationLevel, pos)) {
 					portalMiddlePos = pos;
 					break;
 				} else {
@@ -117,7 +117,7 @@ public class PortalManager {
 			}
 		}
 		if (portalMiddlePos == null) {
-			portalMiddlePos = spawnPortal(destinationWorld, estimatedPos);
+			portalMiddlePos = spawnPortal(destinationLevel, estimatedPos);
 			data.getPortals().add(portalMiddlePos);
 			data.setDirty();
 		}
@@ -125,10 +125,10 @@ public class PortalManager {
 		return new PortalInfo(Vec3.upFromBottomCenterOf(portalMiddlePos, 0.25), entity.getDeltaMovement(), entity.getYRot(), entity.getXRot());
 	}
 	
-	private static boolean validatePortal(Level world, BlockPos pos) {
+	private static boolean validatePortal(Level level, BlockPos pos) {
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
-				if (world.getBlockState(pos.offset(i, 0, j)).getBlock() != OverworldMirrorBlocks.PORTAL.get()) {
+				if (level.getBlockState(pos.offset(i, 0, j)).getBlock() != OverworldMirrorBlocks.PORTAL.get()) {
 					return false;
 				}
 			}
@@ -136,10 +136,10 @@ public class PortalManager {
 		return true;
 	}
 	
-	private static BlockPos spawnPortal(Level world, BlockPos entityPos) {
-		world.getChunk(entityPos); // This loads the chunk / generates it so we can determine the height
+	private static BlockPos spawnPortal(Level level, BlockPos entityPos) {
+		level.getChunk(entityPos); // This loads the chunk / generates it so we can determine the height
 		
-		final BlockPos pos = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, entityPos).below();
+		final BlockPos pos = level.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, entityPos).below();
 		
 		final ArrayList<BlockPos> portal = new ArrayList<>();
 		final ArrayList<BlockPos> frame = new ArrayList<>();
@@ -158,24 +158,24 @@ public class PortalManager {
 		}
 		
 		frame.forEach(framePos -> {
-			world.setBlockAndUpdate(framePos, Blocks.STONE_BRICKS.defaultBlockState());
-			world.removeBlock(framePos.above(), false);
-			world.removeBlock(framePos.above(2), false);
+			level.setBlockAndUpdate(framePos, Blocks.STONE_BRICKS.defaultBlockState());
+			level.removeBlock(framePos.above(), false);
+			level.removeBlock(framePos.above(2), false);
 		});
 		portal.forEach(portalPos -> {
-			world.removeBlock(portalPos.above(), false);
-			world.removeBlock(portalPos.above(2), false);
-			world.setBlockAndUpdate(portalPos.below(), Blocks.STONE_BRICKS.defaultBlockState());
+			level.removeBlock(portalPos.above(), false);
+			level.removeBlock(portalPos.above(2), false);
+			level.setBlockAndUpdate(portalPos.below(), Blocks.STONE_BRICKS.defaultBlockState());
 		});
 		
-		portal.forEach(portalPos -> world.setBlock(portalPos, OverworldMirrorBlocks.PORTAL.get().defaultBlockState(), Block.UPDATE_CLIENTS));
+		portal.forEach(portalPos -> level.setBlock(portalPos, OverworldMirrorBlocks.PORTAL.get().defaultBlockState(), Block.UPDATE_CLIENTS));
 		
 		return pos;
 	}
 	
-	public static PortalWorldSavedData getSavedData(ServerLevel level) {
+	public static PortalLevelSavedData getSavedData(ServerLevel level) {
 		final String name = "overworldmirror_portal";
-		return LevelUtil.getSaveData(level, name, PortalWorldSavedData::load, PortalWorldSavedData::new);
+		return LevelUtil.getSaveData(level, name, PortalLevelSavedData::load, PortalLevelSavedData::new);
 	}
 	
 	public static float getPlaneDistanceSq(int x1, int z1, int x2, int z2) {

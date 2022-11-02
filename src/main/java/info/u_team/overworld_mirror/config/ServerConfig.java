@@ -5,8 +5,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
-import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
-import net.minecraftforge.common.ForgeConfigSpec.LongValue;
 
 public class ServerConfig {
 	
@@ -23,20 +21,12 @@ public class ServerConfig {
 		return INSTANCE;
 	}
 	
-	public final EnumValue<SeedType> seedType;
-	public final LongValue seedValue;
-	
 	public final DoubleValue portalSearchDistanceOverworld;
 	public final DoubleValue portalSearchDistanceOverworldMirror;
 	
 	private ServerConfig(Builder builder) {
-		builder.comment("To configure the dimension type please create a data pack and add a dimension type in this resource location: data/overworldmirror/dimension_type/overworld_mirror.json").push("information");
+		builder.comment("To configure the dimension and dimension type please create a data pack and add a dimension type in this resource location: data/overworldmirror/dimension_type/overworld_mirror.json and a dimension in this resource location: data/overworldmirror/dimension/overworld.json").push("information");
 		builder.define("information", "");
-		builder.pop();
-		
-		builder.comment("Seed settings").push("seed");
-		seedType = builder.comment("If you have set this to \"SEED\" then the seedValue value will be treated as new seed, else if its set to \"ADDITION\" the value will be added to the main world seed.").defineEnum("seedType", SeedType.ADDITION);
-		seedValue = builder.comment("The seed value. See seedType for more information.").defineInRange("seedValue", 100_000, Long.MIN_VALUE, Long.MAX_VALUE);
 		builder.pop();
 		
 		builder.comment("Portal settings").push("portal");
@@ -45,16 +35,4 @@ public class ServerConfig {
 		builder.pop();
 	}
 	
-	public static enum SeedType {
-		
-		SEED,
-		ADDITION;
-		
-		public long calculateSeed(long seedValue, long worldSeed) {
-			if (this == SEED) {
-				return seedValue;
-			}
-			return worldSeed + seedValue;
-		}
-	}
 }

@@ -1,4 +1,4 @@
-package info.u_team.overworld_mirror.world;
+package info.u_team.overworld_mirror.level;
 
 import java.util.UUID;
 
@@ -13,13 +13,13 @@ import net.minecraft.world.level.border.WorldBorder.Settings;
 import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraft.world.level.timers.TimerQueue;
 
-public class CustomTimeWorldInfo implements ServerLevelData {
+public class CustomTimeLevelInfo implements ServerLevelData {
 	
 	private final ServerLevelData info;
 	
 	private long dayTime;
 	
-	public CustomTimeWorldInfo(ServerLevelData info) {
+	public CustomTimeLevelInfo(ServerLevelData info) {
 		this.info = info;
 	}
 	
@@ -32,9 +32,9 @@ public class CustomTimeWorldInfo implements ServerLevelData {
 		getSavedData(world).updateDayTime(getDayTime());
 	}
 	
-	public DimensionDataWorldSavedData getSavedData(ServerLevel world) {
+	public DimensionDataLevelSavedData getSavedData(ServerLevel world) {
 		final String name = "overworldmirror_dimensiondata";
-		return LevelUtil.getSaveData(world, name, DimensionDataWorldSavedData::load, DimensionDataWorldSavedData::new);
+		return LevelUtil.getSaveData(world, name, DimensionDataLevelSavedData::load, DimensionDataLevelSavedData::new);
 	}
 	
 	// Custom dimension time

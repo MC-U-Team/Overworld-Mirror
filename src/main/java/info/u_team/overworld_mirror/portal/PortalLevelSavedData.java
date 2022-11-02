@@ -10,20 +10,20 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.level.saveddata.SavedData;
 
-public class PortalWorldSavedData extends SavedData {
+public class PortalLevelSavedData extends SavedData {
 	
 	private final List<BlockPos> portals;
 	
-	public PortalWorldSavedData() {
+	public PortalLevelSavedData() {
 		this(Collections.emptyList());
 	}
 	
-	public PortalWorldSavedData(List<BlockPos> entries) {
+	public PortalLevelSavedData(List<BlockPos> entries) {
 		portals = new ArrayList<>(entries);
 	}
 	
-	public static PortalWorldSavedData load(CompoundTag compound) {
-		return new PortalWorldSavedData(compound.getList("list", 10).stream().filter(tag -> tag instanceof CompoundTag).map(tag -> (CompoundTag) tag).map(entryCompound -> {
+	public static PortalLevelSavedData load(CompoundTag compound) {
+		return new PortalLevelSavedData(compound.getList("list", 10).stream().filter(tag -> tag instanceof CompoundTag).map(tag -> (CompoundTag) tag).map(entryCompound -> {
 			return new BlockPos(entryCompound.getInt("x"), entryCompound.getInt("y"), entryCompound.getInt("z"));
 		}).collect(Collectors.toList()));
 	}
