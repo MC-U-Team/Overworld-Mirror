@@ -2,9 +2,9 @@ package info.u_team.overworld_mirror.block;
 
 import info.u_team.overworld_mirror.init.OverworldMirrorBlocks;
 import info.u_team.overworld_mirror.init.OverworldMirrorLevelKeys;
+import info.u_team.overworld_mirror.portal.PortalLevelSavedData;
 import info.u_team.overworld_mirror.portal.PortalManager;
 import info.u_team.overworld_mirror.portal.PortalTeleporter;
-import info.u_team.overworld_mirror.portal.PortalLevelSavedData;
 import info.u_team.u_team_core.block.UBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
@@ -33,14 +33,14 @@ public class OverworldMirrorPortalBlock extends UBlock {
 	}
 	
 	@Override
-	public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
-		if (world instanceof ServerLevel && world.getServer() != null && !entity.isPassenger() && !entity.isVehicle() && entity.canChangeDimensions()) {
-			final MinecraftServer server = world.getServer();
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+		if (level instanceof ServerLevel && level.getServer() != null && !entity.isPassenger() && !entity.isVehicle() && entity.canChangeDimensions()) {
+			final MinecraftServer server = level.getServer();
 			if (entity.isOnPortalCooldown()) {
 				entity.setPortalCooldown();
-			} else if (world.dimension() == Level.OVERWORLD) {
+			} else if (level.dimension() == Level.OVERWORLD) {
 				changeDimension(server, entity, OverworldMirrorLevelKeys.MIRROR_OVERWORLD);
-			} else if (world.dimension() == OverworldMirrorLevelKeys.MIRROR_OVERWORLD) {
+			} else if (level.dimension() == OverworldMirrorLevelKeys.MIRROR_OVERWORLD) {
 				changeDimension(server, entity, Level.OVERWORLD);
 			}
 		}
@@ -56,28 +56,28 @@ public class OverworldMirrorPortalBlock extends UBlock {
 	}
 	
 	@Override
-	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (world instanceof ServerLevel) {
-			final PortalLevelSavedData data = PortalManager.getSavedData((ServerLevel) world);
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (level instanceof ServerLevel serverLevel) {
+			final PortalLevelSavedData data = PortalManager.getSavedData(serverLevel);
 			data.getPortals().removeIf(portal -> portal.equals(pos));
 			data.setDirty();
 		}
 	}
 	
 	@Override
-	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
-		if (!fromPos.below().equals(pos) && !fromPos.above().equals(pos) && world.getBlockState(fromPos).getBlock() != OverworldMirrorBlocks.PORTAL.get()) {
-			world.removeBlock(pos, isMoving);
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+		if (!fromPos.below().equals(pos) && !fromPos.above().equals(pos) && level.getBlockState(fromPos).getBlock() != OverworldMirrorBlocks.PORTAL.get()) {
+			level.removeBlock(pos, isMoving);
 		}
 	}
 	
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
 		return SHAPE;
 	}
 	
 	@Override
-	public ItemStack getCloneItemStack(BlockGetter world, BlockPos pos, BlockState state) {
+	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
 		return ItemStack.EMPTY;
 	}
 	
