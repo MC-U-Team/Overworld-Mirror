@@ -16,15 +16,7 @@ public class PortalCreationEventHandler {
 	private static void onBonemeal(BonemealEvent event) {
 		final BlockPos pos = event.getPos();
 		
-		if (!(event.getLevel() instanceof ServerLevel level)) {
-			return;
-		}
-		
-		if (!(event.getBlock().getBlock() instanceof FlowerBlock)) {
-			return;
-		}
-		
-		if (!event.getEntity().isShiftKeyDown()) {
+		if (!(event.getLevel() instanceof final ServerLevel level) || !(event.getBlock().getBlock() instanceof FlowerBlock) || !event.getEntity().isShiftKeyDown()) {
 			return;
 		}
 		
@@ -33,7 +25,7 @@ public class PortalCreationEventHandler {
 			lightning.moveTo(Vec3.atBottomCenterOf(pos.above()));
 			lightning.setVisualOnly(true);
 			
-			if (event.getEntity() instanceof ServerPlayer player) {
+			if (event.getEntity() instanceof final ServerPlayer player) {
 				lightning.setCause(player);
 			}
 			

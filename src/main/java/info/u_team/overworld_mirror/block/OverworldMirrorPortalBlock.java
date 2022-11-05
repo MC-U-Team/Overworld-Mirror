@@ -57,7 +57,7 @@ public class OverworldMirrorPortalBlock extends UBlock {
 	
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (level instanceof ServerLevel serverLevel) {
+		if (level instanceof final ServerLevel serverLevel) {
 			final PortalLevelSavedData data = PortalManager.getSavedData(serverLevel);
 			data.getPortals().removeIf(portal -> portal.equals(pos));
 			data.setDirty();

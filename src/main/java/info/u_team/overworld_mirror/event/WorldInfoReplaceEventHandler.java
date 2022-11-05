@@ -11,10 +11,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 public class WorldInfoReplaceEventHandler {
 	
 	private static void onWorldLoad(LevelEvent.Load event) {
-		if (!(event.getLevel() instanceof ServerLevel level)) {
-			return;
-		}
-		if (level.dimension() != OverworldMirrorLevelKeys.MIRROR_OVERWORLD) {
+		if (!(event.getLevel() instanceof final ServerLevel level) || (level.dimension() != OverworldMirrorLevelKeys.MIRROR_OVERWORLD)) {
 			return;
 		}
 		final CustomTimeLevelInfo worldInfo = new CustomTimeLevelInfo(level.serverLevelData);
@@ -23,13 +20,7 @@ public class WorldInfoReplaceEventHandler {
 	}
 	
 	private static void onWorldTick(LevelTickEvent event) {
-		if (event.phase != Phase.END) {
-			return;
-		}
-		if (!(event.level instanceof ServerLevel level)) {
-			return;
-		}
-		if (!(level.serverLevelData instanceof CustomTimeLevelInfo customTimeLevelData)) {
+		if ((event.phase != Phase.END) || !(event.level instanceof final ServerLevel level) || !(level.serverLevelData instanceof final CustomTimeLevelInfo customTimeLevelData)) {
 			return;
 		}
 		customTimeLevelData.tick(level);
