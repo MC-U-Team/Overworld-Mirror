@@ -18,6 +18,10 @@ java {
 	withJavadocJar()
 }
 
+loom {
+	accessWidenerPath = project(":fabric").file("src/main/resources/overworldmirror.accesswidener")
+}
+
 tasks.withType(Jar).configureEach { task ->
 	gradlefiles.defaultJar(task)
 }

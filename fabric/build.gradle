@@ -20,6 +20,8 @@ java {
 }
 
 loom {
+	accessWidenerPath = file("src/main/resources/overworldmirror.accesswidener")
+	
 	runs {
 		client {
 			runDir "run/client"
