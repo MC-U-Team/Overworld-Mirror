@@ -17,7 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -28,7 +28,7 @@ public class OverworldMirrorPortalBlock extends UBlock {
 	private final PortalTeleporter teleporter;
 	
 	public OverworldMirrorPortalBlock() {
-		super(Properties.of(Material.PORTAL).noCollission().strength(-1.0F).sound(SoundType.GLASS).lightLevel(state -> 11).noLootTable());
+		super(Properties.of().noCollission().strength(-1.0F).sound(SoundType.GLASS).lightLevel(state -> 11).noLootTable().pushReaction(PushReaction.BLOCK));
 		teleporter = new PortalTeleporter();
 	}
 	

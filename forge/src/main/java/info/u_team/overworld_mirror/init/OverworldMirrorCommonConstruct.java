@@ -17,7 +17,7 @@ public class OverworldMirrorCommonConstruct implements ModConstruct {
 	public void construct() {
 		ModLoadingContext.get().registerConfig(Type.SERVER, ServerConfig.CONFIG);
 		
-		BusRegister.registerMod(OverworldMirrorBlocks::registerMod);
+		OverworldMirrorBlocks.register();
 		
 		BusRegister.registerForge(PortalCreationEventHandler::registerForge);
 		BusRegister.registerForge(WorldInfoReplaceEventHandler::registerForge);
