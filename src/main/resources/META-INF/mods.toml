@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[43,)"
+loaderVersion="[45,)"
 issueTrackerURL="https://github.com/MC-U-Team/Overworld-Mirror/issues"
 displayURL="https://u-team.info/mods/overworldmirror"
 logoFile="logo.png"
@@ -17,20 +17,20 @@ authors="HyCraftHD"
 	[[dependencies.overworldmirror]]
 	    modId="forge"
 	    mandatory=true
-	    versionRange="[43.2.0,)"
+	    versionRange="[45.1.0,)"
 	    ordering="NONE"
 	    side="BOTH"
 	
 	[[dependencies.overworldmirror]]
 	    modId="minecraft"
 	    mandatory=true
-	    versionRange="[1.19.2]"
+	    versionRange="[1.19.4]"
 	    ordering="NONE"
 	    side="BOTH"
 	    
 	[[dependencies.overworldmirror]]
 	    modId="uteamcore"
 	    mandatory=true
-	    versionRange="[4.4.3.236,)"
+	    versionRange="[5.1.2.266,)"
 	    ordering="NONE"
 	    side="BOTH"
