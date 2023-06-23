@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import info.u_team.overworld_mirror.config.ServerConfig;
+import info.u_team.overworld_mirror.config.CommonConfig;
 import info.u_team.overworld_mirror.init.OverworldMirrorBlocks;
 import info.u_team.u_team_core.util.LevelUtil;
 import net.minecraft.core.BlockPos;
@@ -91,8 +91,8 @@ public class PortalManager {
 		final BlockPos estimatedPos = border.clampToBounds(entity.getX() * coordinateScale, entity.getY(), entity.getZ() * coordinateScale);
 		
 		final PortalLevelSavedData data = getSavedData(destinationLevel);
-		final ServerConfig config = ServerConfig.getInstance();
-		final double searchDistance = Math.pow(destinationLevel.dimension() == Level.OVERWORLD ? config.portalSearchDistanceOverworld.get() : config.portalSearchDistanceOverworldMirror.get(), 2);
+		final CommonConfig config = CommonConfig.getInstance();
+		final double searchDistance = Math.pow(destinationLevel.dimension() == Level.OVERWORLD ? config.portalSearchDistanceOverworld().get() : config.portalSearchDistanceOverworldMirror().get(), 2);
 		
 		BlockPos portalMiddlePos = null;
 		

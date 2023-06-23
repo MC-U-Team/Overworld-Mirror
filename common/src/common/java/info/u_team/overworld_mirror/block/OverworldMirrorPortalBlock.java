@@ -4,7 +4,7 @@ import info.u_team.overworld_mirror.init.OverworldMirrorBlocks;
 import info.u_team.overworld_mirror.init.OverworldMirrorLevelKeys;
 import info.u_team.overworld_mirror.portal.PortalLevelSavedData;
 import info.u_team.overworld_mirror.portal.PortalManager;
-import info.u_team.overworld_mirror.portal.PortalTeleporter;
+import info.u_team.overworld_mirror.util.TeleportUtil;
 import info.u_team.u_team_core.block.UBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
@@ -25,11 +25,8 @@ public class OverworldMirrorPortalBlock extends UBlock {
 	
 	protected static final VoxelShape SHAPE = box(0, 11.9, 0, 16, 12, 16);
 	
-	private final PortalTeleporter teleporter;
-	
 	public OverworldMirrorPortalBlock() {
 		super(Properties.of().noCollission().strength(-1.0F).sound(SoundType.GLASS).lightLevel(state -> 11).noLootTable().pushReaction(PushReaction.BLOCK));
-		teleporter = new PortalTeleporter();
 	}
 	
 	@Override
@@ -47,12 +44,12 @@ public class OverworldMirrorPortalBlock extends UBlock {
 	}
 	
 	private void changeDimension(MinecraftServer server, Entity entity, ResourceKey<Level> key) {
-		final ServerLevel newWorld = server.getLevel(key);
-		if (newWorld == null) {
+		final ServerLevel newLevel = server.getLevel(key);
+		if (newLevel == null) {
 			return;
 		}
 		entity.setPortalCooldown();
-		entity.changeDimension(newWorld, teleporter);
+		TeleportUtil.changeDimension(entity, newLevel);
 	}
 	
 	@Override

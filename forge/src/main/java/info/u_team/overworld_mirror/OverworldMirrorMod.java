@@ -7,7 +7,7 @@ import net.minecraftforge.fml.common.Mod;
 @Mod(OverworldMirrorMod.MODID)
 public class OverworldMirrorMod {
 	
-	public static final String MODID = "overworldmirror";
+	public static final String MODID = OverworldMirrorReference.MODID;
 	
 	public OverworldMirrorMod() {
 		JarSignVerifier.checkSigned(MODID);
