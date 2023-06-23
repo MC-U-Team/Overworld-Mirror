@@ -31,6 +31,6 @@ authors="HyCraftHD"
 	[[dependencies.overworldmirror]]
 	    modId="uteamcore"
 	    mandatory=true
-	    versionRange="[5.1.2.266,)"
+	    versionRange="[5.0.2.261,)"
 	    ordering="NONE"
 	    side="BOTH"
