@@ -11,7 +11,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.players.PlayerList;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -88,13 +87,8 @@ public class PortalManager {
 	public static PortalInfo findOrCreatePortal(ServerLevel destinationLevel, Entity entity) {
 		final WorldBorder border = destinationLevel.getWorldBorder();
 		
-		final double minX = Math.max(-2.9999872e7, border.getMinX() + 16);
-		final double minZ = Math.max(-2.9999872e7, border.getMinZ() + 16);
-		final double maxX = Math.min(2.9999872e7, border.getMaxX() - 16);
-		final double maxZ = Math.min(2.9999872e7, border.getMaxZ() - 16);
-		
 		final double coordinateScale = DimensionType.getTeleportationScale(entity.getCommandSenderWorld().dimensionType(), destinationLevel.dimensionType());
-		final BlockPos estimatedPos = new BlockPos(Mth.clamp(entity.getX() * coordinateScale, minX, maxX), entity.getY(), Mth.clamp(entity.getZ() * coordinateScale, minZ, maxZ));
+		final BlockPos estimatedPos = border.clampToBounds(entity.getX() * coordinateScale, entity.getY(), entity.getZ() * coordinateScale);
 		
 		final PortalLevelSavedData data = getSavedData(destinationLevel);
 		final ServerConfig config = ServerConfig.getInstance();
