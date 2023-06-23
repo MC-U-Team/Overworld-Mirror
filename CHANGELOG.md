@@ -1,7 +1,6 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [1.19.2-1.6.0.20] - 2022-11-02
+## [1.19.4-1.6.0.21] - 2023-06-23
 ### Changed
- - Port to 1.19.2
- - Removed seed options as they are not supported anymore due to minecraft's world generation changes :/
+ - Port to 1.19.4
