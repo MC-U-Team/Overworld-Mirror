@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "overworldmirror",
+	"version": "${version}",
+	"name": "Overworld Mirror",
+	"description": "Join our discord server here: https://discord.hycrafthd.net\n\nThis mod just mirrors the overworld and let you travel with a portal between them.",
+	"authors": [
+		"HyCraftHD"
+	],
+	"contact": {
+		"homepage": "https://u-team.info/mods/overworldmirror",
+		"sources": "https://github.com/MC-U-Team/Overworld-Mirror"
+	},
+	"license": "Apache-2.0 License",
+	"icon": "logo.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"info.u_team.overworld_mirror.OverworldMirrorMod"
+		]
+	},
+	"accessWidener": "overworldmirror.accesswidener",
+	"mixins": [
+		"overworldmirror.mixins.json"
+	],
+	"depends": {
+		"uteamcore": ">=5.1.2.266",
+		"fabricloader": ">=0.14.21",
+		"fabric": ">=0.83.1+1.20.1",
+		"minecraft": "1.20.1",
+		"java": ">=17"
+	},
+	"custom": {
+		"uteamcore:update_url": "https://api.u-team.info/update/overworldmirror_fabric.json",
+		"modmenu": {
+			"links": {
+				"modmenu.discord": "https://discord.hycrafthd.net"
+			}
+		}
+	}
+}

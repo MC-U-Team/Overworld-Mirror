@@ -37,6 +37,10 @@ loom {
 			ideConfigGenerated true
 		}
 	}
+	
+	mixin {
+		defaultRefmapName = "overworldmirror.mixins.refmap.json"
+	}
 }
 
 tasks.withType(Jar).configureEach { task ->

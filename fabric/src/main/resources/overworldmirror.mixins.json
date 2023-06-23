@@ -1,0 +1,13 @@
+{
+	"minVersion": "0.8",
+	"required": true,
+	"compatibilityLevel": "JAVA_17",
+	"refmap": "overworldmirror.mixins.refmap.json",
+	"package": "info.u_team.overworld_mirror.mixin",
+	"mixins": [
+		"ItemEntityMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
