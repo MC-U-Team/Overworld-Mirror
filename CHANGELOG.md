@@ -1,6 +1,6 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [1.19.4-1.6.0.21] - 2023-06-23
+## [1.20.1-1.7.0.22] - 2023-06-24
 ### Changed
- - Port to 1.19.4
+ - Port to 1.20.1 and to fabric
