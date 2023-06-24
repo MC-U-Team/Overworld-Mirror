@@ -11,6 +11,8 @@ public class OverworldMirrorFabricCommonConstruct implements ModConstruct {
 	@Override
 	public void construct() {
 		FabricCommonConfig.getInstance();
+		
+		
 	}
 	
 }

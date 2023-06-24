@@ -5,7 +5,7 @@
 	"refmap": "overworldmirror.mixins.refmap.json",
 	"package": "info.u_team.overworld_mirror.mixin",
 	"mixins": [
-		"ItemEntityMixin"
+		"BoneMealItemMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
