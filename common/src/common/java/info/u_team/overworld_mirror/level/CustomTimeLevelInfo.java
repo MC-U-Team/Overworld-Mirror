@@ -26,20 +26,20 @@ public class CustomTimeLevelInfo implements ServerLevelData {
 	
 	// Update and save methods
 	
-	public void tick(ServerLevel world) {
+	public void tick(ServerLevel level) {
 		if (!firstTick) {
 			firstTick = true;
-			setDayTime(getSavedData(world).getDayTime());
+			setDayTime(getSavedData(level).getDayTime());
 		}
 		if (getGameRules().getBoolean(GameRules.RULE_DAYLIGHT)) {
 			setDayTime(getDayTime() + 1);
 		}
-		getSavedData(world).updateDayTime(getDayTime());
+		getSavedData(level).updateDayTime(getDayTime());
 	}
 	
-	public DimensionDataLevelSavedData getSavedData(ServerLevel world) {
+	public DimensionDataLevelSavedData getSavedData(ServerLevel level) {
 		final String name = "overworldmirror_dimensiondata";
-		return LevelUtil.getSaveData(world, name, DimensionDataLevelSavedData::load, DimensionDataLevelSavedData::new);
+		return LevelUtil.getSaveData(level, name, DimensionDataLevelSavedData::load, DimensionDataLevelSavedData::new);
 	}
 	
 	// Custom dimension time
