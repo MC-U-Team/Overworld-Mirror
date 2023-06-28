@@ -30,4 +30,7 @@ public class DimensionDataLevelSavedData extends SavedData {
 		setDirty();
 	}
 	
+	public long getDayTime() {
+		return dayTime;
+	}
 }

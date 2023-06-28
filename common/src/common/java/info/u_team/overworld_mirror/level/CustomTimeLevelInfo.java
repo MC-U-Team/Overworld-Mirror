@@ -17,6 +17,7 @@ public class CustomTimeLevelInfo implements ServerLevelData {
 	
 	private final ServerLevelData info;
 	
+	private boolean firstTick;
 	private long dayTime;
 	
 	public CustomTimeLevelInfo(ServerLevelData info) {
@@ -26,6 +27,10 @@ public class CustomTimeLevelInfo implements ServerLevelData {
 	// Update and save methods
 	
 	public void tick(ServerLevel world) {
+		if (!firstTick) {
+			firstTick = true;
+			setDayTime(getSavedData(world).getDayTime());
+		}
 		if (getGameRules().getBoolean(GameRules.RULE_DAYLIGHT)) {
 			setDayTime(getDayTime() + 1);
 		}
