@@ -9,8 +9,8 @@ import java.nio.file.Path;
 import java.util.Properties;
 
 import info.u_team.overworld_mirror.OverworldMirrorReference;
-import info.u_team.overworld_mirror.util.ConfigValueHolder;
 import info.u_team.u_team_core.UCoreReference;
+import info.u_team.u_team_core.util.ConfigValueHolder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.Util;
 import net.minecraft.util.Mth;

@@ -1,6 +1,6 @@
 package info.u_team.overworld_mirror.config;
 
-import info.u_team.overworld_mirror.util.ConfigValueHolder;
+import info.u_team.u_team_core.util.ConfigValueHolder;
 import info.u_team.u_team_core.util.ServiceUtil;
 
 public abstract class CommonConfig {
