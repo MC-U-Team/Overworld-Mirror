@@ -122,7 +122,7 @@ curseforge {
 		addGameVersion "Java 17"
 		
 		relations {
-			optionalDependency "u-team-core"
+			requiredDependency "u-team-core"
 		}
 		
 		mainArtifact(tasks.getByName("jar")) {
