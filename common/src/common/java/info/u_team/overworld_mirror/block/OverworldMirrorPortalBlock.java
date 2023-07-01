@@ -4,8 +4,8 @@ import info.u_team.overworld_mirror.init.OverworldMirrorBlocks;
 import info.u_team.overworld_mirror.init.OverworldMirrorLevelKeys;
 import info.u_team.overworld_mirror.portal.PortalLevelSavedData;
 import info.u_team.overworld_mirror.portal.PortalManager;
-import info.u_team.overworld_mirror.util.TeleportUtil;
 import info.u_team.u_team_core.block.UBlock;
+import info.u_team.u_team_core.util.DimensionTeleportUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
@@ -49,7 +49,7 @@ public class OverworldMirrorPortalBlock extends UBlock {
 			return;
 		}
 		entity.setPortalCooldown();
-		TeleportUtil.changeDimension(entity, newLevel);
+		DimensionTeleportUtil.changeDimension(entity, newLevel, PortalManager.findOrCreatePortal(newLevel, entity));
 	}
 	
 	@Override
