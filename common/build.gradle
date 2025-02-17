@@ -7,45 +7,17 @@ plugins {
 gradlefiles.loaderSuffix = "common"
 
 group = rootProject.group
-archivesBaseName = gradlefiles.archivesBaseName()
+base.archivesName = gradlefiles.archivesName()
 version = gradlefiles.version()
-
-java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
-	}
-	withSourcesJar()
-	withJavadocJar()
-}
-
-loom {
-	accessWidenerPath = project(":fabric").file("src/main/resources/overworldmirror.accesswidener")
-}
-
-tasks.withType(Jar).configureEach { task ->
-	gradlefiles.defaultJar(task)
-}
-
-tasks.withType(Javadoc).configureEach { task ->
-	task.options.addStringOption("Xdoclint:none", "-quiet")
-}
-
-gradlefiles.signJar("remapJar")
-
-processResources {
-	doLast {
-		fileTree(dir: outputs.files.asPath, include: "**/*.json").each { File file ->
-			file.text = groovy.json.JsonOutput.toJson(new groovy.json.JsonSlurper().parse(file))
-		}
-	}
-}
 
 sourceSets {
 	common {
 		java
 		resources {
-			srcDirs += "src/common-generated/resources"
+			srcDirs += "src/common_generated/resources"
 		}
+		compileClasspath = main.compileClasspath
+		runtimeClasspath = main.runtimeClasspath
 	}
 	main {
 		java {
@@ -53,6 +25,40 @@ sourceSets {
 		}
 		resources {
 			srcDirs += sourceSets.common.resources.srcDirs
+		}
+	}
+}
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+	withSourcesJar()
+	withJavadocJar()
+}
+
+loom {
+	accessWidenerPath = gradlefiles.project("fabric").file("src/main/resources/overworldmirror.accesswidener")
+}
+
+tasks.withType(Jar).configureEach { task ->
+	gradlefiles.defaultJar(task)
+	
+	manifest {
+		attributes("Fabric-Loom-Remap": "true")
+	}
+}
+
+tasks.withType(Javadoc).configureEach { task ->
+	task.options.addStringOption("Xdoclint:none", "-quiet")
+}
+
+signjar.sign(tasks.named("remapJar"))
+
+processResources {
+	doLast {
+		fileTree(dir: outputs.files.asPath, include: "**/*.json").each { File file ->
+			file.text = groovy.json.JsonOutput.toJson(new groovy.json.JsonSlurper().parse(file))
 		}
 	}
 }
@@ -73,7 +79,7 @@ dependencies {
 	modImplementation gradlefiles.fabricLoaderDependency()
 	modRuntimeOnly gradlefiles.fabricApiDependency()
 	
-	modImplementation "info.u-team:u_team_core-common-1.20.1:5.1.4.269"
+	modImplementation "info.u-team:u_team_core-common-1.21.1:5.6.2.354"
 }
 
 publishing {
@@ -88,35 +94,13 @@ publishing {
 	}
 	publications {
 		mavenJava(MavenPublication) {
-			artifactId archivesBaseName
+			artifactId project.base.archivesName.get()
 			
-			from components.java
+			from gradlefiles.filteredJavaComponent()
 			
 			pom {
-				name = project.archivesBaseName
-				description = "${config.github.name}"
-				url = "https://github.com/MC-U-Team/${config.github.name}"
-				scm {
-					url = "https://github.com/MC-U-Team/${config.github.name}"
-					connection = "scm:git:git://github.com/MC-U-Team/${config.github.name}.git"
-					developerConnection = "scm:git:git@github.com:MC-U-Team/${config.github.name}.git"
-				}
-				issueManagement {
-					system = "github"
-					url = "https://github.com/MC-U-Team/${config.github.name}/issues"
-				}
-				licenses {
-					license {
-						name = "Apache License 2.0"
-						url = "https://github.com/MC-U-Team/${config.github.name}/blob/${config.github.branch}/LICENSE"
-						distribution = "repo"
-					}
-				}
-				developers {
-					developer {
-						name = "HyCraftHD"
-					}
-				}
+				pom.name = project.base.archivesName.get()
+				rootProject.commonPom(it)
 			}
 		}
 	}
