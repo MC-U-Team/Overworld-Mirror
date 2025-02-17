@@ -1,0 +1,180 @@
+plugins {
+	id "net.neoforged.gradle.userdev"
+	id "info.u_team.gradle_files"
+	id "me.modmuss50.mod-publish-plugin"
+	id "maven-publish"
+}
+
+gradlefiles.loaderSuffix = "neoforge"
+
+group = rootProject.group
+base.archivesName = gradlefiles.archivesName()
+version = gradlefiles.version()
+
+sourceSets {
+	main {
+		java {
+			srcDirs += gradlefiles.project("common").sourceSets.common.java.srcDirs
+		}
+		resources {
+			srcDirs += gradlefiles.project("common").sourceSets.common.resources.srcDirs
+		}
+	}
+	data {
+		java
+		compileClasspath += main.compileClasspath + main.output
+		runtimeClasspath += main.runtimeClasspath
+	}
+}
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+	withSourcesJar()
+	withJavadocJar()
+}
+
+minecraft {
+	accessTransformers {
+		file("src/main/resources/META-INF/accesstransformer.cfg")
+	}
+}
+
+subsystems {
+	parchment {
+		minecraftVersion = config.neoforge.parchment.minecraft_version
+		mappingsVersion = config.neoforge.parchment.version
+	}
+}
+
+runs {
+	sourceSets.main.runs.modIdentifier = config.mod.modid
+	sourceSets.data.runs.modIdentifier = config.mod.modid
+	
+	client {
+		workingDirectory file("run/client").with { mkdirs(); it }
+				
+		modSources sourceSets.main
+	}
+	
+	server {
+		workingDirectory file("run/server").with { mkdirs(); it }
+		
+		modSources sourceSets.main
+	}
+	
+	data {
+		workingDirectory file("run/data").with { mkdirs(); it }
+		
+		arguments "--mod", config.mod.modid
+		arguments "--all"
+		arguments "--output", gradlefiles.project("common").file("src/common_generated/resources").absolutePath
+		arguments "--validate"
+		arguments "--existing", gradlefiles.project("common").file("src/common/resources").absolutePath
+		
+		systemProperties "coremod.uteamcore.dataprovider-set-indent", "true"
+		
+		modSources sourceSets.main
+		modSources sourceSets.data
+	}
+}
+
+tasks.withType(Jar).configureEach { task ->
+	gradlefiles.defaultJar(task)
+}
+
+tasks.withType(Javadoc).configureEach { task ->
+	task.options.addStringOption("Xdoclint:none", "-quiet")
+}
+
+signjar.sign(tasks.named("jar"))
+
+processResources {
+	doLast {
+		fileTree(dir: outputs.files.asPath, include: "**/*.json").each { File file ->
+			file.text = groovy.json.JsonOutput.toJson(new groovy.json.JsonSlurper().parse(file))
+		}
+	}
+}
+
+repositories {
+	maven {
+		url = "https://maven.blamejared.com"
+	}
+}
+
+dependencies {
+	implementation gradlefiles.neoForgeDependency()
+	
+	implementation "info.u-team:u_team_core-neoforge-1.21.1:5.6.2.354"
+	
+	runtimeOnly "mezz.jei:jei-${config.minecraft.version}-neoforge:${config.jei.version}"
+}
+
+publishMods {
+	file = tasks.named("jar").flatMap { jar -> jar.archiveFile }
+	displayName = "${config.publish.display}-NeoForge-${config.minecraft.version}-${project.version}"
+	changelog = "[Changelog for version ${project.version}](${gradlefiles.changelogUrl()})"
+	type = me.modmuss50.mpp.ReleaseType.of(config.publish.type)
+	modLoaders.add("neoforge")
+	
+	curseforge {
+		accessToken = defaultPropertyValue("curseforge.token")
+		
+		projectId = config.curse.id
+		projectSlug = config.curse.slug
+		minecraftVersions.add(config.minecraft.version)
+		javaVersions.add(JavaVersion.VERSION_21)
+		
+		requires("u-team-core")
+		optional("jei")
+	}
+	
+	modrinth {
+		accessToken = defaultPropertyValue("modrinth.token")
+		
+		projectId = config.modrinth.id
+		minecraftVersions.add(config.minecraft.version)
+		
+		requires("u-team-core")
+		optional("jei")
+	}
+	
+	discord {
+		webhookUrl = defaultPropertyValue("discord.update_webhook")
+		
+		username = "Mod Update"
+		avatarUrl = "https://raw.githubusercontent.com/MC-U-Team/${config.github.name}/${config.github.branch}/logo.png"
+		
+		content = changelog.map { log -> "# ${config.minecraft.version}: ${config.publish.display} (NeoForge)\n" + log}
+	}
+}
+
+publishing {
+	repositories {
+		maven {
+			url "https://repo.u-team.info"
+			credentials {
+				username = "maven"
+				password = defaultPropertyValue("maven.password")
+			}
+		}
+	}
+	publications {
+		mavenJava(MavenPublication) {
+			artifactId project.base.archivesName.get()
+			
+			from gradlefiles.filteredJavaComponent {
+				filterDependency { holder ->
+					"mezz.jei" == holder.dependency.group
+				}
+			}
+			
+			pom {
+				pom.name = project.base.archivesName.get()
+				rootProject.commonPom(it)
+			}
+		}
+	}
+}
