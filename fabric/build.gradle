@@ -32,7 +32,7 @@ java {
 
 loom {
 	accessWidenerPath = file("src/main/resources/overworldmirror.accesswidener")
-
+	
 	runs {
 		client {
 			runDir "run/client"
@@ -103,12 +103,12 @@ dependencies {
 	}
 	
 	modImplementation gradlefiles.fabricLoaderDependency()
-	modRuntimeOnly gradlefiles.fabricApiDependency()
+	modImplementation gradlefiles.fabricApiDependency()
 	
 	modImplementation "info.u-team:u_team_core-fabric-1.21.1:5.6.2.354"
 	
 	modRuntimeOnly "mezz.jei:jei-${config.minecraft.version}-fabric:${config.jei.version}"
-		
+	
 	modRuntimeOnly "com.terraformersmc:modmenu:${config.modmenu.fabric.version}"
 }
 
