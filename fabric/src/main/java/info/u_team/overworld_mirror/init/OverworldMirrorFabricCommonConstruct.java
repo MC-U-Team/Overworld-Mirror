@@ -18,9 +18,7 @@ public class OverworldMirrorFabricCommonConstruct implements ModConstruct {
 		ServerWorldEvents.LOAD.register((server, level) -> {
 			WorldInfoReplaceEventHandler.onWorldLoad(level);
 		});
-		ServerTickEvents.END_WORLD_TICK.register(level -> {
-			WorldInfoReplaceEventHandler.onWorldTick(level);
-		});
+		ServerTickEvents.END_WORLD_TICK.register(WorldInfoReplaceEventHandler::onWorldTick);
 	}
 	
 }
