@@ -34,9 +34,9 @@ java {
 
 minecraft {
 	mappings channel: config.forge.mapping_channel, version: config.forge.mapping
-
+	
 	reobf = false
-
+	
 	accessTransformer = file("src/main/resources/META-INF/accesstransformer.cfg")
 	
 	runs {

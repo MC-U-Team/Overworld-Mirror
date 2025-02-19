@@ -54,7 +54,7 @@ runs {
 	
 	client {
 		workingDirectory file("run/client").with { mkdirs(); it }
-				
+		
 		modSources sourceSets.main
 	}
 	
