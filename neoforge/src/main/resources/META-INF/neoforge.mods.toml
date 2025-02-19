@@ -1,0 +1,36 @@
+modLoader="javafml"
+loaderVersion="[2,)"
+issueTrackerURL="https://github.com/MC-U-Team/Overworld-Mirror/issues"
+license="Apache-2.0 License"
+
+[[mods]]
+	modId="overworldmirror"
+	version="${file.jarVersion}"
+	displayName="Overworld Mirror"
+	displayURL="https://u-team.info/mods/overworldmirror"
+	updateJSONURL="https://api.u-team.info/update/overworldmirror_neoforge.json"
+	logoFile="logo.png"
+	credits="Team U-Team"
+	authors="HyCraftHD"
+	description="Join our discord server here: https://discord.hycrafthd.net\n\nThis mod just mirrors the overworld and let you travel with a portal between them."
+	
+	[[dependencies.overworldmirror]]
+		modId="neoforge"
+		type="required"
+		versionRange="[21.1.93,)"
+		ordering="NONE"
+		side="BOTH"
+	
+	[[dependencies.overworldmirror]]
+		modId="minecraft"
+		type="required"
+		versionRange="[1.21.1]"
+		ordering="NONE"
+		side="BOTH"
+	    
+	[[dependencies.overworldmirror]]
+		modId="uteamcore"
+		type="required"
+		versionRange="[5.6.2.354,)"
+		ordering="NONE"
+		side="BOTH"
