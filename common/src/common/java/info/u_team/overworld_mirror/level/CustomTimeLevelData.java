@@ -227,4 +227,19 @@ public class CustomTimeLevelData implements ServerLevelData {
 	public boolean isAllowCommands() {
 		return info.isAllowCommands();
 	}
+	
+	// Dummy neo methods. not implemented and used for now
+	public float getDayTimeFraction() {
+		return 0;
+	}
+	
+	public float getDayTimePerTick() {
+		return 0;
+	}
+	
+	public void setDayTimeFraction(float dayTimeFraction) {
+	}
+	
+	public void setDayTimePerTick(float dayTimePerTick) {
+	}
 }
