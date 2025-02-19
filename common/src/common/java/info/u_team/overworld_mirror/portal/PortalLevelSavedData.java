@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.level.saveddata.SavedData;
@@ -22,14 +23,14 @@ public class PortalLevelSavedData extends SavedData {
 		portals = new ArrayList<>(entries);
 	}
 	
-	public static PortalLevelSavedData load(CompoundTag compound) {
+	public static PortalLevelSavedData load(CompoundTag compound, HolderLookup.Provider provider) {
 		return new PortalLevelSavedData(compound.getList("list", 10).stream().filter(tag -> tag instanceof CompoundTag).map(tag -> (CompoundTag) tag).map(entryCompound -> {
 			return new BlockPos(entryCompound.getInt("x"), entryCompound.getInt("y"), entryCompound.getInt("z"));
 		}).collect(Collectors.toList()));
 	}
 	
 	@Override
-	public CompoundTag save(CompoundTag compound) {
+	public CompoundTag save(CompoundTag compound, HolderLookup.Provider provider) {
 		final ListTag list = new ListTag();
 		portals.forEach(pos -> {
 			final CompoundTag entryCompound = new CompoundTag();

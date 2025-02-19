@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.border.WorldBorder;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.portal.PortalInfo;
+import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.Vec3;
 
 public class PortalManager {
@@ -84,7 +84,7 @@ public class PortalManager {
 		return false;
 	}
 	
-	public static PortalInfo findOrCreatePortal(ServerLevel destinationLevel, Entity entity) {
+	public static DimensionTransition findOrCreatePortal(ServerLevel destinationLevel, Entity entity) {
 		final WorldBorder border = destinationLevel.getWorldBorder();
 		
 		final double coordinateScale = DimensionType.getTeleportationScale(entity.getCommandSenderWorld().dimensionType(), destinationLevel.dimensionType());
@@ -116,7 +116,7 @@ public class PortalManager {
 			data.setDirty();
 		}
 		
-		return new PortalInfo(Vec3.upFromBottomCenterOf(portalMiddlePos, 0.25), entity.getDeltaMovement(), entity.getYRot(), entity.getXRot());
+		return new DimensionTransition(destinationLevel, Vec3.upFromBottomCenterOf(portalMiddlePos, 0.25), entity.getDeltaMovement(), entity.getYRot(), entity.getXRot(), DimensionTransition.PLACE_PORTAL_TICKET);
 	}
 	
 	private static boolean validatePortal(Level level, BlockPos pos) {

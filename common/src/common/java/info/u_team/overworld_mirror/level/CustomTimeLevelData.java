@@ -13,14 +13,14 @@ import net.minecraft.world.level.border.WorldBorder.Settings;
 import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraft.world.level.timers.TimerQueue;
 
-public class CustomTimeLevelInfo implements ServerLevelData {
+public class CustomTimeLevelData implements ServerLevelData {
 	
 	private final ServerLevelData info;
 	
 	private boolean firstTick;
 	private long dayTime;
 	
-	public CustomTimeLevelInfo(ServerLevelData info) {
+	public CustomTimeLevelData(ServerLevelData info) {
 		this.info = info;
 	}
 	
@@ -109,43 +109,8 @@ public class CustomTimeLevelInfo implements ServerLevelData {
 	// Delegated methods
 	
 	@Override
-	public void setXSpawn(int x) {
-		info.setXSpawn(x);
-	}
-	
-	@Override
-	public int getXSpawn() {
-		return info.getXSpawn();
-	}
-	
-	@Override
-	public void setYSpawn(int y) {
-		info.setYSpawn(y);
-	}
-	
-	@Override
-	public int getYSpawn() {
-		return info.getYSpawn();
-	}
-	
-	@Override
-	public void setZSpawn(int z) {
-		info.setZSpawn(z);
-	}
-	
-	@Override
 	public String getLevelName() {
 		return info.getLevelName();
-	}
-	
-	@Override
-	public int getZSpawn() {
-		return info.getZSpawn();
-	}
-	
-	@Override
-	public void setSpawnAngle(float angle) {
-		info.setSpawnAngle(angle);
 	}
 	
 	@Override
@@ -239,11 +204,6 @@ public class CustomTimeLevelInfo implements ServerLevelData {
 	}
 	
 	@Override
-	public boolean getAllowCommands() {
-		return info.getAllowCommands();
-	}
-	
-	@Override
 	public void setGameType(GameType type) {
 		info.setGameType(type);
 	}
@@ -256,5 +216,15 @@ public class CustomTimeLevelInfo implements ServerLevelData {
 	@Override
 	public void setGameTime(long time) {
 		info.setGameTime(time);
+	}
+	
+	@Override
+	public BlockPos getSpawnPos() {
+		return info.getSpawnPos();
+	}
+	
+	@Override
+	public boolean isAllowCommands() {
+		return info.isAllowCommands();
 	}
 }

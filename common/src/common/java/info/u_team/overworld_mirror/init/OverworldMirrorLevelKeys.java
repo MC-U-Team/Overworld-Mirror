@@ -8,6 +8,6 @@ import net.minecraft.world.level.Level;
 
 public class OverworldMirrorLevelKeys {
 	
-	public static final ResourceKey<Level> MIRROR_OVERWORLD = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(OverworldMirrorReference.MODID, "overworld"));
+	public static final ResourceKey<Level> MIRROR_OVERWORLD = ResourceKey.create(Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath(OverworldMirrorReference.MODID, "overworld"));
 	
 }

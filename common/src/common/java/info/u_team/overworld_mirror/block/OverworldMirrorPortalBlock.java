@@ -5,23 +5,24 @@ import info.u_team.overworld_mirror.init.OverworldMirrorLevelKeys;
 import info.u_team.overworld_mirror.portal.PortalLevelSavedData;
 import info.u_team.overworld_mirror.portal.PortalManager;
 import info.u_team.u_team_core.block.UBlock;
-import info.u_team.u_team_core.util.DimensionTeleportUtil;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Portal;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class OverworldMirrorPortalBlock extends UBlock {
+public class OverworldMirrorPortalBlock extends UBlock implements Portal {
 	
 	protected static final VoxelShape SHAPE = box(0, 11.9, 0, 16, 12, 16);
 	
@@ -31,25 +32,32 @@ public class OverworldMirrorPortalBlock extends UBlock {
 	
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if (level instanceof ServerLevel && level.getServer() != null && !entity.isPassenger() && !entity.isVehicle() && entity.canChangeDimensions()) {
-			final MinecraftServer server = level.getServer();
-			if (entity.isOnPortalCooldown()) {
-				entity.setPortalCooldown();
-			} else if (level.dimension() == Level.OVERWORLD) {
-				changeDimension(server, entity, OverworldMirrorLevelKeys.MIRROR_OVERWORLD);
-			} else if (level.dimension() == OverworldMirrorLevelKeys.MIRROR_OVERWORLD) {
-				changeDimension(server, entity, Level.OVERWORLD);
-			}
+		if (entity.canUsePortal(false)) {
+			entity.setAsInsidePortal(this, pos);
 		}
 	}
 	
-	private void changeDimension(MinecraftServer server, Entity entity, ResourceKey<Level> key) {
-		final ServerLevel newLevel = server.getLevel(key);
-		if (newLevel == null) {
-			return;
+	@Override
+	public int getPortalTransitionTime(ServerLevel level, Entity entity) {
+		return entity instanceof Player ? 1 : 0;
+	}
+	
+	@Override
+	public DimensionTransition getPortalDestination(ServerLevel level, Entity entity, BlockPos pos) {
+		final ServerLevel newLevel;
+		if (level.dimension() == Level.OVERWORLD) {
+			newLevel = level.getServer().getLevel(OverworldMirrorLevelKeys.MIRROR_OVERWORLD);
+		} else if (level.dimension() == OverworldMirrorLevelKeys.MIRROR_OVERWORLD) {
+			newLevel = level.getServer().getLevel(Level.OVERWORLD);
+		} else {
+			newLevel = null;
 		}
-		entity.setPortalCooldown();
-		DimensionTeleportUtil.changeDimension(entity, newLevel, PortalManager.findOrCreatePortal(newLevel, entity));
+		
+		if (newLevel == null) {
+			return null;
+		}
+		
+		return PortalManager.findOrCreatePortal(newLevel, entity);
 	}
 	
 	@Override
@@ -74,7 +82,7 @@ public class OverworldMirrorPortalBlock extends UBlock {
 	}
 	
 	@Override
-	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
+	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
 		return ItemStack.EMPTY;
 	}
 	

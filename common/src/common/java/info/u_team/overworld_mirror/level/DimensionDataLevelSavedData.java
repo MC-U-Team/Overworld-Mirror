@@ -1,5 +1,6 @@
 package info.u_team.overworld_mirror.level;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.saveddata.SavedData;
 
@@ -15,12 +16,12 @@ public class DimensionDataLevelSavedData extends SavedData {
 		this.dayTime = dayTime;
 	}
 	
-	public static DimensionDataLevelSavedData load(CompoundTag compound) {
+	public static DimensionDataLevelSavedData load(CompoundTag compound, HolderLookup.Provider provider) {
 		return new DimensionDataLevelSavedData(compound.getLong("dayTime"));
 	}
 	
 	@Override
-	public CompoundTag save(CompoundTag compound) {
+	public CompoundTag save(CompoundTag compound, HolderLookup.Provider provider) {
 		compound.putLong("dayTime", dayTime);
 		return compound;
 	}
