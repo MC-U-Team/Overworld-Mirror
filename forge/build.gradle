@@ -62,8 +62,19 @@ minecraft {
 	}
 }
 
+mixin {
+	config "overworldmirror.mixins.json"
+	
+	debug.verbose = true
+	debug.export = true
+}
+
 tasks.withType(Jar).configureEach { task ->
 	gradlefiles.defaultJar(task)
+	
+	manifest {
+		attributes("MixinConfigs": "overworldmirror.mixins.json")
+	}
 }
 
 tasks.withType(Javadoc).configureEach { task ->
