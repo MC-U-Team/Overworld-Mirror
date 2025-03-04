@@ -15,4 +15,8 @@ public abstract class CommonConfig {
 	
 	public abstract ConfigValueHolder<Double> portalSearchDistanceOverworldMirror();
 	
+	public abstract ConfigValueHolder<Boolean> seedAddition();
+	
+	public abstract ConfigValueHolder<Long> seed();
+	
 }

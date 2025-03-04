@@ -26,6 +26,9 @@ public class FabricCommonConfig {
 	public final ConfigValueHolder<Double> portalSearchDistanceOverworld;
 	public final ConfigValueHolder<Double> portalSearchDistanceOverworldMirror;
 	
+	public final ConfigValueHolder<Boolean> seedAddition;
+	public final ConfigValueHolder<Long> seed;
+	
 	private final Path path = FabricLoader.getInstance().getConfigDir().resolve(OverworldMirrorReference.MODID + ".properties");
 	private final Properties properties;
 	
@@ -50,6 +53,23 @@ public class FabricCommonConfig {
 			return Mth.clamp(Double.valueOf(properties.getProperty("portalSearchDistanceOverworldMirror", "30")), 1, 1e10);
 		}, value -> {
 			properties.put("portalSearchDistanceOverworldMirror", value.toString());
+			Util.ioPool().submit(this::save);
+		});
+		
+		properties.computeIfAbsent("seedAddition", unused -> "true");
+		properties.computeIfAbsent("seedValue", unused -> "100000");
+		
+		seedAddition = new ConfigValueHolder<>(() -> {
+			return Boolean.valueOf(properties.getProperty("seedAddition", "true"));
+		}, value -> {
+			properties.put("seedAddition", value.toString());
+			Util.ioPool().submit(this::save);
+		});
+		
+		seed = new ConfigValueHolder<>(() -> {
+			return Mth.clamp(Long.valueOf(properties.getProperty("seedValue", "100000")), Long.MIN_VALUE, Long.MAX_VALUE);
+		}, value -> {
+			properties.put("seedValue", value.toString());
 			Util.ioPool().submit(this::save);
 		});
 		
@@ -84,6 +104,16 @@ public class FabricCommonConfig {
 		@Override
 		public ConfigValueHolder<Double> portalSearchDistanceOverworldMirror() {
 			return INSTANCE.portalSearchDistanceOverworldMirror;
+		}
+		
+		@Override
+		public ConfigValueHolder<Boolean> seedAddition() {
+			return INSTANCE.seedAddition;
+		}
+		
+		@Override
+		public ConfigValueHolder<Long> seed() {
+			return INSTANCE.seed;
 		}
 	}
 }
