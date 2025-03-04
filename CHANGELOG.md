@@ -1,11 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [1.20.1-1.7.0.23] - 2023-07-01
+## [1.21.1-1.8.0.24] - 2025-03-04
 ### Changed
- - Updated forge and fabric api
- - Updated uteamcore and use many functions from uteamcore
-
-## [1.20.1-1.7.0.22] - 2023-06-24
-### Changed
- - Port to 1.20.1 and to fabric
+ - Port to 1.21.1 and neoforge
+ - Add option to customize seed again
