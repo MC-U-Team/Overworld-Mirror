@@ -105,7 +105,7 @@ dependencies {
 	modImplementation gradlefiles.fabricLoaderDependency()
 	modImplementation gradlefiles.fabricApiDependency()
 	
-	modImplementation "info.u-team:u_team_core-fabric-1.21.1:5.6.2.364"
+	modImplementation "info.u-team:u_team_core-fabric-1.21.1:5.6.2.384"
 	
 	modRuntimeOnly "mezz.jei:jei-${config.minecraft.version}-fabric:${config.jei.version}"
 	
